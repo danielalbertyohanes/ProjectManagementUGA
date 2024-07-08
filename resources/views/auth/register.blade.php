@@ -79,7 +79,7 @@
 
                                     <select id="potition" class="form-control @error('role') is-invalid @enderror"
                                         name="potition" required autocomplete="potition" autofocus>
-                                        <option value="owner">Owner</option>
+                                        <option value="owner">asdasd</option>
                                         <option value="employee">Employee</option>
                                     </select>
 
