@@ -1,7 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\DosenController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 
 
 /*
@@ -20,5 +23,11 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::resource('course', CourseController::class);
+Route::resource('dosen', DosenController::class);
+Route::get('/welcome', function () {
+    return view('layouts.welcome');
+})->name('welcome');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');

@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Course;
-use App\Models\Potition;
+use App\Models\Position;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -40,8 +39,8 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        $potitions = Potition::all();
-        return view('auth.register', compact('potitions'));
+        $positions = Position::all();
+        return view('auth.register', compact('positions'));
     }
     /**
      * Create a new controller instance.

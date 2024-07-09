@@ -77,8 +77,8 @@
                                 <div class="col-md-6">
                                     <select id="potition" class="form-control @error('role') is-invalid @enderror"
                                         name="potition" required autocomplete="potition" autofocus>
-
-                                        @foreach ($potitions as $p)
+                                        <option value="" selected disabled>Choose Position</option>
+                                        @foreach ($positions as $p)
                                             <option value={{ $p->id }}>{{ $p->name }}</option>
                                         @endforeach
                                     </select>

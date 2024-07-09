@@ -3,10 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -43,4 +45,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    public function position(): BelongsTo
+    {
+        return $this->belongsTo(Position::class, 'position_id'); // hotel_id untuk merujuk pada id hotel yang akan di tuju
+    }
+
+    public  function courses(): HasMany
+    {
+        return $this->hasMany(Course::class, 'pic_course', 'id'); // hasmany buat many karena 1 hotel bisa banyak product
+    }
 }

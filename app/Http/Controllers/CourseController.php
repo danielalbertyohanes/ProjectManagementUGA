@@ -9,14 +9,14 @@ class CourseController extends Controller
 {
     public function index()
     {
-        $courses = Course::getAllCourses();
-        return view('courses.index', compact('courses'));
+        $courses = Course::with('user')->get();
+        return view('course.index', compact('courses'));
     }
 
     public function show($id)
     {
         $course = Course::getCourseById($id);
-        return view('courses.show', compact('course'));
+        return view('course.show', compact('course'));
     }
 
     public function store(Request $request)
@@ -33,7 +33,7 @@ class CourseController extends Controller
 
         Course::createCourse($data);
 
-        return redirect()->route('courses.index');
+        return redirect()->route('course.index');
     }
 
     public function update(Request $request, $id)
@@ -50,13 +50,13 @@ class CourseController extends Controller
 
         Course::updateCourse($id, $data);
 
-        return redirect()->route('courses.index');
+        return redirect()->route('course.index');
     }
 
     public function destroy($id)
     {
         Course::deleteCourse($id);
 
-        return redirect()->route('courses.index');
+        return redirect()->route('course.index');
     }
 }
