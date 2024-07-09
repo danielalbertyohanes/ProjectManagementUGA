@@ -74,13 +74,13 @@
                             <div class="row mb-3">
                                 <label for="potition"
                                     class="col-md-4 col-form-label text-md-end">{{ __('Potition') }}</label>
-
                                 <div class="col-md-6">
-
                                     <select id="potition" class="form-control @error('role') is-invalid @enderror"
                                         name="potition" required autocomplete="potition" autofocus>
-                                        <option value="owner">Owner</option>
-                                        <option value="employee">Employee</option>
+
+                                        @foreach ($potitions as $p)
+                                            <option value={{ $p->id }}>{{ $p->name }}</option>
+                                        @endforeach
                                     </select>
 
                                     @error('potition')

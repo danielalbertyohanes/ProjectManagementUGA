@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Course;
+use App\Models\Potition;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -30,6 +32,17 @@ class RegisterController extends Controller
      */
     protected $redirectTo = '/home';
 
+
+    /**
+     * Show the registration form.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showRegistrationForm()
+    {
+        $potitions = Potition::all();
+        return view('auth.register', compact('potitions'));
+    }
     /**
      * Create a new controller instance.
      *
@@ -52,7 +65,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'position_id' =>  ['required']
+            'potition' =>  ['required']
         ]);
     }
 
@@ -68,7 +81,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'position_id' => $data['position_id']
+            'potition_id' => $data['potition']
         ]);
     }
 }
