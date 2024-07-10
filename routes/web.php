@@ -17,6 +17,7 @@ use App\Http\Controllers\HomeController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+//TEST INI BUSI COBA GITHUB
 
 Route::get('/', function () {
     return view('welcome');
