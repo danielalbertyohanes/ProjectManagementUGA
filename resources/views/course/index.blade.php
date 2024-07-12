@@ -25,36 +25,65 @@
                                 <th class="text-center">Description</th>
                                 <th class="text-center">Created_at</th>
                                 <th class="text-center">Jumlah_video</th>
+                                <th class="text-center">Dosen</th>
                                 <th class="text-center">Panduan_rpp_path</th>
                                 <th class="text-center">Template_rpp_path</th>
-
                                 <th class="text-center">Pic_course</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($courses as $d)
-                                <tr id="tr_{{ $d->id }}">
-                                    <td>{{ $d->id }}</td>
-                                    <td>{{ $d->name }}</td>
-                                    <td>{{ $d->description }}</td>
-                                    <td>{{ $d->created_at }}</td>
-                                    <td>{{ $d->jumlah_video }}</td>
-                                    <td>{{ $d->panduan_rpp_path }}</td>
-                                    <td>{{ $d->template_rpp_path }}</td>
+                            @foreach ($courses as $course)
+                                <tr id="tr_{{ $course->id }}">
+                                    <td>{{ $course->id }}</td>
+                                    <td>{{ $course->name }}</td>
+                                    <td>{{ $course->description }}</td>
+                                    <td>{{ $course->created_at }}</td>
+                                    <td>{{ $course->jumlah_video }}</td>
+                                    <td>
+                                        <ul>
+                                            @php
+                                                $ketua = $course->dosens->where('pivot.role', 'ketua')->first();
+                                                $anggota = $course->dosens->where('pivot.role', 'anggota');
+                                            @endphp
 
-                                    <td>{{ $d->user->name }}</td>
+                                            @if ($ketua)
+                                                <li>
+                                                    @if ($anggota->isNotEmpty())
+                                                        <strong>Ketua:</strong>
+                                                    @endif
+                                                    {{ $ketua->name }}
+                                                </li>
+                                            @endif
+
+                                            @if ($anggota->isNotEmpty())
+                                                <li>
+                                                    <strong>Anggota:</strong>
+                                                    @foreach ($anggota as $dosen)
+                                                        {{ $dosen->name }},
+                                                    @endforeach
+                                                </li>
+                                            @endif
+
+                                            @if (!$ketua && $anggota->isEmpty())
+                                                <li>Tidak ada dosen</li>
+                                            @endif
+                                        </ul>
+                                    </td>
+                                    <td>{{ $course->panduan_rpp_path }}</td>
+                                    <td>{{ $course->template_rpp_path }}</td>
+                                    <td>{{ $course->user->name }}</td>
                                     <td>
                                         @if (Auth::user()->position_id == '3')
                                             <a href="#" class="btn btn-warning" data-toggle="modal"
-                                                data-target="#modalEditA" onclick="getEditForm({{ $d->id }})">EDIT
-                                            </a>
-                                            <form method="POST" action="{{ route('course.destroy', $d->id) }}"
+                                                data-target="#modalEditA"
+                                                onclick="getEditForm({{ $course->id }})">EDIT</a>
+                                            <form method="POST" action="{{ route('course.destroy', $course->id) }}"
                                                 style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <input type="submit" value="Delete" class="btn btn-danger"
-                                                    onclick="return confirm('Are you sure to delete {{ $d->id }} - {{ $d->name }}?');">
+                                                    onclick="return confirm('Are you sure to delete {{ $course->id }} - {{ $course->name }}?');">
                                             </form>
                                         @endif
                                     </td>
@@ -78,7 +107,6 @@
         </div>
     </div>
 @endsection
-
 @section('javascript')
     <script>
         // EDIT

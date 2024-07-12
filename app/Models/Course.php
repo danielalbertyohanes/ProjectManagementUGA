@@ -25,6 +25,11 @@ class Course extends Model
     {
         return $this->belongsTo(User::class, 'pic_course');
     }
+    public function dosens()
+    {
+        return $this->belongsToMany(Dosen::class, 'courses_has_dosens', 'courses_id', 'dosens_id')
+            ->withPivot('role');
+    }
 
     // // function tambah data 
     // public static function createCourse(array $data)

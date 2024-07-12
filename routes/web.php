@@ -29,7 +29,10 @@ Auth::routes();
 Route::resource('course', CourseController::class);
 Route::post('/course/getEditForm', [CourseController::class, 'getEditForm'])->name('course.getEditForm');
 
+
 Route::resource('dosen', DosenController::class);
+Route::post('/dosen/getEditForm', [DosenController::class, 'getEditForm'])->name('dosen.getEditForm');
+
 Route::get('/welcome', function () {
     return view('layouts.welcome');
 })->name('welcome');

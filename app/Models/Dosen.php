@@ -2,16 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Dosen extends Model
 {
+
+    use HasFactory, SoftDeletes;
     protected $fillable = [
         'name',
         'no_tlpn',
         'description'
     ];
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'courses_has_dosens', 'dosens_id', 'courses_id')
+            ->withPivot('role');
+    }
 
     // function tambah dosen
     public static function createDosen($data)

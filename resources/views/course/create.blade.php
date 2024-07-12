@@ -31,6 +31,21 @@
                     <option value="{{ $p->id }}">{{ $p->name }}</option>
                 @endforeach
             </select>
+
+            <hr>
+
+            <label for="dosen">Dosen</label>
+            <div id="dosenInputs">
+                <div class="form-group">
+                    <select class="form-control" name="dosens[]">
+                        <option value="" selected disabled>Pilih Dosen</option>
+                        @foreach ($dosens as $dosen)
+                            <option value="{{ $dosen->id }}">{{ $dosen->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <button type="button" class="btn btn-sm btn-primary" id="addDosen">Add Dosen</button>
         </div>
 
         <div class="modal-footer">
@@ -38,4 +53,22 @@
             <a href="{{ route('course.index') }}" class="btn btn-danger">Cancel</a>
         </div>
     </form>
+@endsection
+
+@section('javascript')
+    <script>
+        $(document).ready(function() {
+            // Tambah inputan dosen
+            $('#addDosen').click(function() {
+                $('#dosenInputs').append(
+                    '<div class="form-group"><select class="form-control" name="dosens[]"><option value="" selected disabled>Pilih Dosen</option>@foreach ($dosens as $dosen)<option value="{{ $dosen->id }}">{{ $dosen->name }}</option>@endforeach</select><button type="button" class="btn btn-sm btn-danger remove-input">Remove</button></div>'
+                );
+            });
+
+            // Hapus inputan dosen
+            $(document).on('click', '.remove-input', function() {
+                $(this).closest('.form-group').remove();
+            });
+        });
+    </script>
 @endsection

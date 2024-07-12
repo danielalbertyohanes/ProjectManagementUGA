@@ -9,14 +9,14 @@ class DosenController extends Controller
 {
     public function index()
     {
-        $dosens = Dosen::getAllDosens();
-        return view('dosens.index', compact('dosens'));
+        $dosens = Dosen::all();
+        return view('dosen.index', compact('dosens'));
     }
 
     public function show($id)
     {
         $dosen = Dosen::getDosenById($id);
-        return view('dosens.show', compact('dosen'));
+        return view('dosen.show', compact('dosen'));
     }
 
     public function store(Request $request)
@@ -27,12 +27,18 @@ class DosenController extends Controller
             'description' => 'nullable|string|max:45'
         ]);
 
-        Dosen::createDosen($data);
+        Dosen::create($data);
 
-        return redirect()->route('dosens.index');
+        return redirect()->route('dosen.index');
     }
 
-    public function update(Request $request, $id)
+    public function create()
+    {
+
+        return view("dosen.create");
+    }
+
+    public function update(Request $request, Dosen $dosen)
     {
         $data = $request->validate([
             'name' => 'nullable|string|max:45',
@@ -40,15 +46,30 @@ class DosenController extends Controller
             'description' => 'nullable|string|max:45'
         ]);
 
-        Dosen::updateDosen($id, $data);
+        $dosen->update($data);
 
-        return redirect()->route('dosens.index');
+        return redirect()->route('dosen.index')->with('status', 'dosen updated successfully');
     }
 
-    public function destroy($id)
+    public function destroy(Dosen $dosen)
     {
-        Dosen::deleteDosen($id);
+        try {
+            $deletedData = $dosen;
+            $deletedData->delete();
+            return redirect()->route('dosen.index')->with('status', 'Horray ! Your data is successfully deleted !');
+        } catch (\PDOException $ex) {
 
-        return redirect()->route('dosens.index');
+            $msg = "Failed to delete data ! Make sure there is no related data before deleting it";
+            return redirect()->route('dosen.index')->with('status', $msg);
+        }
+    }
+
+    public function getEditForm(Request $request)
+    {
+        $dosen = Dosen::findOrFail($request->id);
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('dosen.edit', compact('dosen'))->render()
+        ], 200);
     }
 }

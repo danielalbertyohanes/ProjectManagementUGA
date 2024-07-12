@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Course;
+use App\Models\Dosen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,8 +12,7 @@ class CourseController extends Controller
 {
     public function index()
     {
-
-        $courses = Course::with('user')->get();
+        $courses = Course::with(['user', 'dosens'])->get();
         return view('course.index', compact('courses'));
     }
 
@@ -21,7 +21,6 @@ class CourseController extends Controller
         $course = Course::getCourseById($id);
         return view('course.show', compact('course'));
     }
-
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -32,18 +31,30 @@ class CourseController extends Controller
             'template_rpp_path' => 'nullable|string',
             'pic_course' => 'required|integer'
         ]);
-        Course::create($data);
+
+        // Simpan data kursus
+        $course = Course::create($data);
+
+        // Simpan relasi dosen
+        $dosens = $request->input('dosens', []);
+
+        foreach ($dosens as $key => $dosenId) {
+            $role = $key === 0 ? 'ketua' : 'anggota'; // Dosen pertama menjadi ketua, yang lainnya anggota
+            $course->dosens()->attach($dosenId, ['role' => $role]);
+        }
 
         return redirect()->route('course.index')->with('status', 'Berhasil Tambah');
     }
+
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
+        $dosens = Dosen::all();
         $pic = User::getUserPIC();
-        return view("course.create", compact('pic'));
+        return view("course.create", compact('pic', 'dosens'));
     }
 
     // app/Http/Controllers/CourseController.php
@@ -86,9 +97,9 @@ class CourseController extends Controller
     }
 
 
+
     public function destroy(Course $course)
     {
-
         try {
             $deletedData = $course;
             //dd($deletedData);

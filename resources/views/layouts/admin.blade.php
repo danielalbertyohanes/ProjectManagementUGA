@@ -76,6 +76,13 @@
                     <span>Courses</span></a>
             </li>
 
+            <!-- Nav Item - Charts -->
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('dosen.index') }}">
+                    <i class="fa fa-user"></i>
+                    <span>Dosens</span></a>
+            </li>
+
             {{-- <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCustomers"
                     aria-expanded="true" aria-controls="collapseCustomers">
@@ -177,7 +184,8 @@
                     <i class="fa fa-book"></i>
                     <span>Laporan/Rekap</span>
                 </a>
-                <div id="collapseRekap" class="collapse" aria-labelledby="headingHotel" data-parent="#accordionSidebar">
+                <div id="collapseRekap" class="collapse" aria-labelledby="headingHotel"
+                    data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Laporan:</h6>
                         <a class="collapse-item" href=""> Laporan Pertama </a>
