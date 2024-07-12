@@ -111,7 +111,7 @@
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHotel"
+                <!-- <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHotel"
                     aria-expanded="true" aria-controls="collapseHotel">
                     <i class="fa fa-bed"></i>
                     <span>Hotel</span>
@@ -126,11 +126,11 @@
                         <a class="collapse-item" href="">Create </a>
                     </div>
 
-                </div>
+                </div> -->
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProduct"
                     aria-expanded="true" aria-controls="collapseProduct">
                     <i class="fa fa-th"></i>
@@ -147,7 +147,7 @@
                         <a class="collapse-item" href="">Create</a>
                     </div>
                 </div>
-            </li>
+            </li> -->
             {{-- <!-- Nav Item - Utilities Collapse Menu -->
 
             <li class="nav-item">
@@ -162,11 +162,11 @@
                 </div>
             </li> --}}
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="">
                     <i class="fa fa-money-bill"></i>
                     <span>Transaction</span></a>
-            </li>
+            </li> -->
 
 
 

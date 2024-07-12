@@ -17,13 +17,19 @@ use App\Http\Controllers\HomeController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+//TEST INI BUSI COBA GITHUB
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Auth::routes();
+// routes/web.php
+
+
 Route::resource('course', CourseController::class);
+Route::post('/course/getEditForm', [CourseController::class, 'getEditForm'])->name('course.getEditForm');
+
 Route::resource('dosen', DosenController::class);
 Route::get('/welcome', function () {
     return view('layouts.welcome');
