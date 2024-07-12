@@ -46,9 +46,7 @@
                                     <td>{{ $d->panduan_rpp_path }}</td>
                                     <td>{{ $d->template_rpp_path }}</td>
                                     <td>{{ $d->uploaded_rpp_path }}</td>
-                                    @if (Auth::user()->position_id == '3')
-                                        <td>{{ $d->user->name }}</td>
-                                    @endif
+                                    <td>{{ $d->user->name }}</td>
                                     <td>
                                         {{-- <a class="btn btn-success" data-toggle="modal" href="#myModal"
                                                 onclick="getDetailData({{ $d->id }})"> Rincian Pembelian</a> --}}
