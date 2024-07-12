@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\Course;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
     public function index()
     {
+
         $courses = Course::with('user')->get();
         return view('course.index', compact('courses'));
     }
@@ -27,37 +30,45 @@ class CourseController extends Controller
             'jumlah_video' => 'nullable|integer',
             'panduan_rpp_path' => 'nullable|string',
             'template_rpp_path' => 'nullable|string',
-            'uploaded_rpp_path' => 'nullable|string',
             'pic_course' => 'required|integer'
         ]);
+        Course::create($data);
 
-        Course::createCourse($data);
+        return redirect()->route('course.index')->with('status', 'Berhasil Tambah');
+    }
 
-        return redirect()->route('course.index');
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $pic = User::getUserPIC();
+        return view("course.create", compact('pic'));
     }
 
     // app/Http/Controllers/CourseController.php
 
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Course $course)
     {
+        // Validasi data input
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'jumlah_video' => 'nullable|integer',
             'panduan_rpp_path' => 'nullable|string',
-            'template_rpp_path' => 'nullable|string',
-            'uploaded_rpp_path' => 'nullable|string',
-            'pic_course' => 'required|integer'
+            'template_rpp_path' => 'nullable|string'
         ]);
 
-        $course = Course::findOrFail($id);
+        // Perbarui data course menggunakan metode update
         $course->update($data);
 
-        return redirect()->route('course.index');
+        return redirect()->route('course.index')->with('status', 'Course updated successfully');
     }
+
     public function edit($id)
     {
+
         $course = Course::findOrFail($id);
         return view('course.edit', compact('course'));
     }
@@ -75,10 +86,18 @@ class CourseController extends Controller
     }
 
 
-    public function destroy($id)
+    public function destroy(Course $course)
     {
-        Course::deleteCourse($id);
 
-        return redirect()->route('course.index');
+        try {
+            $deletedData = $course;
+            //dd($deletedData);
+            $deletedData->delete();
+            return redirect()->route('course.index')->with('status', 'Horray ! Your data is successfully deleted !');
+        } catch (\PDOException $ex) {
+
+            $msg = "Failed to delete data ! Make sure there is no related data before deleting it";
+            return redirect()->route('course.index')->with('status', $msg);
+        }
     }
 }

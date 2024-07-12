@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -55,5 +56,11 @@ class User extends Authenticatable
     public  function courses(): HasMany
     {
         return $this->hasMany(Course::class, 'pic_course', 'id'); // hasmany buat many karena 1 hotel bisa banyak product
+    }
+
+    // function cari nama dosen
+    public static function getUserPIC()
+    {
+        return DB::table('users')->where('position_id', 1)->get();
     }
 }
