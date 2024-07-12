@@ -24,7 +24,12 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+// routes/web.php
+
+
 Route::resource('course', CourseController::class);
+Route::post('/course/getEditForm', [CourseController::class, 'getEditForm'])->name('course.getEditForm');
+
 Route::resource('dosen', DosenController::class);
 Route::get('/welcome', function () {
     return view('layouts.welcome');

@@ -36,6 +36,9 @@ class CourseController extends Controller
         return redirect()->route('course.index');
     }
 
+    // app/Http/Controllers/CourseController.php
+
+
     public function update(Request $request, $id)
     {
         $data = $request->validate([
@@ -48,10 +51,29 @@ class CourseController extends Controller
             'pic_course' => 'required|integer'
         ]);
 
-        Course::updateCourse($id, $data);
+        $course = Course::findOrFail($id);
+        $course->update($data);
 
         return redirect()->route('course.index');
     }
+    public function edit($id)
+    {
+        $course = Course::findOrFail($id);
+        return view('course.edit', compact('course'));
+    }
+
+    // app/Http/Controllers/CourseController.php
+
+    public function getEditForm(Request $request)
+    {
+        $id = $request->id;
+        $course = Course::findOrFail($id);
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('course.edit', compact('course'))->render()
+        ], 200);
+    }
+
 
     public function destroy($id)
     {
