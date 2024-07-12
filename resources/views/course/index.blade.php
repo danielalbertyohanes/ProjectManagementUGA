@@ -127,3 +127,41 @@
         }
     </script>
 @endsection
+
+@section('javascript')
+<script>
+
+// Add
+// $(document).ready(function () {
+//         $('[data-target="#"]').on('click', function () {
+//             $.ajax({
+//                 url: ,
+//                 method: 'GET',
+//                 success: function (data) {
+//                     $('# .modal-body').html(data);
+//                 },
+//                 error: function (jqXHR, textStatus, errorThrown) {
+//                     console.error('AJAX request failed: ' + textStatus + ', ' + errorThrown);
+//                 }
+//             });
+//         });
+//     });
+
+// EDIT
+    function getEditForm(course_id) {
+        $.ajax({
+            type: 'POST',
+            url: '{{ route("course.getEditForm") }}',
+            data: {
+                '_token': '{{ csrf_token() }}',
+                'id': course_id
+            },
+            success: function (data) {
+                if (data.status === 'ok') {
+                    $('#modalContent').html(data.msg);
+                }
+            }
+        });
+    }
+</script>
+@endsection

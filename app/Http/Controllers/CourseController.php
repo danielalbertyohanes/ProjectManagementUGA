@@ -46,7 +46,6 @@ class CourseController extends Controller
         return redirect()->route('course.index')->with('status', 'Berhasil Tambah');
     }
 
-
     /**
      * Show the form for creating a new resource.
      */
@@ -58,7 +57,6 @@ class CourseController extends Controller
     }
 
     // app/Http/Controllers/CourseController.php
-
 
     public function update(Request $request, Course $course)
     {
@@ -95,8 +93,6 @@ class CourseController extends Controller
             'msg' => view('course.edit', compact('course'))->render()
         ], 200);
     }
-
-
 
     public function destroy(Course $course)
     {
