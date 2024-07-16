@@ -116,45 +116,45 @@
             </div>
         </div>
     </div>
+
+    {{-- <!-- Modal Add-->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addTypeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTypeModalLabel">Add Type Hotel</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form will be loaded here using AJAX -->
+                </div>
+            </div>
+        </div>
+    </div> --}}
 @endsection
-@section('javascript')
-    <script>
-        // EDIT
-        function getEditForm(course_id) {
-            $.ajax({
-                type: 'POST',
-                url: '{{ route('course.getEditForm') }}',
-                data: {
-                    '_token': '{{ csrf_token() }}',
-                    'id': course_id
-                },
-                success: function(data) {
-                    if (data.status === 'ok') {
-                        $('#modalContent').html(data.msg);
-                    }
-                }
-            });
-        }
-    </script>
-@endsection
+
 
 @section('javascript')
     <script>
-        // Add
-        // $(document).ready(function () {
-        //         $('[data-target="#"]').on('click', function () {
-        //             $.ajax({
-        //                 url: ,
-        //                 method: 'GET',
-        //                 success: function (data) {
-        //                     $('# .modal-body').html(data);
-        //                 },
-        //                 error: function (jqXHR, textStatus, errorThrown) {
-        //                     console.error('AJAX request failed: ' + textStatus + ', ' + errorThrown);
-        //                 }
-        //             });
+        // // Add
+        // $(document).ready(function() {
+        //     $('[data-target="#"]').on('click', function() {
+        //         $.ajax({
+        //             url: ,
+        //             method: 'GET',
+        //             success: function(data) {
+        //                 $('# .modal-body').html(data);
+        //             },
+        //             error: function(jqXHR, textStatus, errorThrown) {
+        //                 console.error('AJAX request failed: ' + textStatus + ', ' +
+        //                     errorThrown);
+        //             }
         //         });
         //     });
+        // });
 
         // EDIT
         function getEditForm(course_id) {

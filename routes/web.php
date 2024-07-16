@@ -5,7 +5,8 @@ use App\Http\Controllers\DosenController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\PptController;
+use App\Http\Controllers\VideoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,3 +40,7 @@ Route::get('/welcome', function () {
 
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+
+Route::resource('video', VideoController::class);
+Route::resource('ppt', PptController::class);
