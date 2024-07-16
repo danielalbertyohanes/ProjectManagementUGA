@@ -28,8 +28,6 @@ class TopicController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'course_id' => 'required|exists:courses,id',
             'status' => 'nullable|string|in:active,inactive,pending',
             'progres' => 'nullable|integer|min:0|max:100',
         ]);
@@ -42,8 +40,6 @@ class TopicController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'course_id' => 'required|exists:courses,id',
             'status' => 'nullable|string|in:active,inactive,pending',
             'progres' => 'nullable|integer|min:0|max:100',
         ]);
