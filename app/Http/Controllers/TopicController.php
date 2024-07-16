@@ -37,6 +37,7 @@ class TopicController extends Controller
         return redirect()->route('topics.index')
             ->with('success', 'Topic created successfully');
     }
+    //update
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
