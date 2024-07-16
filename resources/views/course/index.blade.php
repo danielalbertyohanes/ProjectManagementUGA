@@ -11,6 +11,13 @@
             <a class="btn btn-success mb-3" href="{{ route('course.create') }}">+ New Course</a>
         @endif
 
+        <a href="http://">Panduan_rpp_path</a>
+        <a href="http://">Panduan_rpp_path</a>
+        <a href="http://">Panduan_rpp_path</a>
+        <a href="http://">Panduan_rpp_path</a>
+        <a href="http://">Panduan_rpp_path</a>
+
+
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">DataTables</h6>
@@ -30,6 +37,8 @@
                                 <th class="text-center">Template_rpp_path</th>
                                 <th class="text-center">Pic_course</th>
                                 <th class="text-center">Action</th>
+                                <th class="text-center">manage topic & sub topic</th>
+                                <th class="text-center">manage ppt & video</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -87,6 +96,7 @@
                                             </form>
                                         @endif
                                     </td>
+                                    <td><button>asdad</button></td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -129,39 +139,38 @@
 @endsection
 
 @section('javascript')
-<script>
+    <script>
+        // Add
+        // $(document).ready(function () {
+        //         $('[data-target="#"]').on('click', function () {
+        //             $.ajax({
+        //                 url: ,
+        //                 method: 'GET',
+        //                 success: function (data) {
+        //                     $('# .modal-body').html(data);
+        //                 },
+        //                 error: function (jqXHR, textStatus, errorThrown) {
+        //                     console.error('AJAX request failed: ' + textStatus + ', ' + errorThrown);
+        //                 }
+        //             });
+        //         });
+        //     });
 
-// Add
-// $(document).ready(function () {
-//         $('[data-target="#"]').on('click', function () {
-//             $.ajax({
-//                 url: ,
-//                 method: 'GET',
-//                 success: function (data) {
-//                     $('# .modal-body').html(data);
-//                 },
-//                 error: function (jqXHR, textStatus, errorThrown) {
-//                     console.error('AJAX request failed: ' + textStatus + ', ' + errorThrown);
-//                 }
-//             });
-//         });
-//     });
-
-// EDIT
-    function getEditForm(course_id) {
-        $.ajax({
-            type: 'POST',
-            url: '{{ route("course.getEditForm") }}',
-            data: {
-                '_token': '{{ csrf_token() }}',
-                'id': course_id
-            },
-            success: function (data) {
-                if (data.status === 'ok') {
-                    $('#modalContent').html(data.msg);
+        // EDIT
+        function getEditForm(course_id) {
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('course.getEditForm') }}',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'id': course_id
+                },
+                success: function(data) {
+                    if (data.status === 'ok') {
+                        $('#modalContent').html(data.msg);
+                    }
                 }
-            }
-        });
-    }
-</script>
+            });
+        }
+    </script>
 @endsection
