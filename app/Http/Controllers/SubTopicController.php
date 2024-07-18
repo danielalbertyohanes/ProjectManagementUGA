@@ -25,7 +25,7 @@ class SubTopicController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'progres' => 'nullable|string|in:active,inactive,pending',
+            'progres' => 'nullable|string|in:Not Yet, Progres, Finish, Cancel',
             'status' => 'nullable|integer|min:0|max:100',
         ]);
         $subTopic = SubTopic::insertSubTopics($validatedData);
