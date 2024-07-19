@@ -32,7 +32,7 @@ class SubTopicController extends Controller
         return redirect()->route('subTopics.index')
             ->with('success', 'SubTopic created successfully');
     }
-    //update
+    //update.
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([

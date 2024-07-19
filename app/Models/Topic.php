@@ -26,7 +26,7 @@ class Topic extends Model
         return $this->belongsTo(Course::class);
     }
 
-    // Get all topics
+    // Get all topics.
     public static function getAllTopics()
     {
         return self::all();

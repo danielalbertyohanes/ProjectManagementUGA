@@ -30,7 +30,7 @@ class SubTopic extends Model
     {
         return self::all();
     }
-    // Get topics by course_id
+    // Get topics by course_id.
     public static function getTopicsByCourseId($topic_id)
     {
         return self::where('topic_id', $topic_id)->get();

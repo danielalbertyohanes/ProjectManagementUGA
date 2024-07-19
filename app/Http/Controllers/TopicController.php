@@ -22,7 +22,7 @@ class TopicController extends Controller
         $topics = Topic::getTopicsByCourseId($course_id);
         return view('topics.index', compact('topics'));
     }
-    //insert 
+    //insert.
     public function store(Request $request)
     {
 
