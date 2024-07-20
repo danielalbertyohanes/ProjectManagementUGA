@@ -14,18 +14,18 @@
         <input type="number" class="form-control" id="videoCount" name="jumlah_video" placeholder="Enter Jumlah Video"
             value="{{ $course->jumlah_video }}" required>
 
-        <label for="panduanRPP">Panduan RPP Path</label>
-        <input type="text" class="form-control" id="panduanRPP" name="panduan_rpp_path"
-            placeholder="Enter Panduan RPP" value="{{ $course->panduan_rpp_path }}">
-
-        <label for="templateRPP">Template RPP Path</label>
-        <input type="text" class="form-control" id="templateRPP" name="template_rpp_path"
-            placeholder="Enter Template RPP" value="{{ $course->template_rpp_path }}">
+        <label for="status">Status</label>
+        <select class="form-control" id="status" name="status" required>
+            <option value="" selected disabled>Pilih Status</option>
+            @foreach (['Not Yet', 'Progres', 'Finish', 'Cancel'] as $status)
+                <option value="{{ $status }}" @if ($course->status == $status) selected @endif>
+                    {{ $status }}</option>
+            @endforeach
+        </select>
 
         <label for="exampleInputPicCourse">PIC Course</label>
         <input type="text" class="form-control" id="exampleInputPicCourse" name=""
             placeholder="Enter Pic Course" value="{{ $course->user->name }}" disabled>
-
     </div>
 
     <div class="modal-footer">

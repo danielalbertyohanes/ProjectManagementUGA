@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Course extends Model
 {
@@ -16,10 +17,14 @@ class Course extends Model
         'name',
         'description',
         'jumlah_video',
-        'panduan_rpp_path',
-        'template_rpp_path',
+        'progres',
+        'status',
         'pic_course'
     ];
+    public function topics(): HasMany
+    {
+        return $this->hasMany(Topic::class, 'course_id', 'id');
+    }
 
     public function user(): BelongsTo
     {

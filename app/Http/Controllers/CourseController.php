@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ppt;
 use App\Models\User;
-use App\Models\Course;
 use App\Models\Dosen;
+use App\Models\Video;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PhpParser\Node\Expr\Cast\String_;
 
 class CourseController extends Controller
 {
@@ -16,9 +19,9 @@ class CourseController extends Controller
         return view('course.index', compact('courses'));
     }
 
-    public function show($id)
+    public function show(String $id)
     {
-        $course = Course::getCourseById($id);
+        $course = Course::findCourseById($id);
         return view('course.show', compact('course'));
     }
     public function store(Request $request)
@@ -27,8 +30,6 @@ class CourseController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'jumlah_video' => 'nullable|integer',
-            'panduan_rpp_path' => 'nullable|string',
-            'template_rpp_path' => 'nullable|string',
             'pic_course' => 'required|integer'
         ]);
 
@@ -60,20 +61,18 @@ class CourseController extends Controller
 
     public function update(Request $request, Course $course)
     {
-        // Validasi data input
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:255',
             'jumlah_video' => 'nullable|integer',
-            'panduan_rpp_path' => 'nullable|string',
-            'template_rpp_path' => 'nullable|string'
+            'status' => 'required|in:Not Yet,Progres,Finish,Cancel',
         ]);
 
-        // Perbarui data course menggunakan metode update
         $course->update($data);
 
         return redirect()->route('course.index')->with('status', 'Course updated successfully');
     }
+
 
     public function edit($id)
     {
@@ -106,5 +105,15 @@ class CourseController extends Controller
             $msg = "Failed to delete data ! Make sure there is no related data before deleting it";
             return redirect()->route('course.index')->with('status', $msg);
         }
+    }
+
+    public function showAjax(Request $request)
+    {
+        $course_id = $request->get('id');
+        $ppts = Ppt::getPptsByCourseId($course_id);
+        $videos = Video::getVideosByCourseId($course_id);
+        return response()->json([
+            'msg' => view('course.showPptAndVideo', compact('ppts', 'videos'))->render()
+        ], 200);
     }
 }

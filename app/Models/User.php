@@ -50,12 +50,22 @@ class User extends Authenticatable
 
     public function position(): BelongsTo
     {
-        return $this->belongsTo(Position::class, 'position_id'); // hotel_id untuk merujuk pada id hotel yang akan di tuju
+        return $this->belongsTo(Position::class, 'position_id');
     }
 
     public  function courses(): HasMany
     {
-        return $this->hasMany(Course::class, 'pic_course', 'id'); // hasmany buat many karena 1 hotel bisa banyak product
+        return $this->hasMany(Course::class, 'pic_course', 'id');
+    }
+
+    public  function videos(): HasMany
+    {
+        return $this->hasMany(Video::class, 'user_id', 'id');
+    }
+
+    public  function ppts(): HasMany
+    {
+        return $this->hasMany(Ppt::class, 'user_id', 'id');
     }
 
     // function cari nama dosen

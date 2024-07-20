@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
 class SubTopic extends Model
@@ -21,9 +22,14 @@ class SubTopic extends Model
         'progres',
         'status'
     ];
-    public function topic()
+    public function topic(): BelongsTo
     {
-        return $this->belongsTo(Topic::class);
+        return $this->belongsTo(Topic::class, 'topic_id');
+    }
+
+    public function ppts(): HasMany
+    {
+        return $this->hasMany(Ppt::class, 'sub_topic_id', 'id');
     }
     // Get all topics
     public static function getAllSubTopics()

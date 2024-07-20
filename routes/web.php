@@ -18,7 +18,6 @@ use App\Http\Controllers\VideoController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-//TEST INI BUSI COBA GITHUB
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,12 +25,10 @@ Route::get('/', function () {
 
 Auth::routes();
 // routes/web.php
+Route::post('course/showDataPptAndVideo/', [CourseController::class, 'showAjax'])->name('course.showAjax');
 
-Route::resource('course', CourseController::class);
+Route::post('course/showDataPptAndVideo/', [CourseController::class, 'showAjax'])->name('course.showAjax');
 Route::post('/course/getEditForm', [CourseController::class, 'getEditForm'])->name('course.getEditForm');
-
-
-Route::resource('dosen', DosenController::class);
 Route::post('/dosen/getEditForm', [DosenController::class, 'getEditForm'])->name('dosen.getEditForm');
 
 Route::get('/welcome', function () {
@@ -44,3 +41,5 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::resource('video', VideoController::class);
 Route::resource('ppt', PptController::class);
+Route::resource('course', CourseController::class);
+Route::resource('dosen', DosenController::class);

@@ -1,8 +1,43 @@
 @extends('layouts.admin')
 
 @section('content')
+    <style>
+        .modal-wide {
+            max-width: 80%;
+            /* Adjust the percentage as needed */
+        }
+
+        .modal-dialog {
+            width: 100%;
+            /* Make the modal full width of the viewport */
+            max-width: 100%;
+            /* Ensure the modal does not exceed the viewport width */
+        }
+
+        .modal-content {
+            height: 80vh;
+            /* Adjust the height as needed */
+            overflow: auto;
+            /* Add scroll if the content exceeds the height */
+        }
+
+        .panduan-links a {
+            display: block;
+            /* Ensure links are displayed as block elements */
+            margin-bottom: 10px;
+            /* Add some space between the links */
+        }
+    </style>
+
     <div class="container-fluid">
         <h1 class="h3 mb-2 text-gray-800">COURSE</h1>
+        <div class="panduan-links">
+            <a href="http://">Panduan_rpp_path</a>
+            <a href="http://">Panduan_rpp_path</a>
+            <a href="http://">Panduan_rpp_path</a>
+            <a href="http://">Panduan_rpp_path</a>
+            <a href="http://">Panduan_rpp_path</a>
+        </div>
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
@@ -11,11 +46,6 @@
             <a class="btn btn-success mb-3" href="{{ route('course.create') }}">+ New Course</a>
         @endif
 
-        <a href="http://">Panduan_rpp_path</a>
-        <a href="http://">Panduan_rpp_path</a>
-        <a href="http://">Panduan_rpp_path</a>
-        <a href="http://">Panduan_rpp_path</a>
-        <a href="http://">Panduan_rpp_path</a>
 
 
         <div class="card shadow mb-4">
@@ -33,12 +63,12 @@
                                 <th class="text-center">Created_at</th>
                                 <th class="text-center">Jumlah_video</th>
                                 <th class="text-center">Dosen</th>
-                                <th class="text-center">Panduan_rpp_path</th>
-                                <th class="text-center">Template_rpp_path</th>
                                 <th class="text-center">Pic_course</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-center">Proggres</th>
+                                <th class="text-center">Status</th>
                                 <th class="text-center">manage topic & sub topic</th>
                                 <th class="text-center">manage ppt & video</th>
+                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -79,9 +109,18 @@
                                             @endif
                                         </ul>
                                     </td>
-                                    <td>{{ $course->panduan_rpp_path }}</td>
-                                    <td>{{ $course->template_rpp_path }}</td>
                                     <td>{{ $course->user->name }}</td>
+                                    <td>{{ $course->proggres }}</td>
+                                    <td>{{ $course->status }}</td>
+                                    <td><button>Topic & Subtopic</button></td>
+                                    <td>
+                                        <a class="btn btn-success" href="#" data-toggle="modal"
+                                            data-target="#pptModal" onclick="getDetailData({{ $course->id }})">
+                                            Ppt & Video
+                                        </a>
+                                    </td>
+
+                                    </td>
                                     <td>
                                         @if (Auth::user()->position_id == '3')
                                             <a href="#" class="btn btn-warning" data-toggle="modal"
@@ -96,12 +135,22 @@
                                             </form>
                                         @endif
                                     </td>
-                                    <td><button>asdad</button></td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for displaying PPT details -->
+    <div class="modal fade" id="pptModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-wide" role="document">
+            <div class="modal-content" id="msg">
+                <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" alt="Loading..."
+                    style="width: 100px;">
+                <p>Loading...</p>
             </div>
         </div>
     </div>
@@ -116,46 +165,10 @@
             </div>
         </div>
     </div>
-
-    {{-- <!-- Modal Add-->
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addTypeModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addTypeModalLabel">Add Type Hotel</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Form will be loaded here using AJAX -->
-                </div>
-            </div>
-        </div>
-    </div> --}}
 @endsection
-
 
 @section('javascript')
     <script>
-        // // Add
-        // $(document).ready(function() {
-        //     $('[data-target="#"]').on('click', function() {
-        //         $.ajax({
-        //             url: ,
-        //             method: 'GET',
-        //             success: function(data) {
-        //                 $('# .modal-body').html(data);
-        //             },
-        //             error: function(jqXHR, textStatus, errorThrown) {
-        //                 console.error('AJAX request failed: ' + textStatus + ', ' +
-        //                     errorThrown);
-        //             }
-        //         });
-        //     });
-        // });
-
         // EDIT
         function getEditForm(course_id) {
             $.ajax({
@@ -169,6 +182,20 @@
                     if (data.status === 'ok') {
                         $('#modalContent').html(data.msg);
                     }
+                }
+            });
+        }
+
+        function getDetailData(id) {
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('course.showAjax') }}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: id
+                },
+                success: function(data) {
+                    $("#msg").html(data.msg);
                 }
             });
         }

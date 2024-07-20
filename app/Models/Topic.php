@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Topic extends Model
 {
@@ -21,9 +23,15 @@ class Topic extends Model
     ];
 
     protected $dates = ['deleted_at'];
-    public function course()
+
+    public function courses(): BelongsTo
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Course::class, 'course_id');
+    }
+
+    public function sub_topics(): HasMany
+    {
+        return $this->hasMany(SubTopic::class, 'topic_id', 'id');
     }
 
     // Get all topics.
