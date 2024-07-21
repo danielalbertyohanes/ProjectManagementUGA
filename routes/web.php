@@ -30,7 +30,9 @@ Route::post('course/showDataPptAndVideo/', [CourseController::class, 'showAjax']
 
 Route::post('course/showDataPptAndVideo/', [CourseController::class, 'showAjax'])->name('course.showAjax');
 Route::post('/course/getEditForm', [CourseController::class, 'getEditForm'])->name('course.getEditForm');
-Route::post('/link/getEditForm', [LinkExternalController::class, 'getEditForm'])->name('link.getEditForm');
+
+Route::post('/link_external/getEditForm', [LinkExternalController::class, 'getEditForm'])->name('link.getEditForm');
+
 Route::post('/dosen/getEditForm', [DosenController::class, 'getEditForm'])->name('dosen.getEditForm');
 
 Route::get('/welcome', function () {
@@ -39,8 +41,6 @@ Route::get('/welcome', function () {
 
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-
-
 Route::resource('link_external', LinkExternalController::class);
 Route::resource('video', VideoController::class);
 Route::resource('ppt', PptController::class);

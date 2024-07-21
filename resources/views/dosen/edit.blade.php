@@ -6,8 +6,8 @@
         <input type="text" class="form-control" id="dosenName" name="name" placeholder="Enter Name of dosen"
             value="{{ $dosen->name }}" required>
 
-        <label for="videoCount">nomor telpon dosen</label>
-        <input type="number" class="form-control" id="videoCount" name="no_tlpn" placeholder="Enter Jumlah Video"
+        <label for="no_tlpn">nomor telpon dosen</label>
+        <input type="text" class="form-control" id="no_tlpn" name="no_tlpn" placeholder="Enter No_tlpn"
             value="{{ $dosen->no_tlpn }}" required>
 
         <label for="dosenDescription">Description</label>

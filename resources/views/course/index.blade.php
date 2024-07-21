@@ -13,11 +13,9 @@
     <div class="container-fluid">
         <h1 class="h3 mb-2 text-gray-800">COURSE</h1>
         <div class="panduan-links">
-            <a href="http://">Panduan_rpp_path</a>
-            <a href="http://">Panduan_rpp_path</a>
-            <a href="http://">Panduan_rpp_path</a>
-            <a href="http://">Panduan_rpp_path</a>
-            <a href="http://">Panduan_rpp_path</a>
+            @foreach ($links as $link)
+                <a href="{{ $link->value }}">{{ $link->name }}</a>
+            @endforeach
         </div>
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>

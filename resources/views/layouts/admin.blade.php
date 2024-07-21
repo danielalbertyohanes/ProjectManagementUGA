@@ -83,6 +83,13 @@
                     <span>Dosens</span></a>
             </li>
 
+            <!-- Nav Item - Charts -->
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('link_external.index') }}">
+                    <i class="fa fa-user"></i>
+                    <span>Link External</span></a>
+            </li>
+
             {{-- <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCustomers"
                     aria-expanded="true" aria-controls="collapseCustomers">

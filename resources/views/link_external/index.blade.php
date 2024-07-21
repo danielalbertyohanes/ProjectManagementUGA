@@ -7,9 +7,7 @@
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
 
-
-        <a class="btn btn-success mb-3" href="{{ route('dosen.create') }}">+ New Link</a>
-
+        <a class="btn btn-success mb-3" href="{{ route('link_external.create') }}">+ New Link</a>
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -20,7 +18,6 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th class="text-center">ID</th>
                                 <th class="text-center">Name</th>
                                 <th class="text-center">Value</th>
                                 <th class="text-center">Status</th>
@@ -30,23 +27,13 @@
                         <tbody>
                             @foreach ($links as $link)
                                 <tr id="tr_{{ $link->id }}">
-                                    <td>{{ $link->id }}</td>
                                     <td>{{ $link->name }}</td>
                                     <td>{{ $link->value }}</td>
                                     <td>{{ $link->status }}</td>
                                     <td>
-
                                         <a href="#" class="btn btn-warning" data-toggle="modal"
                                             data-target="#modalEditA" onclick="getEditForm({{ $link->id }})">EDIT
                                         </a>
-                                        {{-- <form method="POST" action="{{ route('dosen.destroy', $link->id) }}"
-                                                style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <input type="submit" value="Delete" class="btn btn-danger"
-                                                    onclick="return confirm('Are you sure to delete {{ $link->id }} - {{ $link->name }}?');">
-                                            </form> --}}
-
                                     </td>
                                 </tr>
                             @endforeach

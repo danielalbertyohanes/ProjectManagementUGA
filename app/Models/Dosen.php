@@ -16,7 +16,7 @@ class Dosen extends Model
         'no_tlpn',
         'description'
     ];
-    public function courses()
+    public function courses()   
     {
         return $this->belongsToMany(Course::class, 'courses_has_dosens', 'dosens_id', 'courses_id')
             ->withPivot('role');

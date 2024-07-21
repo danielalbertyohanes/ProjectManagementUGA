@@ -14,7 +14,21 @@ class LinkExternal extends Model
 
     protected $fillable = [
         'name',
+        'value',
         'status',
-        'value'
     ];
+
+    public static function getLinkOrderedByStatus()
+    {
+        return self::orderBy('status', 'desc')
+            ->orderBy('name', 'desc')
+            ->get();
+    }
+
+    public static function getLinkOrderedByStatusActive()
+    {
+        return self::where('status', 'active')
+            ->orderBy('name', 'desc')
+            ->get();
+    }
 }

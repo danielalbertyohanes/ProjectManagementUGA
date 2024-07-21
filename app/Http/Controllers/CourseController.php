@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Dosen;
 use App\Models\Video;
 use App\Models\Course;
+use App\Models\LinkExternal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PhpParser\Node\Expr\Cast\String_;
@@ -15,8 +16,9 @@ class CourseController extends Controller
 {
     public function index()
     {
+        $links = LinkExternal::getLinkOrderedByStatusActive();
         $courses = Course::with(['user', 'dosens'])->get();
-        return view('course.index', compact('courses'));
+        return view('course.index', compact('courses', 'links'));
     }
 
     public function show(String $id)
@@ -76,7 +78,6 @@ class CourseController extends Controller
 
     public function edit($id)
     {
-
         $course = Course::findOrFail($id);
         return view('course.edit', compact('course'));
     }

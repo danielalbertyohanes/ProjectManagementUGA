@@ -12,7 +12,7 @@ class LinkExternalController extends Controller
      */
     public function index()
     {
-        $links = LinkExternal::all();
+        $links = LinkExternal::getLinkOrderedByStatus();
         return view('link_external.index', compact('links'));
     }
 
@@ -21,7 +21,7 @@ class LinkExternalController extends Controller
      */
     public function create()
     {
-        //
+        return view('link_external.create');
     }
 
     /**
@@ -29,7 +29,15 @@ class LinkExternalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'nullable|string',
+            'value' => 'nullable|string',
+            'status' => 'nullable|string'
+        ]);
+
+        LinkExternal::create($data);
+
+        return redirect()->route('link_external.index');
     }
 
     /**
@@ -51,10 +59,18 @@ class LinkExternalController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $link = LinkExternal::find($id);
+        $data = $request->validate([
+            'name' => 'nullable|string',
+            'value' => 'nullable|string',
+            'status' => 'nullable|string|in:not active,active',
+        ]);
+        $link->update($data);
+        return redirect()->route('link_external.index')->with('status', 'Link updated successfully');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -68,6 +84,8 @@ class LinkExternalController extends Controller
     {
         $id = $request->id;
         $link = LinkExternal::findOrFail($id);
+
+
         return response()->json([
             'status' => 'ok',
             'msg' => view('link_external.edit', compact('link'))->render()

@@ -1,20 +1,24 @@
-<form method="POST" action="{{ route('link_external.store') }}">
-    @csrf
-    <div class="form-group">
-        <label for="dosenName">Name dosen</label>
-        <input type="text" class="form-control" id="dosenName" name="name" placeholder="Enter Name of dosen" required>
+@extends('layouts.admin')
+@section('content')
+    <form method="POST" action="{{ route('link_external.store') }}">
+        @csrf
+        <div class="form-group">
+            <label for="linkName">Link Name</label>
+            <input type="text" class="form-control" id="linkName" name="name" placeholder="Enter Link Name" required>
 
-        <label for="dosenDescription">nomor telpon dosen</label>
-        <input type="text" class="form-control" id="dosenDescription" name="no_tlpn" placeholder="Enter Description"
-            required>
+            <label for="linkValue">URL</label>
+            <input type="url" class="form-control" id="linkValue" name="value" placeholder="Enter URL" required>
 
-        <label for="dosenDescription">Description dosen</label>
-        <input type="text" class="form-control" id="dosenDescription" name="description"
-            placeholder="Enter Description" required>
-    </div>
+            <label for="linkStatus">Status</label>
+            <select class="form-control" id="linkStatus" name="status" required>
+                <option value="not active">Not Active</option>
+                <option value="active">Active</option>
+            </select>
+        </div>
 
-    <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <a href="{{ route('dosen.index') }}" class="btn btn-danger">Cancel</a>
-    </div>
-</form>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a href="{{ route('link_external.index') }}" class="btn btn-danger">Cancel</a>
+        </div>
+    </form>
+@endsection
