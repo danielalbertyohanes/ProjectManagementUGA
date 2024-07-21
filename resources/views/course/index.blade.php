@@ -2,25 +2,6 @@
 
 @section('content')
     <style>
-        .modal-wide {
-            max-width: 80%;
-            /* Adjust the percentage as needed */
-        }
-
-        .modal-dialog {
-            width: 100%;
-            /* Make the modal full width of the viewport */
-            max-width: 100%;
-            /* Ensure the modal does not exceed the viewport width */
-        }
-
-        .modal-content {
-            height: 80vh;
-            /* Adjust the height as needed */
-            overflow: auto;
-            /* Add scroll if the content exceeds the height */
-        }
-
         .panduan-links a {
             display: block;
             /* Ensure links are displayed as block elements */

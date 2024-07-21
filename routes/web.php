@@ -5,6 +5,7 @@ use App\Http\Controllers\DosenController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LinkExternalController;
 use App\Http\Controllers\PptController;
 use App\Http\Controllers\VideoController;
 
@@ -29,6 +30,7 @@ Route::post('course/showDataPptAndVideo/', [CourseController::class, 'showAjax']
 
 Route::post('course/showDataPptAndVideo/', [CourseController::class, 'showAjax'])->name('course.showAjax');
 Route::post('/course/getEditForm', [CourseController::class, 'getEditForm'])->name('course.getEditForm');
+Route::post('/link/getEditForm', [LinkExternalController::class, 'getEditForm'])->name('link.getEditForm');
 Route::post('/dosen/getEditForm', [DosenController::class, 'getEditForm'])->name('dosen.getEditForm');
 
 Route::get('/welcome', function () {
@@ -39,6 +41,7 @@ Route::get('/welcome', function () {
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
+Route::resource('link_external', LinkExternalController::class);
 Route::resource('video', VideoController::class);
 Route::resource('ppt', PptController::class);
 Route::resource('course', CourseController::class);

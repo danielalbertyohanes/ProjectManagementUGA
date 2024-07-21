@@ -63,4 +63,14 @@ class LinkExternalController extends Controller
     {
         //
     }
+
+    public function getEditForm(Request $request)
+    {
+        $id = $request->id;
+        $link = LinkExternal::findOrFail($id);
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('link_external.edit', compact('link'))->render()
+        ], 200);
+    }
 }
