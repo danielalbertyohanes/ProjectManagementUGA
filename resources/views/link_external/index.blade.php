@@ -7,9 +7,9 @@
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
 
-        @if (Auth::user()->position_id == '3')
-            <a class="btn btn-success mb-3" href="{{ route('dosen.create') }}">+ New Link</a>
-        @endif
+
+        <a class="btn btn-success mb-3" href="{{ route('dosen.create') }}">+ New Link</a>
+
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -22,31 +22,31 @@
                             <tr>
                                 <th class="text-center">ID</th>
                                 <th class="text-center">Name</th>
-                                <th class="text-center">Nomor_telpon</th>
-                                <th class="text-center">Description</th>
+                                <th class="text-center">Value</th>
+                                <th class="text-center">Status</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($dosens as $d)
-                                <tr id="tr_{{ $d->id }}">
-                                    <td>{{ $d->id }}</td>
-                                    <td>{{ $d->name }}</td>
-                                    <td>{{ $d->no_tlpn }}</td>
-                                    <td>{{ $d->description }}</td>
+                            @foreach ($links as $link)
+                                <tr id="tr_{{ $link->id }}">
+                                    <td>{{ $link->id }}</td>
+                                    <td>{{ $link->name }}</td>
+                                    <td>{{ $link->value }}</td>
+                                    <td>{{ $link->status }}</td>
                                     <td>
-                                        @if (Auth::user()->position_id == '3')
-                                            <a href="#" class="btn btn-warning" data-toggle="modal"
-                                                data-target="#modalEditA" onclick="getEditForm({{ $d->id }})">EDIT
-                                            </a>
-                                            <form method="POST" action="{{ route('dosen.destroy', $d->id) }}"
+
+                                        <a href="#" class="btn btn-warning" data-toggle="modal"
+                                            data-target="#modalEditA" onclick="getEditForm({{ $link->id }})">EDIT
+                                        </a>
+                                        {{-- <form method="POST" action="{{ route('dosen.destroy', $link->id) }}"
                                                 style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <input type="submit" value="Delete" class="btn btn-danger"
-                                                    onclick="return confirm('Are you sure to delete {{ $d->id }} - {{ $d->name }}?');">
-                                            </form>
-                                        @endif
+                                                    onclick="return confirm('Are you sure to delete {{ $link->id }} - {{ $link->name }}?');">
+                                            </form> --}}
+
                                     </td>
                                 </tr>
                             @endforeach

@@ -1,4 +1,4 @@
-<form method="POST" action="{{ route('dosen.update', $dosen->id) }}">
+<form method="POST" action="{{ route('link_external.update', $dosen->id) }}">
     @csrf
     @method('PUT')
     <div class="form-group">
