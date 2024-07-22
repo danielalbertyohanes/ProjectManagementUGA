@@ -20,7 +20,7 @@
         @endif
 
         @if (Auth::user()->position_id == '3')
-            <a class="btn btn-success mb-3" href="{{ route('course.create') }}">+ New Course</a>
+            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateCourse" onclick="loadCreateForm()">+ New Course</button>
         @endif
 
         <div class="card shadow mb-4">
@@ -122,6 +122,17 @@
         </div>
     </div>
 
+    <!-- Modal for displaying PPT details -->
+    <div class="modal fade" id="pptModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-wide" role="document">
+            <div class="modal-content" id="msg">
+                <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" alt="Loading..."
+                    style="width: 100px;">
+                <p>Loading...</p>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal EDIT -->
     <div class="modal fade" id="modalEditA" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-wide">
@@ -136,6 +147,22 @@
 
 @section('javascript')
     <script>
+        // ADD
+        function loadCreateForm() {
+        $.ajax({
+            type: 'POST',
+            url: '{{ route('course.getCreateForm') }}',
+            data: {
+                '_token': '{{ csrf_token() }}'
+            },
+            success: function(data) {
+                if (data.status === 'ok') {
+                    $('#modalCreateContent').html(data.msg);
+                }
+            }
+        });
+    }
+
         // EDIT
         function getEditForm(course_id) {
             $.ajax({
@@ -153,27 +180,18 @@
             });
         }
 
-        function getDetailData(course_id) {
-            const detailsRow = $('#details_' + course_id);
-            const detailsDiv = $('#ppt_videos_' + course_id);
-
-            if (detailsRow.is(':visible')) {
-                detailsRow.hide();
-                detailsDiv.html('');
-            } else {
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route('course.showAjax') }}',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        id: course_id
-                    },
-                    success: function(data) {
-                        detailsDiv.html(data.msg);
-                        detailsRow.show();
-                    }
-                });
-            }
+        function getDetailData(id) {
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('course.showAjax') }}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: id
+                },
+                success: function(data) {
+                    $("#msg").html(data.msg);
+                }
+            });
         }
     </script>
 @endsection

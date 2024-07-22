@@ -59,6 +59,17 @@ class CourseController extends Controller
         return view("course.create", compact('pic', 'dosens'));
     }
 
+    public function getCreateForm()
+    {
+        $dosens = Dosen::all();
+        $pic = User::getUserPIC();
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('course.create', compact('pic', 'dosens'))->render()
+        ], 200);
+    }
+
+
     // app/Http/Controllers/CourseController.php
 
     public function update(Request $request, Course $course)

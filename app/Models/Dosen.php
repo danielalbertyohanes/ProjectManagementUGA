@@ -13,10 +13,12 @@ class Dosen extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = [
         'name',
+        'npk',
+        'fakultas',
         'no_tlpn',
         'description'
     ];
-    public function courses()   
+    public function courses()
     {
         return $this->belongsToMany(Course::class, 'courses_has_dosens', 'dosens_id', 'courses_id')
             ->withPivot('role');

@@ -8,7 +8,7 @@
         @endif
 
         @if (Auth::user()->position_id == '3')
-            <a class="btn btn-success mb-3" href="{{ route('dosen.create') }}">+ New Dosen</a>
+            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateDosen" onclick="loadCreateForm()">+ New Course</button>
         @endif
 
         <div class="card shadow mb-4">
@@ -22,7 +22,9 @@
                             <tr>
                                 <th class="text-center">ID</th>
                                 <th class="text-center">Name</th>
-                                <th class="text-center">Nomor_telpon</th>
+                                <th class="text-center">NPK</th>
+                                <th class="text-center">Fakutlas</th>
+                                <th class="text-center">Nomor Telpon</th>
                                 <th class="text-center">Description</th>
                                 <th class="text-center">Action</th>
                             </tr>
@@ -32,6 +34,8 @@
                                 <tr id="tr_{{ $d->id }}">
                                     <td>{{ $d->id }}</td>
                                     <td>{{ $d->name }}</td>
+                                    <td>{{ $d->npk }}</td>
+                                    <td>{{ $d->fakultas }}</td>
                                     <td>{{ $d->no_tlpn }}</td>
                                     <td>{{ $d->description }}</td>
                                     <td>
@@ -57,6 +61,17 @@
         </div>
     </div>
 
+    <!-- Modal ADD -->
+    <div class="modal fade" id="modalCreateDosen" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-wide">
+            <div class="modal-content">
+                <div class="modal-body" id="modalCreateContent">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal EDIT -->
     <div class="modal fade" id="modalEditA" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-wide">
@@ -71,6 +86,22 @@
 
 @section('javascript')
     <script>
+        // Create
+        function loadCreateForm() {
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('dosen.getCreateForm') }}',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                },
+                success: function(data) {
+                    if (data.status === 'ok') {
+                        $('#modalCreateContent').html(data.msg);
+                    }
+                }
+            });
+        }
+
         // EDIT
         function getEditForm(dosen_id) {
             $.ajax({

@@ -29,9 +29,14 @@ Auth::routes();
 Route::post('course/showDataPptAndVideo/', [CourseController::class, 'showAjax'])->name('course.showAjax');
 
 Route::post('course/showDataPptAndVideo/', [CourseController::class, 'showAjax'])->name('course.showAjax');
+
+Route::post('/course/getCreateForm', [CourseController::class, 'getCreateForm'])->name('course.getCreateForm');
+
 Route::post('/course/getEditForm', [CourseController::class, 'getEditForm'])->name('course.getEditForm');
 
 Route::post('/link_external/getEditForm', [LinkExternalController::class, 'getEditForm'])->name('link.getEditForm');
+
+Route::post('/dosen/getCreateForm', [DosenController::class, 'getCreateForm'])->name('dosen.getCreateForm');
 
 Route::post('/dosen/getEditForm', [DosenController::class, 'getEditForm'])->name('dosen.getEditForm');
 
