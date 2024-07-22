@@ -40,7 +40,7 @@
                                 <th class="text-center">Jumlah_video</th>
                                 <th class="text-center">Dosen</th>
                                 <th class="text-center">Pic_course</th>
-                                <th class="text-center">Proggres</th>
+                                <th class="text-center">Progres</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">manage topic & sub topic</th>
                                 <th class="text-center">manage ppt & video</th>
@@ -86,7 +86,7 @@
                                         </ul>
                                     </td>
                                     <td>{{ $course->user->name }}</td>
-                                    <td>{{ $course->proggres }}</td>
+                                    <td>{{ $course->progres }}%</td>
                                     <td>{{ $course->status }}</td>
                                     <td><button>Topic & Subtopic</button></td>
                                     <td>
