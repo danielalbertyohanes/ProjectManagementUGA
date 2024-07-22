@@ -12,7 +12,7 @@
 
         <label for="videoCount">Jumlah Video</label>
         <input type="number" class="form-control" id="videoCount" name="jumlah_video" placeholder="Enter Jumlah Video"
-            value="{{ $course->jumlah_video }}" required>
+            value="{{ $course->jumlah_video }}" required min="1" max="20">
 
         <label for="status">Status</label>
         <select class="form-control" id="status" name="status" required>

@@ -22,10 +22,8 @@
         @endif
 
         @if (Auth::user()->position_id == '3')
-            <a class="btn btn-success mb-3" href="{{ route('course.create') }}">+ New Course</a>
+            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateCourse" onclick="loadCreateForm()">+ New Course</button>
         @endif
-
-
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -134,6 +132,18 @@
         </div>
     </div>
 
+    <!-- Modal ADD -->
+    <div class="modal fade" id="modalCreateCourse" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-wide">
+            <div class="modal-content">
+                <div class="modal-body" id="modalCreateContent">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Modal EDIT -->
     <div class="modal fade" id="modalEditA" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-wide">
@@ -148,6 +158,22 @@
 
 @section('javascript')
     <script>
+        // ADD
+        function loadCreateForm() {
+        $.ajax({
+            type: 'POST',
+            url: '{{ route('course.getCreateForm') }}',
+            data: {
+                '_token': '{{ csrf_token() }}'
+            },
+            success: function(data) {
+                if (data.status === 'ok') {
+                    $('#modalCreateContent').html(data.msg);
+                }
+            }
+        });
+    }
+
         // EDIT
         function getEditForm(course_id) {
             $.ajax({
@@ -165,6 +191,7 @@
             });
         }
 
+        // Detail
         function getDetailData(id) {
             $.ajax({
                 type: 'POST',
