@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ppt;
+use App\Models\Course;
 use App\Models\SubTopic;
+use App\Models\LinkExternal;
 use Illuminate\Http\Request;
 
 class PptController extends Controller
@@ -13,8 +15,9 @@ class PptController extends Controller
      */
     public function index()
     {
-        $ppt = Ppt::all();
-        return view('ppt.index', compact('ppt'));
+        $links = LinkExternal::getLinkOrderedByStatusActive();
+        $courses = Course::with(['user', 'dosens'])->get();
+        return view('course.index', compact('courses', 'links'));
     }
 
     /**
@@ -31,11 +34,15 @@ class PptController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
+            'user_id' => 'required|integer',
             'name' => 'required|string|max:255',
+            'drive_url' => 'required|string|max:255',
+            'sub_topic_id' => 'required|integer',
+            'status' => 'required|string|max:255',
         ]);
         // Simpan data ppt
-        Ppt::create($request);
+        Ppt::create($data);
         return redirect()->route('ppt.index')->with('status', 'Berhasil Tambah');
     }
 

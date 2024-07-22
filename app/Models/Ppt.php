@@ -16,7 +16,7 @@ class Ppt extends Model
 
     protected $fillable = [
         'drive_url',
-        'penginput',
+        'user_id',
         'sub_topic_id',
         'name',
         'progres',
