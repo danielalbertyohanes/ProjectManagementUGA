@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ppt;
+use App\Models\SubTopic;
 use Illuminate\Http\Request;
 
 class PptController extends Controller
@@ -21,14 +22,8 @@ class PptController extends Controller
      */
     public function create(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-
-        // Simpan data ppt
-        Ppt::create($request);
-
-        return redirect()->route('ppt.index')->with('status', 'Berhasil Tambah');
+        $subTopics = SubTopic::all();
+        return view('ppt.create', compact('subTopics'));
     }
 
     /**
@@ -36,7 +31,12 @@ class PptController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+        // Simpan data ppt
+        Ppt::create($request);
+        return redirect()->route('ppt.index')->with('status', 'Berhasil Tambah');
     }
 
     /**

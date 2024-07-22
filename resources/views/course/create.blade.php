@@ -31,9 +31,7 @@
                     <option value="{{ $p->id }}">{{ $p->name }}</option>
                 @endforeach
             </select>
-
             <hr>
-
             <label for="dosen">Dosen</label>
             <div id="dosenInputs">
                 <div class="form-group">

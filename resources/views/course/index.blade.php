@@ -4,9 +4,7 @@
     <style>
         .panduan-links a {
             display: block;
-            /* Ensure links are displayed as block elements */
             margin-bottom: 10px;
-            /* Add some space between the links */
         }
     </style>
 
@@ -24,8 +22,6 @@
         @if (Auth::user()->position_id == '3')
             <a class="btn btn-success mb-3" href="{{ route('course.create') }}">+ New Course</a>
         @endif
-
-
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -93,12 +89,10 @@
                                     <td>{{ $course->status }}</td>
                                     <td><button>Topic & Subtopic</button></td>
                                     <td>
-                                        <a class="btn btn-success" href="#" data-toggle="modal"
-                                            data-target="#pptModal" onclick="getDetailData({{ $course->id }})">
+                                        <a class="btn btn-success" href="#"
+                                            onclick="getDetailData({{ $course->id }})">
                                             Ppt & Video
                                         </a>
-                                    </td>
-
                                     </td>
                                     <td>
                                         @if (Auth::user()->position_id == '3')
@@ -115,21 +109,15 @@
                                         @endif
                                     </td>
                                 </tr>
+                                <tr id="details_{{ $course->id }}" class="details-row" style="display: none;">
+                                    <td colspan="12">
+                                        <div id="ppt_videos_{{ $course->id }}"></div>
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal for displaying PPT details -->
-    <div class="modal fade" id="pptModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-wide" role="document">
-            <div class="modal-content" id="msg">
-                <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" alt="Loading..."
-                    style="width: 100px;">
-                <p>Loading...</p>
             </div>
         </div>
     </div>
@@ -165,18 +153,27 @@
             });
         }
 
-        function getDetailData(id) {
-            $.ajax({
-                type: 'POST',
-                url: '{{ route('course.showAjax') }}',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    id: id
-                },
-                success: function(data) {
-                    $("#msg").html(data.msg);
-                }
-            });
+        function getDetailData(course_id) {
+            const detailsRow = $('#details_' + course_id);
+            const detailsDiv = $('#ppt_videos_' + course_id);
+
+            if (detailsRow.is(':visible')) {
+                detailsRow.hide();
+                detailsDiv.html('');
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('course.showAjax') }}',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: course_id
+                    },
+                    success: function(data) {
+                        detailsDiv.html(data.msg);
+                        detailsRow.show();
+                    }
+                });
+            }
         }
     </script>
 @endsection

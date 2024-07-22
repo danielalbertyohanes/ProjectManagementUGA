@@ -113,8 +113,12 @@ class CourseController extends Controller
         $course_id = $request->get('id');
         $ppts = Ppt::getPptsByCourseId($course_id);
         $videos = Video::getVideosByCourseId($course_id);
+
+        $pptHtml = view('ppt.ppt_table', compact('ppts'))->render();
+        $videoHtml = view('video.video_table', compact('videos'))->render();
+        
         return response()->json([
-            'msg' => view('course.showPptAndVideo', compact('ppts', 'videos'))->render()
+            'msg' =>  $pptHtml . $videoHtml
         ], 200);
     }
 }
