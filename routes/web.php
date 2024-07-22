@@ -28,8 +28,6 @@ Auth::routes();
 // routes/web.php
 Route::post('course/showDataPptAndVideo/', [CourseController::class, 'showAjax'])->name('course.showAjax');
 
-Route::post('course/showDataPptAndVideo/', [CourseController::class, 'showAjax'])->name('course.showAjax');
-
 Route::post('/course/getCreateForm', [CourseController::class, 'getCreateForm'])->name('course.getCreateForm');
 
 Route::post('/course/getEditForm', [CourseController::class, 'getEditForm'])->name('course.getEditForm');

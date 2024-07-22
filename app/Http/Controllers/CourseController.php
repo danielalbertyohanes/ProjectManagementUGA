@@ -127,7 +127,7 @@ class CourseController extends Controller
 
         $pptHtml = view('ppt.ppt_table', compact('ppts'))->render();
         $videoHtml = view('video.video_table', compact('videos'))->render();
-        
+
         return response()->json([
             'msg' =>  $pptHtml . $videoHtml
         ], 200);
