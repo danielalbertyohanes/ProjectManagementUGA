@@ -15,11 +15,8 @@ class SubTopic extends Model
 
     protected $fillable = [
         'name',
-        'created_at',
-        'updated_at',
-        'deleted_at',
         'topic_id',
-        'progres',
+        'progress',
         'status'
     ];
     public function topic(): BelongsTo
@@ -36,11 +33,23 @@ class SubTopic extends Model
     {
         return self::all();
     }
-    // Get topics by course_id.
-    public static function getTopicsByCourseId($topic_id)
+    // Get subtopics by topic_id.
+    public static function getSubTopicsByTopicId($course_id)
     {
-        return self::where('topic_id', $topic_id)->get();
+        return self::join('topics', 'sub_topics.topic_id', '=', 'topics.id')->join('courses', 'topics.course_id', '=', 'courses.id')
+            ->select(
+                'topics.name as topic_name',
+                'sub_topics.name as sub_topic_name',
+                'sub_topics.created_at',
+                'sub_topics.status',
+                'sub_topics.progress'
+            )
+            ->where('courses.id', $course_id)
+            ->orderBy('sub_topics.name', 'asc')  // Mengurutkan berdasarkan kolom 'created_at'
+            ->get();
     }
+
+
     // Insert subtopics
     public static function insertSubTopics($data)
     {

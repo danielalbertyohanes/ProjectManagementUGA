@@ -1,196 +1,190 @@
 @extends('layouts.admin')
 
 @section('content')
-    <style>
-        .panduan-links a {
-            display: block;
-            margin-bottom: 10px;
-        }
-    </style>
+<style>
+    .panduan-links a {
+        display: block;
+        margin-bottom: 10px;
+    }
+</style>
 
-    <div class="container-fluid">
-        <h1 class="h3 mb-2 text-gray-800">COURSE</h1>
-        <div class="panduan-links">
-            @foreach ($links as $link)
-                <a href="{{ $link->value }}">{{ $link->name }}</a>
-            @endforeach
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800">COURSE</h1>
+    <div class="panduan-links">
+        @foreach ($links as $link)
+        <a href="{{ $link->value }}">{{ $link->name }}</a>
+        @endforeach
+    </div>
+    @if (session('status'))
+    <div class="alert alert-success">{{ session('status') }}</div>
+    @endif
+
+    @if (Auth::user()->position_id == '3')
+    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateCourse" onclick="loadCreateForm()">+ New Course</button>
+    @endif
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">DataTables</h6>
         </div>
-        @if (session('status'))
-            <div class="alert alert-success">{{ session('status') }}</div>
-        @endif
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Name</th>
+                            <th class="text-center">Description</th>
+                            <th class="text-center">Created_at</th>
+                            <th class="text-center">Jumlah_video</th>
+                            <th class="text-center">Dosen</th>
+                            <th class="text-center">Pic_course</th>
+                            <th class="text-center">Proggres</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Details</th>
+                            <th class="text-center">Action</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($courses as $course)
+                        <tr id="tr_{{ $course->id }}">
+                            <td>{{ $course->id }}</td>
+                            <td>{{ $course->name }}</td>
+                            <td>{{ $course->description }}</td>
+                            <td>{{ $course->created_at }}</td>
+                            <td>{{ $course->jumlah_video }}</td>
+                            <td>
+                                <ul>
+                                    @php
+                                    $ketua = $course->dosens->where('pivot.role', 'ketua')->first();
+                                    $anggota = $course->dosens->where('pivot.role', 'anggota');
+                                    @endphp
 
-        @if (Auth::user()->position_id == '3')
-            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateCourse"
-                onclick="loadCreateForm()">+ New Course</button>
-        @endif
-
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">DataTables</h6>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th class="text-center">ID</th>
-                                <th class="text-center">Name</th>
-                                <th class="text-center">Description</th>
-                                <th class="text-center">Created_at</th>
-                                <th class="text-center">Jumlah_video</th>
-                                <th class="text-center">Dosen</th>
-                                <th class="text-center">Pic_course</th>
-                                <th class="text-center">Proggres</th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center">manage topic & sub topic</th>
-                                <th class="text-center">manage ppt & video</th>
-                                <th class="text-center">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($courses as $course)
-                                <tr id="tr_{{ $course->id }}">
-                                    <td>{{ $course->id }}</td>
-                                    <td>{{ $course->name }}</td>
-                                    <td>{{ $course->description }}</td>
-                                    <td>{{ $course->created_at }}</td>
-                                    <td>{{ $course->jumlah_video }}</td>
-                                    <td>
-                                        <ul>
-                                            @php
-                                                $ketua = $course->dosens->where('pivot.role', 'ketua')->first();
-                                                $anggota = $course->dosens->where('pivot.role', 'anggota');
-                                            @endphp
-
-                                            @if ($ketua)
-                                                <li>
-                                                    @if ($anggota->isNotEmpty())
-                                                        <strong>Ketua:</strong>
-                                                    @endif
-                                                    {{ $ketua->name }}
-                                                </li>
-                                            @endif
-
-                                            @if ($anggota->isNotEmpty())
-                                                <li>
-                                                    <strong>Anggota:</strong>
-                                                    @foreach ($anggota as $dosen)
-                                                        {{ $dosen->name }},
-                                                    @endforeach
-                                                </li>
-                                            @endif
-
-                                            @if (!$ketua && $anggota->isEmpty())
-                                                <li>Tidak ada dosen</li>
-                                            @endif
-                                        </ul>
-                                    </td>
-                                    <td>{{ $course->user->name }}</td>
-                                    <td>{{ $course->proggres }}</td>
-                                    <td>{{ $course->status }}</td>
-                                    <td><button>Topic & Subtopic</button></td>
-                                    <td>
-                                        <a class="btn btn-success" href="#"
-                                            onclick="getDetailData({{ $course->id }})">
-                                            Ppt & Video
-                                        </a>
-                                    </td>
-                                    <td>
-                                        @if (Auth::user()->position_id == '3')
-                                            <a href="#" class="btn btn-warning" data-toggle="modal"
-                                                data-target="#modalEditA"
-                                                onclick="getEditForm({{ $course->id }})">EDIT</a>
-                                            <form method="POST" action="{{ route('course.destroy', $course->id) }}"
-                                                style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <input type="submit" value="Delete" class="btn btn-danger"
-                                                    onclick="return confirm('Are you sure to delete {{ $course->id }} - {{ $course->name }}?');">
-                                            </form>
+                                    @if ($ketua)
+                                    <li>
+                                        @if ($anggota->isNotEmpty())
+                                        <strong>Ketua:</strong>
                                         @endif
-                                    </td>
-                                </tr>
-                                <tr id="details_{{ $course->id }}" class="details-row" style="display: none;">
-                                    <td colspan="12">
-                                        <div id="ppt_videos_{{ $course->id }}"></div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+                                        {{ $ketua->name }}
+                                    </li>
+                                    @endif
 
-    <!-- Modal EDIT -->
-    <div class="modal fade" id="modalEditA" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-wide">
-            <div class="modal-content">
-                <div class="modal-body" id="modalContent">
-                    <!-- Content will be loaded dynamically -->
-                </div>
+                                    @if ($anggota->isNotEmpty())
+                                    <li>
+                                        <strong>Anggota:</strong>
+                                        @foreach ($anggota as $dosen)
+                                        {{ $dosen->name }},
+                                        @endforeach
+                                    </li>
+                                    @endif
+
+                                    @if (!$ketua && $anggota->isEmpty())
+                                    <li>Tidak ada dosen</li>
+                                    @endif
+                                </ul>
+                            </td>
+                            <td>{{ $course->user->name }}</td>
+                            <td>{{ $course->proggres }}</td>
+                            <td>{{ $course->status }}</td>
+                            <td>
+                                <a class="btn btn-success" href="#" onclick="getDetailData({{ $course->id }})">
+                                    Details
+                                </a>
+                            </td>
+                            <td>
+                                @if (Auth::user()->position_id == '3')
+                                <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#modalEditA" onclick="getEditForm({{ $course->id }})">EDIT</a>
+                                <form method="POST" action="{{ route('course.destroy', $course->id) }}" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure to delete {{ $course->id }} - {{ $course->name }}?');">
+                                </form>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr id="details_{{ $course->id }}" class="details-row" style="display: none;">
+                            <td colspan="12">
+                                <div id="ppt_videos_{{ $course->id }}"></div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Modal EDIT -->
+<div class="modal fade" id="modalEditA" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-wide">
+        <div class="modal-content">
+            <div class="modal-body" id="modalContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('javascript')
-    <script>
-        // ADD
-        function loadCreateForm() {
-            $.ajax({
-                type: 'POST',
-                url: '{{ route('course.getCreateForm') }}',
-                data: {
-                    '_token': '{{ csrf_token() }}'
-                },
-                success: function(data) {
-                    if (data.status === 'ok') {
-                        $('#modalCreateContent').html(data.msg);
-                    }
+<script>
+    // ADD
+    function loadCreateForm() {
+        $.ajax({
+            type: 'POST',
+            url: '{{ route("course.getCreateForm") }}',
+            data: {
+                '_token': '{{ csrf_token() }}'
+            },
+            success: function(data) {
+                if (data.status === 'ok') {
+                    $('#modalCreateContent').html(data.msg);
                 }
-            });
-        }
+            }
+        });
+    }
 
-        // EDIT
-        function getEditForm(course_id) {
+    // EDIT
+    function getEditForm(course_id) {
+        $.ajax({
+            type: 'POST',
+            url: '{{ route("course.getEditForm") }}',
+            data: {
+                '_token': '{{ csrf_token() }}',
+                'id': course_id
+            },
+            success: function(data) {
+                if (data.status === 'ok') {
+                    $('#modalContent').html(data.msg);
+                }
+            }
+        });
+    }
+
+    // DETAILS
+    // DETAILS
+    function getDetailData(course_id) {
+        const detailsRow = $('#details_' + course_id);
+        const detailsDiv = $('#ppt_videos_' + course_id);
+        if (detailsRow.is(':visible')) {
+            detailsRow.hide();
+            detailsDiv.html('');
+        } else {
             $.ajax({
                 type: 'POST',
-                url: '{{ route('course.getEditForm') }}',
+                url: '{{ route("course.showAjax") }}',
                 data: {
                     '_token': '{{ csrf_token() }}',
-                    'id': course_id
+                    'course_id': course_id // Kirimkan parameter yang benar
                 },
                 success: function(data) {
-                    if (data.status === 'ok') {
-                        $('#modalContent').html(data.msg);
-                    }
+                    detailsDiv.html(data.msg);
+                    detailsRow.show();
                 }
             });
         }
-
-        function getDetailData(course_id) {
-            const detailsRow = $('#details_' + course_id);
-            const detailsDiv = $('#ppt_videos_' + course_id);
-
-            if (detailsRow.is(':visible')) {
-                detailsRow.hide();
-                detailsDiv.html('');
-            } else {
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route('course.showAjax') }}',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        id: course_id
-                    },
-                    success: function(data) {
-                        detailsDiv.html(data.msg);
-                        detailsRow.show();
-                    }
-                });
-            }
-        }
-    </script>
+    }
+</script>
 @endsection

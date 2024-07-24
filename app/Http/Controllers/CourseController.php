@@ -8,6 +8,8 @@ use App\Models\Dosen;
 use App\Models\Video;
 use App\Models\Course;
 use App\Models\LinkExternal;
+use App\Models\Topic;
+use App\Models\SubTopic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PhpParser\Node\Expr\Cast\String_;
@@ -121,15 +123,22 @@ class CourseController extends Controller
 
     public function showAjax(Request $request)
     {
-        $course_id = $request->get('id');
+        $course_id = $request->get('course_id'); // Pastikan nama parameter sesuai dengan yang dikirim dari AJAX
+
+        // Ambil data berdasarkan ID yang sesuai
         $ppts = Ppt::getPptsByCourseId($course_id);
         $videos = Video::getVideosByCourseId($course_id);
+        $topics = Topic::getTopicsByCourseId($course_id);
+        $subtopics = SubTopic::getSubTopicsByTopicId($course_id); // Gunakan $subtopics sesuai nama variabel
 
+        // Render HTML untuk masing-masing bagian
         $pptHtml = view('ppt.ppt_table', compact('ppts'))->render();
         $videoHtml = view('video.video_table', compact('videos'))->render();
+        $topicHtml = view('topic.topic_table', compact('topics'))->render();
+        $subTopicHtml = view('subTopic.subTopic_table', compact('subtopics'))->render(); // Pastikan nama variabel konsisten
 
         return response()->json([
-            'msg' =>  $pptHtml . $videoHtml
+            'msg' => $topicHtml . $subTopicHtml .  $pptHtml . $videoHtml
         ], 200);
     }
 }
