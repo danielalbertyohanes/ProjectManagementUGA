@@ -20,7 +20,7 @@
                         <th>Recording Finished</th>
                         <th>Editing Started</th>
                         <th>Editing Finished</th>
-                        <th>Sended</th>
+                        <th>Sent</th>
                         <th>ACC</th>
                         <th>URL Video</th>
                         <th>Uploaded</th>
@@ -28,6 +28,7 @@
                         <th>Updated At</th>
                         <th>User</th>
                         <th>PPT</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,7 +37,7 @@
                             <td>{{ $video->id }}</td>
                             <td>{{ $video->name }}</td>
                             <td>{{ $video->status }}</td>
-                            <td>{{ $video->progres }}%</td>
+                            <td>{{ $video->progress }}%</td>
                             <td>{{ $video->location }}</td>
                             <td>{{ $video->detail_location }}</td>
                             <td>{{ $video->recording_started_at }}</td>

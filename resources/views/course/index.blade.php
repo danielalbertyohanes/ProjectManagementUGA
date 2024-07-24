@@ -10,11 +10,19 @@
 
     <div class="container-fluid">
         <h1 class="h3 mb-2 text-gray-800">COURSE</h1>
-        <div class="panduan-links">
-            @foreach ($links as $link)
-                <a href="{{ $link->value }}">{{ $link->name }}</a>
-            @endforeach
-        </div>
+        {{-- ini harus di tambah dan di ubah lagi --}}
+        <p>Info terkait course agar informative</p>
+        <br>
+        @if ($links->isNotEmpty())
+            <p>Dibawah ini adalah Link yang bisa di akses: </p>
+            <div class="panduan-links">
+                @foreach ($links as $link)
+                    <a href="{{ $link->value }}">{{ $link->name }}</a>
+                @endforeach
+            </div>
+        @endif
+
+
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
@@ -33,24 +41,23 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th class="text-center">ID</th>
-                                <th class="text-center">Name</th>
+                                <th class="text-center">Course</th>
                                 <th class="text-center">Description</th>
-                                <th class="text-center">Created_at</th>
-                                <th class="text-center">Jumlah_video</th>
+                                <th class="text-center">Created</th>
+                                <th class="text-center">Jumlah Video</th>
                                 <th class="text-center">Dosen</th>
-                                <th class="text-center">Pic_course</th>
+                                <th class="text-center">Pic</th>
                                 <th class="text-center">Progres</th>
                                 <th class="text-center">Status</th>
-                                <th class="text-center">manage topic & sub topic</th>
-                                <th class="text-center">manage ppt & video</th>
+                                <th class="text-center">Manage topic & sub topic</th>
+                                <th class="text-center">Manage ppt & video</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($courses as $course)
                                 <tr id="tr_{{ $course->id }}">
-                                    <td>{{ $course->id }}</td>
+
                                     <td>{{ $course->name }}</td>
                                     <td>{{ $course->description }}</td>
                                     <td>{{ $course->created_at }}</td>
@@ -86,7 +93,7 @@
                                         </ul>
                                     </td>
                                     <td>{{ $course->user->name }}</td>
-                                    <td>{{ $course->progres }}%</td>
+                                    <td>{{ $course->progress }}%</td>
                                     <td>{{ $course->status }}</td>
                                     <td><button>Topic & Subtopic</button></td>
                                     <td>
@@ -118,6 +125,17 @@
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal ADD -->
+    <div class="modal fade" id="modalCreateCourse" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-wide">
+            <div class="modal-content">
+                <div class="modal-body" id="modalCreateContent">
+                    <!-- Content will be loaded dynamically -->
                 </div>
             </div>
         </div>

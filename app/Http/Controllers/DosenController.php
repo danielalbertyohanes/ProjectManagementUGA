@@ -9,15 +9,15 @@ class DosenController extends Controller
 {
     public function index()
     {
-        $dosens = Dosen::all();
+        $dosens = Dosen::getAllDosens();
         return view('dosen.index', compact('dosens'));
     }
 
-    public function show($id)
-    {
-        $dosen = Dosen::getDosenById($id);
-        return view('dosen.show', compact('dosen'));
-    }
+    // public function show($id)
+    // {
+    //     $dosen = Dosen::getDosenById($id);
+    //     return view('dosen.show', compact('dosen'));
+    // }
 
     public function store(Request $request)
     {

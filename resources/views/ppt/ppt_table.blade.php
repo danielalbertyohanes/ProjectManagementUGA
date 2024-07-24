@@ -14,6 +14,7 @@
                         <th>Status</th>
                         <th>Progress</th>
                         <th>Created At</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,7 +26,7 @@
                                 <a href="{{ $ppt->drive_url }}" target="_blank">{{ $ppt->drive_url }}</a>
                             </td>
                             <td>{{ $ppt->status }}</td>
-                            <td>{{ $ppt->progres }}%</td>
+                            <td>{{ $ppt->progress }}%</td>
                             <td>{{ $ppt->created_at }}</td>
                         </tr>
                     @endforeach

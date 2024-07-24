@@ -3,12 +3,14 @@
 @section('content')
     <div class="container-fluid">
         <h1 class="h3 mb-2 text-gray-800">DOSEN</h1>
+        <p>Info terkait dosen agar informative</p>
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
 
         @if (Auth::user()->position_id == '3')
-            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateDosen" onclick="loadCreateForm()">+ New Course</button>
+            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateDosen"
+                onclick="loadCreateForm()">+ New Course</button>
         @endif
 
         <div class="card shadow mb-4">
@@ -20,11 +22,11 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th class="text-center">ID</th>
+                                {{-- <th class="text-center">ID</th> --}}
                                 <th class="text-center">Name</th>
                                 <th class="text-center">NPK</th>
-                                <th class="text-center">Fakutlas</th>
-                                <th class="text-center">Nomor Telpon</th>
+                                <th class="text-center">Faculty</th>
+                                <th class="text-center">Phone Number</th>
                                 <th class="text-center">Description</th>
                                 <th class="text-center">Action</th>
                             </tr>
@@ -32,7 +34,7 @@
                         <tbody>
                             @foreach ($dosens as $d)
                                 <tr id="tr_{{ $d->id }}">
-                                    <td>{{ $d->id }}</td>
+                                    {{-- <td>{{ $d->id }}</td> --}}
                                     <td>{{ $d->name }}</td>
                                     <td>{{ $d->npk }}</td>
                                     <td>{{ $d->fakultas }}</td>

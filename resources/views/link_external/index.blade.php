@@ -3,6 +3,7 @@
 @section('content')
     <div class="container-fluid">
         <h1 class="h3 mb-2 text-gray-800">Link External</h1>
+        <p>Info terkait link agar informative</p>
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif

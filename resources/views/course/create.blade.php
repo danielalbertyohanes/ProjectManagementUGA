@@ -2,19 +2,16 @@
     @csrf
     <div class="form-group">
         <label for="courseName">Name Course</label>
-        <input type="text" class="form-control" id="courseName" name="name" placeholder="Enter Name of Course" required>
+        <input type="text" class="form-control" id="courseName" name="name" placeholder="Enter Name of Course"
+            required>
 
         <label for="courseDescription">Description Course</label>
-        <input type="text" class="form-control" id="courseDescription" name="description" placeholder="Enter Description" required>
+        <input type="text" class="form-control" id="courseDescription" name="description"
+            placeholder="Enter Description" required>
 
         <label for="videoCount">Jumlah Video</label>
-        <input type="number" class="form-control" id="videoCount" name="jumlah_video" placeholder="Enter Jumlah Video" required min="1" max="20">
-
-        <label for="panduanRPP">Panduan RPP Path</label>
-        <input type="text" class="form-control" id="panduanRPP" name="panduan_rpp_path" placeholder="Enter Panduan RPP">
-
-        <label for="templateRPP">Template RPP Path</label>
-        <input type="text" class="form-control" id="templateRPP" name="template_rpp_path" placeholder="Enter Template RPP">
+        <input type="number" class="form-control" id="videoCount" name="jumlah_video" placeholder="Enter Jumlah Video"
+            required min="1" max="20">
 
         <label for="picCourse">PIC Course</label>
         <select class="form-control" id="picCourse" name="pic_course" required>
@@ -32,7 +29,8 @@
                 <select class="form-control" name="dosens[]">
                     <option value="" selected disabled>Pilih Dosen</option>
                     @foreach ($dosens as $dosen)
-                        <option value="{{ $dosen->id }}">{{ $dosen->name }} - {{ $dosen->npk }} - {{ $dosen->fakultas }}</option>
+                        <option value="{{ $dosen->id }}">{{ $dosen->name }} - {{ $dosen->npk }} -
+                            {{ $dosen->fakultas }}</option>
                     @endforeach
                 </select>
             </div>

@@ -17,7 +17,7 @@ class CourseController extends Controller
     public function index()
     {
         $links = LinkExternal::getLinkOrderedByStatusActive();
-        $courses = Course::with(['user', 'dosens'])->get();
+        $courses = Course::getAllCourses();
         return view('course.index', compact('courses', 'links'));
     }
 
@@ -32,7 +32,7 @@ class CourseController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'jumlah_video' => 'nullable|integer',
-            'pic_course' => 'required|integer'
+            'pic_course' => 'required|integer',
         ]);
 
         // Simpan data kursus
@@ -54,14 +54,14 @@ class CourseController extends Controller
      */
     public function create()
     {
-        $dosens = Dosen::all();
+        $dosens = Dosen::getAllDosens();
         $pic = User::getUserPIC();
         return view("course.create", compact('pic', 'dosens'));
     }
 
     public function getCreateForm()
     {
-        $dosens = Dosen::all();
+        $dosens = Dosen::getAllDosens();
         $pic = User::getUserPIC();
         return response()->json([
             'status' => 'ok',

@@ -30,10 +30,13 @@ class Dosen extends Model
         return DB::table('dosens')->insert($data);
     }
 
-    // function ambil data dosen
+    // Function to retrieve all dosens
     public static function getAllDosens()
     {
-        return DB::table('dosens')->get();
+        return DB::table('dosens')
+            ->orderBy('name', 'asc')
+            ->whereNull('deleted_at')
+            ->get();
     }
 
     // function cari nama dosen

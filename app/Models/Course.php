@@ -19,7 +19,10 @@ class Course extends Model
         'jumlah_video',
         'progres',
         'status',
-        'pic_course'
+        'pic_course',
+        'updated_at',
+        'created_at'
+        
     ];
     public function topics(): HasMany
     {
@@ -36,11 +39,11 @@ class Course extends Model
             ->withPivot('role');
     }
 
-    // // function tambah data 
-    // public static function createCourse(array $data)
-    // {
-    //     return DB::table('courses')->insert($data);
-    // }
+    // function tambah data 
+    public static function createCourse(array $data)
+    {
+        return DB::table('courses')->insert($data);
+    }
 
     // // function update
     // public static function updateCourse($id, $data)
@@ -57,8 +60,12 @@ class Course extends Model
     // function ambil data 
     public static function getAllCourses()
     {
-        return DB::table('courses')->get();
+        return Course::with(['user', 'dosens'])
+            ->whereNull('deleted_at')
+            ->orderBy('name', 'asc')
+            ->get();
     }
+
 
     // function cari course by id
     public static function findCourseById($id)

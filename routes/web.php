@@ -21,10 +21,17 @@ use App\Http\Controllers\VideoController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
+
+Route::resource('link_external', LinkExternalController::class);
+Route::resource('video', VideoController::class);
+Route::resource('ppt', PptController::class);
+Route::resource('course', CourseController::class);
+Route::resource('dosen', DosenController::class);
+
 // routes/web.php
 Route::post('course/showDataPptAndVideo/', [CourseController::class, 'showAjax'])->name('course.showAjax');
 
@@ -44,8 +51,3 @@ Route::get('/welcome', function () {
 
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::resource('link_external', LinkExternalController::class);
-Route::resource('video', VideoController::class);
-Route::resource('ppt', PptController::class);
-Route::resource('course', CourseController::class);
-Route::resource('dosen', DosenController::class);
