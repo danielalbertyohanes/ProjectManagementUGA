@@ -3,72 +3,87 @@
 namespace App\Http\Controllers;
 
 use App\Models\SubTopic;
+use App\Models\Topic;
 use Illuminate\Http\Request;
 
 class SubTopicController extends Controller
 {
-    // Get all topics
+    // Get all sub-topics
     public function index()
     {
-        $topics = SubTopic::getAllTopics();
-        return view('subTopics.index', compact('subTopics'));
+        $subTopics = SubTopic::all();
+        return view('subTopic.index', compact('subTopics'));
     }
-    // Get topics by course_id
-    public function getTopicByCourseId($topic_id)
+
+    // Get sub-topics by topic_id
+    public function getSubTopicByTopicId($topic_id)
     {
-        $topics = SubTopic::getTopicsByCourseId($topic_id);
-        return view('subTopics.index', compact('subTopics'));
+        $subTopics = SubTopic::where('topic_id', $topic_id)->get();
+        return view('subTopic.index', compact('subTopics'));
     }
-    //insert 
+
+    // Store a new sub-topic
     public function store(Request $request)
     {
-
+        //dd($request);
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'progres' => 'nullable|string|in:Not Yet, Progres, Finish, Cancel',
-            'status' => 'nullable|integer|min:0|max:100',
+            'topic_id' => 'required|exists:topics,id',
+            'status' => 'nullable|string|in:Not Yet,Progres,Finish,Cancel',
+
         ]);
-        $subTopic = SubTopic::insertSubTopics($validatedData);
-        return redirect()->route('subTopics.index')
+        //dd($validatedData);
+        SubTopic::create($validatedData);
+
+        return redirect()->route('course.index')
             ->with('success', 'SubTopic created successfully');
     }
-    //update.
+
+    // Show create form
+    public function create()
+    {
+        $topics = Topic::all();
+        return view('subTopic.create', compact('topics'));
+    }
+
+    // Update sub-topic
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'progres' => 'nullable|string|in:active,inactive,pending',
-            'status' => 'nullable|integer|min:0|max:100',
+            'status' => 'nullable|string|in:Not Yet,Progres,Finish,Cancel',
+            'progress' => 'nullable|integer|min:0|max:100',
         ]);
-        $subTopic = SubTopic::insertSubTopics($validatedData);
-        if ($subTopic) {
-            return redirect()->route('subTopics.index')
-                ->with('success', 'SubTopic updated successfully');
-        } else {
-            return back()->withInput()->with('error', 'SubTopic not found or update failed');
-        }
+
+        $subTopic = SubTopic::findOrFail($id);
+        $subTopic->update($validatedData);
+
+        return redirect()->route('subTopic.index')
+            ->with('success', 'SubTopic updated successfully');
     }
-    // Soft delete subtopic
+
+    // Soft delete sub-topic
     public function softDelete(SubTopic $subTopic)
     {
         try {
-            $subTopic->delete(); // Soft delete
-            return redirect()->route('subTopics.index')->with('status', 'SubTopic soft deleted successfully');
+            $subTopic->delete();
+            return redirect()->route('subTopic.index')->with('status', 'SubTopic soft deleted successfully');
         } catch (\PDOException $ex) {
-            $msg = "Failed to soft delete subtopic. Please make sure there are no related records before deleting.";
-            return redirect()->route('subTopics.index')->with('status', $msg);
+            $msg = "Failed to soft delete sub-topic. Please make sure there are no related records before deleting.";
+            return redirect()->route('subTopic.index')->with('status', $msg);
         }
     }
-    // Force delete subtopic
+
+    // Force delete sub-topic
     public function forceDelete($id)
     {
         try {
-            $topic = SubTopic::withTrashed()->findOrFail($id);
-            $topic->forceDelete(); // Permanent delete
-            return redirect()->route('subTopics.index')->with('status', 'subTopic permanently deleted');
+            $subTopic = SubTopic::withTrashed()->findOrFail($id);
+            $subTopic->forceDelete();
+            return redirect()->route('subTopic.index')->with('status', 'SubTopic permanently deleted');
         } catch (\PDOException $ex) {
-            $msg = "Failed to permanently delete topic.";
-            return redirect()->route('subTopics.index')->with('status', $msg);
+            $msg = "Failed to permanently delete sub-topic.";
+            return redirect()->route('subTopic.index')->with('status', $msg);
         }
     }
 }

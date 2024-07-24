@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LinkExternalController;
 use App\Http\Controllers\PptController;
+use App\Http\Controllers\TopicController;
+use App\Http\Controllers\SubTopicController;
 use App\Http\Controllers\VideoController;
 
 /*
@@ -45,9 +47,18 @@ Route::post('/dosen/getCreateForm', [DosenController::class, 'getCreateForm'])->
 
 Route::post('/dosen/getEditForm', [DosenController::class, 'getEditForm'])->name('dosen.getEditForm');
 
+
+
 Route::get('/welcome', function () {
     return view('layouts.welcome');
 })->name('welcome');
 
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::resource('link_external', LinkExternalController::class);
+Route::resource('video', VideoController::class);
+Route::resource('ppt', PptController::class);
+Route::resource('topic', TopicController::class);
+Route::resource('subTopic', SubTopicController::class);
+Route::resource('course', CourseController::class);
+Route::resource('dosen', DosenController::class);
