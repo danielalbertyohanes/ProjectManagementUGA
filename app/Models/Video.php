@@ -16,21 +16,20 @@ class Video extends Model
 
     protected $fillable = [
         'name',
-
-        'status',
-        'progres',
-        'recording_started_at',
-        'recording_finished_at',
         'location',
         'detail_location',
+        'recording_video_started_at',
+        'recording_video_finished_at',
+        'recording_ppt_started_at',
+        'recording_ppt_finished_at',
         'editing_started_at',
         'editing_finished_at',
-        'sended_at',
+        'sent_at',
         'acc_at',
-        'url_video',
         'uploaded_at',
-        'user_id',
-        'ppts_id',
+        'progress',
+        'status',
+        'ppt_id'
     ];
 
     public function user(): BelongsTo
@@ -46,13 +45,13 @@ class Video extends Model
     public static function getVideosByCourseId($courseId)
     {
         return DB::table('videos')
-            ->join('users', 'videos.user_id', '=', 'users.id')
+
             ->join('ppts', 'videos.ppt_id', '=', 'ppts.id')
             ->join('sub_topics', 'ppts.sub_topic_id', '=', 'sub_topics.id')
             ->join('topics', 'sub_topics.topic_id', '=', 'topics.id')
             ->join('courses', 'topics.course_id', '=', 'courses.id')
             ->where('courses.id', $courseId)
-            ->select('videos.*', 'users.name as staf_name', 'ppts.name as ppt_name')
+            ->select('videos.*', 'ppts.name as ppt_name')
             ->orderBy('videos.id', 'asc')
             ->get();
     }

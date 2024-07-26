@@ -10,7 +10,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Drive URL</th>
+                        {{-- <th>Drive URL</th> --}}
                         <th>Status</th>
                         <th>Progress</th>
                         <th>Created At</th>
@@ -22,9 +22,9 @@
                         <tr>
                             <td>{{ $ppt->id }}</td>
                             <td>{{ $ppt->name }}</td>
-                            <td>
+                            {{-- <td>
                                 <a href="{{ $ppt->drive_url }}" target="_blank">{{ $ppt->drive_url }}</a>
-                            </td>
+                            </td> --}}
                             <td>{{ $ppt->status }}</td>
                             <td>{{ $ppt->progress }}%</td>
                             <td>{{ $ppt->created_at }}</td>

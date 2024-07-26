@@ -15,12 +15,14 @@ class Ppt extends Model
     protected $table = 'ppts';
 
     protected $fillable = [
-        'drive_url',
-        'user_id',
-        'sub_topic_id',
         'name',
-        'progres',
-        'status'
+        'editing_started_at',
+        'editing_finished_at',
+        'sent_at',
+        'progress',
+        'status',
+        'user_id',
+        'sub_topic_id'
     ];
 
     public function subTopic()
