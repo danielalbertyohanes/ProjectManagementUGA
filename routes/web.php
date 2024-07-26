@@ -9,6 +9,7 @@ use App\Http\Controllers\LinkExternalController;
 use App\Http\Controllers\PptController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\SubTopicController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
 
 /*
@@ -47,6 +48,8 @@ Route::post('/dosen/getCreateForm', [DosenController::class, 'getCreateForm'])->
 
 Route::post('/dosen/getEditForm', [DosenController::class, 'getEditForm'])->name('dosen.getEditForm');
 
+Route::post('/employee/getCreateForm', [UserController::class, 'getCreateForm'])->name('employee.getCreateForm');
+
 
 
 Route::get('/welcome', function () {
@@ -62,3 +65,4 @@ Route::resource('topic', TopicController::class);
 Route::resource('subTopic', SubTopicController::class);
 Route::resource('course', CourseController::class);
 Route::resource('dosen', DosenController::class);
+Route::resource('employee',  UserController::class);

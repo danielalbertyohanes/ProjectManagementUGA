@@ -73,4 +73,13 @@ class User extends Authenticatable
     {
         return DB::table('users')->where('position_id', 1)->get();
     }
+    //show employee
+    public static function getEmployee()
+    {
+        return DB::table('users')
+            ->join('positions', 'users.position_id', '=', 'positions.id')
+            ->select('users.npk', 'users.name as user_name', 'positions.name as position_name', 'users.email', 'users.noTelp')
+            ->orderBy('users.position_id')
+            ->get();
+    }
 }
