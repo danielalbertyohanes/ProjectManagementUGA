@@ -25,7 +25,7 @@ class DosenController extends Controller
             'name' => 'nullable|string|max:45',
             'npk' => 'nullable|string|max:45',
             'fakultas' => 'nullable|string|max:255',
-            'no_tlpn' => 'nullable|string|max:45',
+            'no_telp' => 'nullable|string|max:45',
             'description' => 'nullable|string|max:45'
         ]);
 
@@ -51,7 +51,7 @@ class DosenController extends Controller
             'name' => 'nullable|string|max:45',
             'npk' => 'nullable|string|max:45',
             'fakultas' => 'nullable|string|max:255',
-            'no_tlpn' => 'nullable|string|max:45',
+            'no_telp' => 'nullable|string|max:45',
             'description' => 'nullable|string|max:45'
         ]);
 

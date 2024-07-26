@@ -23,8 +23,8 @@
                         <thead>
                             <tr>
                                 {{-- <th class="text-center">ID</th> --}}
-                                <th class="text-center">Name</th>
                                 <th class="text-center">NPK</th>
+                                <th class="text-center">Name</th>
                                 <th class="text-center">Faculty</th>
                                 <th class="text-center">Phone Number</th>
                                 <th class="text-center">Description</th>
@@ -35,10 +35,10 @@
                             @foreach ($dosens as $d)
                                 <tr id="tr_{{ $d->id }}">
                                     {{-- <td>{{ $d->id }}</td> --}}
-                                    <td>{{ $d->name }}</td>
                                     <td>{{ $d->npk }}</td>
+                                    <td>{{ $d->name }}</td>
                                     <td>{{ $d->fakultas }}</td>
-                                    <td>{{ $d->no_tlpn }}</td>
+                                    <td>{{ $d->no_telp }}</td>
                                     <td>{{ $d->description }}</td>
                                     <td>
                                         @if (Auth::user()->position_id == '3')

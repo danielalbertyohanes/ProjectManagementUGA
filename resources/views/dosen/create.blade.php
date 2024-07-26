@@ -5,15 +5,15 @@
         <input type="text" class="form-control" id="dosenName" name="name" placeholder="Enter Name of dosen" required>
 
         <label for="dosenNpk">NPK</label>
-        <input type="number" class="form-control" id="dosenDescription" name="npk" placeholder="Enter NPK"
-            required min="0" maxlength="6">
+        <input type="number" class="form-control" id="dosenDescription" name="npk" placeholder="Enter NPK" required
+            min="0" maxlength="6">
 
         <label for="dosenFakutlas">Fakultas</label>
-        <input type="text" class="form-control" id="dosenFakultas" name="fakultas"
-            placeholder="Enter Fakultas" required>
+        <input type="text" class="form-control" id="dosenFakultas" name="fakultas" placeholder="Enter Fakultas"
+            required>
 
         <label for="dosenDescription">nomor telpon dosen</label>
-        <input type="text" class="form-control" id="dosenDescription" name="no_tlpn" placeholder="Enter Description"
+        <input type="text" class="form-control" id="dosenDescription" name="no_telp" placeholder="Enter Description"
             required>
 
         <label for="dosenDescription">Description dosen</label>

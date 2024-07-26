@@ -15,7 +15,7 @@ class Dosen extends Model
         'name',
         'npk',
         'fakultas',
-        'no_tlpn',
+        'no_telp',
         'description'
     ];
     public function courses()
