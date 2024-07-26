@@ -7,7 +7,7 @@
             <input type="text" class="form-control" id="linkName" name="name" placeholder="Enter Link Name" required>
 
             <label for="linkValue">URL</label>
-            <input type="url" class="form-control" id="linkValue" name="value" placeholder="Enter URL" required>
+            <input type="url" class="form-control" id="linkValue" name="url" placeholder="Enter URL" required>
 
             <label for="linkStatus">Status</label>
             <select class="form-control" id="linkStatus" name="status" required>

@@ -5,15 +5,16 @@
         <input type="text" class="form-control" id="dosenName" name="name" placeholder="Enter Name of dosen" required>
 
         <label for="dosenNpk">NPK</label>
-        <input type="number" class="form-control" id="dosenDescription" name="npk" placeholder="Enter NPK" required
-            min="0" maxlength="6">
+        <input type="text" class="form-control" id="dosenNpk" name="npk" placeholder="Enter NPK" required
+            maxlength="6" pattern="\d{6}" inputmode="numeric"
+            title="NPK must be exactly 6 digits and only numbers are allowed">
 
-        <label for="dosenFakutlas">Fakultas</label>
+        <label for="dosenFakultas">Fakultas</label>
         <input type="text" class="form-control" id="dosenFakultas" name="fakultas" placeholder="Enter Fakultas"
             required>
 
-        <label for="dosenDescription">nomor telpon dosen</label>
-        <input type="text" class="form-control" id="dosenDescription" name="no_telp" placeholder="Enter Description"
+        <label for="dosenNoTelp">Nomor Telpon dosen</label>
+        <input type="text" class="form-control" id="dosenNoTelp" name="no_telp" placeholder="Enter Nomor Telpon"
             required>
 
         <label for="dosenDescription">Description dosen</label>

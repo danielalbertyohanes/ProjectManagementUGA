@@ -31,7 +31,7 @@ class LinkExternalController extends Controller
     {
         $data = $request->validate([
             'name' => 'nullable|string',
-            'value' => 'nullable|string',
+            'url' => 'nullable|string',
             'status' => 'nullable|string'
         ]);
 
@@ -64,7 +64,7 @@ class LinkExternalController extends Controller
         $link = LinkExternal::find($id);
         $data = $request->validate([
             'name' => 'nullable|string',
-            'value' => 'nullable|string',
+            'url' => 'nullable|string',
             'status' => 'nullable|string|in:not active,active',
         ]);
         $link->update($data);

@@ -13,8 +13,8 @@
         </select>
 
         <label for="linkValue">URL</label>
-        <input type="url" class="form-control" id="linkValue" name="value" placeholder="Enter URL"
-            value="{{ $link->value }}" required>
+        <input type="url" class="form-control" id="linkValue" name="url" placeholder="Enter URL"
+            value="{{ $link->url }}" required>
     </div>
 
     <div class="modal-footer">

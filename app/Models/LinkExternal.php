@@ -14,7 +14,7 @@ class LinkExternal extends Model
 
     protected $fillable = [
         'name',
-        'value',
+        'url',
         'status',
     ];
 

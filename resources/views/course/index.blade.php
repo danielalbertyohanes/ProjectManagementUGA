@@ -17,7 +17,7 @@
             <p>Dibawah ini adalah Link yang bisa di akses: </p>
             <div class="panduan-links">
                 @foreach ($links as $link)
-                    <a href="{{ $link->value }}">{{ $link->name }}</a>
+                    <a href="{{ $link->url }}">{{ $link->name }}</a>
                 @endforeach
             </div>
         @endif
@@ -27,7 +27,7 @@
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
 
-        @if (Auth::user()->position_id == '3')
+        @if (Auth::user()->position_id == '1' && Auth::user()->position_id == '2')
             <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateCourse"
                 onclick="loadCreateForm()">+ New Course</button>
         @endif
@@ -102,7 +102,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        @if (Auth::user()->position_id == '3')
+                                        @if (Auth::user()->position_id == '1')
                                             <a href="#" class="btn btn-warning" data-toggle="modal"
                                                 data-target="#modalEditA"
                                                 onclick="getEditForm({{ $course->id }})">EDIT</a>
@@ -200,7 +200,7 @@
                     url: '{{ route('course.showAjax') }}',
                     data: {
                         '_token': '{{ csrf_token() }}',
-                        'course_id': course_id 
+                        'course_id': course_id
                     },
                     success: function(data) {
                         detailsDiv.html(data.msg);

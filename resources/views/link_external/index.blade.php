@@ -29,7 +29,7 @@
                             @foreach ($links as $link)
                                 <tr id="tr_{{ $link->id }}">
                                     <td>{{ $link->name }}</td>
-                                    <td>{{ $link->value }}</td>
+                                    <td>{{ $link->url }}</td>
                                     <td>{{ $link->status }}</td>
                                     <td>
                                         <a href="#" class="btn btn-warning" data-toggle="modal"
