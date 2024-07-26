@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LinkExternalController;
+use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\PptController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\SubTopicController;
@@ -29,11 +30,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::resource('link_external', LinkExternalController::class);
-Route::resource('video', VideoController::class);
-Route::resource('ppt', PptController::class);
-Route::resource('course', CourseController::class);
-Route::resource('dosen', DosenController::class);
 
 // routes/web.php
 Route::post('course/showDataPptAndVideo/', [CourseController::class, 'showAjax'])->name('course.showAjax');
@@ -49,6 +45,10 @@ Route::post('/dosen/getCreateForm', [DosenController::class, 'getCreateForm'])->
 Route::post('/dosen/getEditForm', [DosenController::class, 'getEditForm'])->name('dosen.getEditForm');
 
 Route::post('/employee/getCreateForm', [UserController::class, 'getCreateForm'])->name('employee.getCreateForm');
+
+Route::post('/periode/getCreateForm', [PeriodeController::class, 'getCreateForm'])->name('periode.getCreateForm');
+
+Route::post('/periode/getEditForm', [PeriodeController::class, 'getEditForm'])->name('periode.getEditForm');
 
 
 
@@ -66,3 +66,4 @@ Route::resource('subTopic', SubTopicController::class);
 Route::resource('course', CourseController::class);
 Route::resource('dosen', DosenController::class);
 Route::resource('employee',  UserController::class);
+Route::resource('periode',  PeriodeController::class);

@@ -31,7 +31,7 @@ class DosenController extends Controller
 
         Dosen::create($data);
 
-        return redirect()->route('dosen.index');
+        return redirect()->route('dosen.index')->with('status', 'dosen create successfully');
     }
 
     public function create()
