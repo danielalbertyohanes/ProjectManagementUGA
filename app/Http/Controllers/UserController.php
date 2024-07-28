@@ -28,4 +28,11 @@ class UserController extends Controller
 
         return redirect()->route('dosen.index')->with('status', 'Dosen updated successfully');
     }
+
+
+    public function show(string $id)
+    {
+        $user = User::findOrFail($id);
+        return view('employee.show', compact('user'));
+    }
 }
