@@ -1,8 +1,10 @@
+<!-- resources/views/subTopic/index.blade.php -->
+
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Sub-Topic</h6>
     </div>
-    <a class="btn btn-success mb-3" href="{{ route('subTopic.create') }}">+ New Sub-Topic</a> <!-- Perbaiki route ke create -->
+    <a class="btn btn-success mb-3" href="{{ route('subTopic.create') }}">+ New Sub-Topic</a>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" width="100%" cellspacing="0">
@@ -17,7 +19,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($subtopics as $subTopic)
+                    @foreach ($subTopics as $subTopic)
                     <tr>
                         <td>{{ $subTopic->topic_name }}</td>
                         <td>{{ $subTopic->sub_topic_name }}</td>

@@ -12,13 +12,14 @@ class SubTopicController extends Controller
     public function index()
     {
         $subTopics = SubTopic::all();
+        dd($subTopics);
         return view('subTopic.index', compact('subTopics'));
     }
 
     // Get sub-topics by topic_id
     public function getSubTopicByTopicId($topic_id)
     {
-        $subTopics = SubTopic::where('topic_id', $topic_id)->get();
+        $subTopics = SubTopic::getSubTopicsByTopicId($topic_id);
         return view('subTopic.index', compact('subTopics'));
     }
 
@@ -47,30 +48,33 @@ class SubTopicController extends Controller
     }
 
     // Update sub-topic
-    public function update(Request $request, $id)
+    public function update(Request $request, SubTopic $subTopic)
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'status' => 'nullable|string|in:Not Yet,Progres,Finish,Cancel',
-            'progress' => 'nullable|integer|min:0|max:100',
+            'status' => 'required|in:Not Yet,Progres,Finish,Cancel',
         ]);
 
-        $subTopic = SubTopic::findOrFail($id);
         $subTopic->update($validatedData);
 
         return redirect()->route('subTopic.index')
             ->with('success', 'SubTopic updated successfully');
     }
+    public function edit(String $id)
+    {
+        $subTopic = SubTopic::findOrFail($id);
+        return view('subTopic.edit', compact('subTopic'));
+    }
 
     // Soft delete sub-topic
-    public function softDelete(SubTopic $subTopic)
+    public function destroy(SubTopic $subTopic)
     {
         try {
             $subTopic->delete();
-            return redirect()->route('subTopic.index')->with('status', 'SubTopic soft deleted successfully');
+            return redirect()->route('course.index')->with('status', 'SubTopic soft deleted successfully');
         } catch (\PDOException $ex) {
             $msg = "Failed to soft delete sub-topic. Please make sure there are no related records before deleting.";
-            return redirect()->route('subTopic.index')->with('status', $msg);
+            return redirect()->route('course.index')->with('status', $msg);
         }
     }
 

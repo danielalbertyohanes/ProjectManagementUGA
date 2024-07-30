@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Course;
 use App\Models\Topic;
 use Illuminate\Http\Request;
+use PhpParser\Node\Expr\Cast\String_;
 
 class TopicController extends Controller
 {
@@ -46,32 +47,34 @@ class TopicController extends Controller
 
 
     //update
-    public function update(Request $request, $id)
+    public function update(Request $request, Topic $topic)
     {
-        $validatedData = $request->validate([
+        $data = $request->validate([
             'name' => 'required|string|max:255',
-            'status' => 'nullable|string|in:active,inactive,pending',
-            'progres' => 'nullable|integer|min:0|max:100',
+            'status' => 'required|in:Not Yet,Progres,Finish,Cancel',
         ]);
 
-        $topic = Topic::updateTopic($id, $validatedData); // Memanggil updateTopic dengan $id
+        // Update the topic instance with the validated data
+        $topic->update($data);
 
-        if ($topic) {
-            return redirect()->route('topic.index')
-                ->with('success', 'Topic updated successfully');
-        } else {
-            return back()->withInput()->with('error', 'Topic not found or update failed');
-        }
+        return redirect()->route('course.index')->with('status', 'Topic updated successfully');
     }
+    public function edit(String $id)
+    {
+        $topic = Topic::findOrFail($id);
+        return view('topic.edit', compact('topic'));
+    }
+
+
     // Soft delete topic
-    public function softDelete(Topic $topic)
+    public function destroy(Topic $topic)
     {
         try {
             $topic->delete(); // Soft delete
-            return redirect()->route('topic.index')->with('status', 'Topic soft deleted successfully');
+            return redirect()->route('course.index')->with('status', 'Topic soft deleted successfully');
         } catch (\PDOException $ex) {
             $msg = "Failed to soft delete topic. Please make sure there are no related records before deleting.";
-            return redirect()->route('topics.index')->with('status', $msg);
+            return redirect()->route('course.index')->with('status', $msg);
         }
     }
 
@@ -86,5 +89,12 @@ class TopicController extends Controller
             $msg = "Failed to permanently delete topic.";
             return redirect()->route('topic.index')->with('status', $msg);
         }
+    }
+    //ajax modal
+    public function getEditFormTopic(Request $request)
+    {
+        $topic = Topic::find($request->id);
+        $view = view('topic.edit', compact('topic'))->render();
+        return response()->json(['status' => 'ok', 'msg' => $view], 200);
     }
 }

@@ -25,7 +25,13 @@
                         <td>{{ $topic->status }}</td>
                         <td>{{ $topic->progress }}</td>
                         <td>
-                            <a class="btn btn-success" href="#">+ Add Sub-Topic</a> <!-- Sesuaikan jika perlu -->
+                            <a href="{{route('topic.edit',$topic->id)}}" class="btn btn-warning">EDIT</a>
+                            <form method="POST" action="{{ route('topic.destroy', $topic->id) }}" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure to delete {{ $topic->id }} - {{ $topic->name }}?');">
+                            </form>
+
                         </td>
                     </tr>
                     @endforeach

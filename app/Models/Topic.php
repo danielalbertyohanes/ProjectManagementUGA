@@ -55,11 +55,16 @@ class Topic extends Model
     // Update topic by ID
     public static function updateTopic($id, $data)
     {
-        $topic = self::find($id);
-        if ($topic) {
-            $topic->update($data);
-            return $topic;
+        try {
+            $topic = self::find($id);
+            if ($topic) {
+                $topic->update($data);
+                return $topic;
+            }
+            return null;
+        } catch (\Exception $e) {
+            // Log the error or handle it as needed
+            return null;
         }
-        return null;
     }
 }
