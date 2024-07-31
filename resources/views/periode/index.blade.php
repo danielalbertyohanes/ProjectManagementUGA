@@ -22,6 +22,7 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+                                <th class="text-center">No</th>
                                 <th class="text-center">Nama</th>
                                 <th class="text-center">Tanggal_Mulai</th>
                                 <th class="text-center">Tanggal_Selesai</th>
@@ -33,6 +34,7 @@
                         <tbody>
                             @foreach ($periodes as $periode)
                                 <tr id="tr_{{ $periode->id }}">
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $periode->name }}</td>
                                     <td>{{ $periode->start_date }}</td>
                                     <td>{{ $periode->end_date }}</td>

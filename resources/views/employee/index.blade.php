@@ -21,6 +21,7 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+                                <th class="text-center">No</th>
                                 <th class="text-center">NPK</th>
                                 <th class="text-center">Nama</th>
                                 <th class="text-center">Phone Number</th>
@@ -32,6 +33,7 @@
                         <tbody>
                             @foreach ($users as $user)
                                 <tr id="tr_{{ $user->npk }}">
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $user->npk }}</td>
                                     <td>{{ $user->user_name }}</td>
                                     <td>{{ $user->no_telp }}</td>

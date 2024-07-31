@@ -19,7 +19,8 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th class="text-center">Name</th>
+                                <th class="text-center">No</th>
+                                <th class="text-center">Nama</th>
                                 <th class="text-center">Value</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Action</th>
@@ -28,6 +29,7 @@
                         <tbody>
                             @foreach ($links as $link)
                                 <tr id="tr_{{ $link->id }}">
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $link->name }}</td>
                                     <td>{{ $link->url }}</td>
                                     <td>{{ $link->status }}</td>

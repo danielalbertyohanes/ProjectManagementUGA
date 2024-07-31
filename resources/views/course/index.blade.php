@@ -27,13 +27,14 @@
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
 
-        @if (Auth::user()->position_id == '1' && Auth::user()->position_id == '2')
+        @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
             <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateCourse"
                 onclick="loadCreateForm()">+ New Course</button>
         @endif
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">
+
                 <h6 class="m-0 font-weight-bold text-primary">DataTables</h6>
             </div>
             <div class="card-body">
@@ -41,7 +42,8 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th class="text-center">ID</th>
+                                <th class="text-center">No</th>
+                                <th class="text-center">Kode Course</th>
                                 <th class="text-center">Name</th>
                                 <th class="text-center">Description</th>
                                 <th class="text-center">Created_at</th>
@@ -57,7 +59,8 @@
                         <tbody>
                             @foreach ($courses as $course)
                                 <tr id="tr_{{ $course->id }}">
-                                    <td>{{ $course->id }}</td>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $course->kode_course }}</td>
                                     <td>{{ $course->name }}</td>
                                     <td>{{ $course->description }}</td>
                                     <td>{{ $course->created_at }}</td>
@@ -96,9 +99,8 @@
                                     <td>{{ $course->progress }}%</td>
                                     <td>{{ $course->status }}</td>
                                     <td>
-                                        <a class="btn btn-success" href="#"
-                                            onclick="getDetailData({{ $course->id }})">
-                                            Details
+                                        <a class="btn btn-success" href="{{ route('course.show', $course->id) }}">
+                                            Detail
                                         </a>
                                     </td>
                                     <td>
@@ -114,11 +116,6 @@
                                                     onclick="return confirm('Are you sure to delete {{ $course->id }} - {{ $course->name }}?');">
                                             </form>
                                         @endif
-                                    </td>
-                                </tr>
-                                <tr id="details_{{ $course->id }}" class="details-row" style="display: none;">
-                                    <td colspan="12">
-                                        <div id="ppt_videos_{{ $course->id }}"></div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -185,29 +182,6 @@
                     }
                 }
             });
-        }
-
-        // DETAILS
-        function getDetailData(course_id) {
-            const detailsRow = $('#details_' + course_id);
-            const detailsDiv = $('#ppt_videos_' + course_id);
-            if (detailsRow.is(':visible')) {
-                detailsRow.hide();
-                detailsDiv.html('');
-            } else {
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route('course.showAjax') }}',
-                    data: {
-                        '_token': '{{ csrf_token() }}',
-                        'course_id': course_id
-                    },
-                    success: function(data) {
-                        detailsDiv.html(data.msg);
-                        detailsRow.show();
-                    }
-                });
-            }
         }
     </script>
 @endsection

@@ -22,7 +22,7 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                {{-- <th class="text-center">ID</th> --}}
+                                <th class="text-center">NO</th>
                                 <th class="text-center">NPK</th>
                                 <th class="text-center">Name</th>
                                 <th class="text-center">Faculty</th>
@@ -34,7 +34,7 @@
                         <tbody>
                             @foreach ($dosens as $d)
                                 <tr id="tr_{{ $d->id }}">
-                                    {{-- <td>{{ $d->id }}</td> --}}
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $d->npk }}</td>
                                     <td>{{ $d->name }}</td>
                                     <td>{{ $d->fakultas }}</td>

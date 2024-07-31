@@ -29,16 +29,6 @@
             <label for="name_video">Name Of Video</label>
             <input type="text" class="form-control" id="name_video" name="name_video" placeholder="Enter Name" required>
 
-            <label for="location_video">Location Video</label>
-            <select class="form-control" id="location_video" name="location_video" required>
-                <option value="UBAYA">UBAYA</option>
-                <option value="Not UBAYA">Not UBAYA</option>
-            </select>
-
-            <label for="detail_location_video">Detail Location Video</label>
-            <input type="text" class="form-control" id="detail_location_video" name="detail_location_video"
-                placeholder="Enter Detail Location" required>
-
             <input type="hidden" id="status_video" name="status_video" value="Not Yet">
         </div>
 

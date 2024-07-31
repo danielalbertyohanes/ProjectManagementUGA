@@ -23,10 +23,12 @@ class CourseController extends Controller
         return view('course.index', compact('courses', 'links'));
     }
 
-    public function show(String $id)
+    public function show(String $course_id)
     {
-        $course = Course::findCourseById($id);
-        return view('course.show', compact('course'));
+        $course = Course::findCourseById($course_id);
+        $topics = Topic::getTopicsByCourseId($course_id);
+        $subTopics = SubTopic::getSubTopicsByCourseId($course_id);
+        return view('course.detail', compact('course', 'topics', 'subTopics'));
     }
     public function store(Request $request)
     {

@@ -15,8 +15,8 @@ class SubTopic extends Model
 
     protected $fillable = [
         'name',
+        'drive_url',
         'topic_id',
-        'progress',
         'status'
     ];
     public function topic(): BelongsTo
@@ -34,15 +34,12 @@ class SubTopic extends Model
         return self::all();
     }
     // Get subtopics by topic_id.
-    public static function getSubTopicsByTopicId($course_id)
+    public static function getSubTopicsByCourseId($course_id)
     {
         return self::join('topics', 'sub_topics.topic_id', '=', 'topics.id')->join('courses', 'topics.course_id', '=', 'courses.id')
             ->select(
                 'topics.name as topic_name',
-                'sub_topics.name as sub_topic_name',
-                'sub_topics.created_at',
-                'sub_topics.status',
-                'sub_topics.progress'
+                'sub_topics.*'
             )
             ->where('courses.id', $course_id)
             ->orderBy('sub_topics.name', 'asc')  // Mengurutkan berdasarkan kolom 'created_at'

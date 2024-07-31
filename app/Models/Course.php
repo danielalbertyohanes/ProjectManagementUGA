@@ -66,7 +66,6 @@ class Course extends Model
             ->get();
     }
 
-
     // function cari course by id
     public static function findCourseById($id)
     {

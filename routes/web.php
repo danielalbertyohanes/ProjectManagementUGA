@@ -57,6 +57,9 @@ Route::get('/welcome', function () {
 })->name('welcome');
 
 
+Route::get('/topic/create/{course_id}', [TopicController::class, 'create'])->name('topic.newtopic');
+
+
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::resource('link_external', LinkExternalController::class);
 Route::resource('video', VideoController::class);

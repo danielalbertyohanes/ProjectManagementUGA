@@ -52,20 +52,15 @@ class PptController extends Controller
             'status' => $datappt['status_ppt'],
         ]);
 
-
         // Validate data for Video
         $datavideo = $request->validate([
             'name_video' => 'required|string|max:255',
-            'location_video' => 'required|string',
-            'detail_location_video' => 'required|string|max:255',
             'status_video' => 'required|string|max:255',
         ]);
 
         // Create Video record
-        $video = Video::create([
+        Video::create([
             'name' => $datavideo['name_video'],
-            'location' => $datavideo['location_video'],
-            'detail_location' => $datavideo['detail_location_video'],
             'ppt_id' => $ppt->id,
             'status' => $datavideo['status_video'],
         ]);

@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Course;
 use App\Models\Topic;
+use App\Models\Course;
+use App\Models\SubTopic;
 use Illuminate\Http\Request;
 
 class TopicController extends Controller
@@ -22,25 +23,42 @@ class TopicController extends Controller
         $topics = Topic::getTopicsByCourseId($course_id);
         return view('topic.index', compact('topics'));
     }
-    //insert.
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        // Validate the topic data
+        $dataTopic = $request->validate([
             'name' => 'required|string|max:255',
-            'course_id' => 'required|exists:courses,id', // Adjust as per your schema
+            'course_id' => 'required|exists:courses,id',
             'status' => 'required|in:Not Yet,Progres,Finish,Cancel',
         ]);
 
-        Topic::create($validatedData); // This will insert the data
+        // Create the topic
+        $topic = Topic::create($dataTopic);
 
-        return redirect()->route('course.index')
-            ->with('success', 'Topic created successfully');
+        // Validate the subtopics data
+        $subTopicsData = $request->validate([
+            'name_subTopic.*' => 'required|string|max:255',
+            'drive_url.*' => 'required|string|max:255',
+        ]);
+
+        // Create the subtopics and associate them with the topic
+        foreach ($request->name_subTopic as $index => $name_subTopic) {
+            SubTopic::create([
+                'name' => $name_subTopic,
+                'drive_url' => $request->drive_url[$index],
+                'topic_id' => $topic->id,
+            ]);
+        }
+
+        return redirect()->route('course.show', $request->course_id)
+            ->with('status', 'Topic and subtopics created successfully');
     }
 
-    public function create()
+
+    public function create(string $course_id)
     {
-        $courses = Course::all(); // Or use any method to fetch courses if needed
-        return view('topic.create', compact('courses'));
+        $course = Course::findCourseById($course_id);
+        return view('topic.create', compact('course'));
     }
 
 
@@ -58,9 +76,9 @@ class TopicController extends Controller
 
         if ($topic) {
             return redirect()->route('topic.index')
-                ->with('success', 'Topic updated successfully');
+                ->with('status', 'Topic updated successfully');
         } else {
-            return back()->withInput()->with('error', 'Topic not found or update failed');
+            return back()->withInput()->with('status', 'Topic not found or update failed');
         }
     }
     // Soft delete topic

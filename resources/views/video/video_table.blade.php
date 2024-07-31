@@ -10,33 +10,32 @@
             <table class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Status</th>
-                        <th>Progress</th>
-                        <th>Location</th>
-                        <th>Detail Location</th>
-                        <th>Recording Started</th>
-                        <th>Recording Finished</th>
-                        <th>Recording ppt Started</th>
-                        <th>Recording ppt Finished</th>
-                        <th>Editing Started</th>
-                        <th>Editing Finished</th>
-                        <th>Sent</th>
-                        <th>ACC</th>
-                        {{-- <th>URL Video</th> --}}
-                        <th>Uploaded</th>
-                        <th>Created At</th>
-                        <th>Updated At</th>
-                        <th>User</th>
-                        <th>PPT</th>
-                        <th>Action</th>
+                        <th class="text-center">No</th>
+                        <th class="text-center">Name</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Progress</th>
+                        <th class="text-center">Location</th>
+                        <th class="text-center">Detail Location</th>
+                        <th class="text-center">Recording Started</th>
+                        <th class="text-center">Recording Finished</th>
+                        <th class="text-center">Recording ppt Started</th>
+                        <th class="text-center">Recording ppt Finished</th>
+                        <th class="text-center">Editing Started</th>
+                        <th class="text-center">Editing Finished</th>
+                        <th class="text-center">Sent</th>
+                        <th class="text-center">ACC</th>
+                        <th class="text-center">Uploaded</th>
+                        <th class="text-center">Created At</th>
+                        <th class="text-center">Updated At</th>
+                        <th class="text-center">User</th>
+                        <th class="text-center">PPT</th>
+                        <th class="text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($videos as $video)
                         <tr>
-                            <td>{{ $video->id }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $video->name }}</td>
                             <td>{{ $video->status }}</td>
                             <td>{{ $video->progress }}%</td>
@@ -50,9 +49,6 @@
                             <td>{{ $video->editing_finished_at }}</td>
                             <td>{{ $video->sent_at }}</td>
                             <td>{{ $video->acc_at }}</td>
-                            {{-- <td>
-                                <a href="{{ $video->url_video }}" target="_blank">{{ $video->url_video }}</a>
-                            </td> --}}
                             <td>{{ $video->uploaded_at }}</td>
                             <td>{{ $video->created_at }}</td>
                             <td>{{ $video->updated_at }}</td>

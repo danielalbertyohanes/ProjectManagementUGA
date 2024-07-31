@@ -1,32 +1,74 @@
 @extends('layouts.admin')
 
 @section('content')
-<form method="POST" action="{{ route('topic.store') }}">
-    @csrf
-    <div class="form-group">
-        <label for="name">Nama Topic</label>
-        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name Topic" required>
+    <form method="POST" action="{{ route('topic.store') }}">
+        @csrf
+        <div class="form-group">
+            <input type="hidden" id="courseId" name="course_id" value="{{ $course->id }}">
+            <label for="course">Nama Course</label>
+            <input type="text" class="form-control" id="course" name="course" value="{{ $course->name }}" readonly>
 
-        <label for="courseId">Course</label>
-        <select class="form-control" id="courseId" name="course_id" required>
-            <option value="" selected disabled>Pilih Course</option>
-            @foreach ($courses as $course)
-            <option value="{{ $course->id }}">{{ $course->name }}</option>
-            @endforeach
-        </select>
+            <label for="name">Nama Topic</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name Topic"
+                required>
 
-        <label for="status">Status</label>
-        <select class="form-control" id="status" name="status" required>
-            <option value="Not Yet">Not Yet</option>
-            <option value="Progres">Progres</option>
-            <option value="Finish">Finish</option>
-            <option value="Cancel">Cancel</option>
-        </select>
-    </div>
+            <label for="status">Status</label>
+            <select class="form-control" id="status" name="status" required>
+                <option value="Not Yet">Not Yet</option>
+                <option value="Progres">Progres</option>
+                <option value="Finish">Finish</option>
+                <option value="Cancel">Cancel</option>
+            </select>
+        </div>
 
-    <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <a href="{{ route('topic.index') }}" class="btn btn-danger">Cancel</a>
-    </div>
-</form>
+        <hr>
+
+        <label for="subtopic">Sub Topic</label>
+        <div id="subtopicInputs">
+            <div class="form-group">
+                <label for="name_subTopic_0">Nama Sub Topic</label>
+                <input type="text" class="form-control" id="name_subTopic_0" name="name_subTopic[]"
+                    placeholder="Enter Name Sub Topic" required>
+
+                <label for="drive_url_0">Url Sub Topic</label>
+                <input type="text" class="form-control" id="drive_url_0" name="drive_url[]" placeholder="Enter Drive URL"
+                    required>
+            </div>
+        </div>
+        <button type="button" class="btn btn-sm btn-primary" id="addSubTopic">Tambah Sub Topic</button>
+
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a href="{{ route('topic.index') }}" class="btn btn-danger">Cancel</a>
+        </div>
+    </form>
+@endsection
+
+@section('javascript')
+    <script>
+        $(document).ready(function() {
+            let subtopicIndex = 1;
+
+            $('#addSubTopic').click(function() {
+                $('#subtopicInputs').append(
+                    `<div class="form-group">
+                <label for="name_subTopic_${subtopicIndex}">Nama Sub Topic</label>
+                <input type="text" class="form-control" id="name_subTopic_${subtopicIndex}" name="name_subTopic[]"
+                    placeholder="Enter Name Sub Topic" required>
+
+                <label for="drive_url_${subtopicIndex}">Url Sub Topic</label>
+                <input type="text" class="form-control" id="drive_url_${subtopicIndex}" name="drive_url[]"
+                    placeholder="Enter Drive URL" required>
+
+                <button type="button" class="btn btn-sm btn-danger remove-input">Remove</button>
+            </div>`
+                );
+                subtopicIndex++;
+            });
+
+            $(document).on('click', '.remove-input', function() {
+                $(this).closest('.form-group').remove();
+            });
+        });
+    </script>
 @endsection

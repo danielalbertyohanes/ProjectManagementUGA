@@ -8,23 +8,19 @@
             <table class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        {{-- <th>Drive URL</th> --}}
-                        <th>Status</th>
-                        <th>Progress</th>
-                        <th>Created At</th>
-                        <th>Action</th>
+                        <th class="text-center">No</th>
+                        <th class="text-center">Name</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Progress</th>
+                        <th class="text-center">Created At</th>
+                        <th class="text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($ppts as $ppt)
                         <tr>
-                            <td>{{ $ppt->id }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $ppt->name }}</td>
-                            {{-- <td>
-                                <a href="{{ $ppt->drive_url }}" target="_blank">{{ $ppt->drive_url }}</a>
-                            </td> --}}
                             <td>{{ $ppt->status }}</td>
                             <td>{{ $ppt->progress }}%</td>
                             <td>{{ $ppt->created_at }}</td>
