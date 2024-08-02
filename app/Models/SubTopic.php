@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -61,5 +62,9 @@ class SubTopic extends Model
             return $subTopic;
         }
         return null;
+    }
+    public static function findSubTopicById($id)
+    {
+        return DB::table('sub_topics')->where('id', $id)->first();
     }
 }

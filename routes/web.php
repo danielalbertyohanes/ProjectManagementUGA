@@ -12,6 +12,7 @@ use App\Http\Controllers\TopicController;
 use App\Http\Controllers\SubTopicController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
+use App\Models\Ppt;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,7 @@ Route::get('/welcome', function () {
 
 Route::get('/topic/create/{course_id}', [TopicController::class, 'create'])->name('topic.newtopic');
 
+Route::get('/ppt/create/{sub_topic_id}', [PptController::class, 'create'])->name('ppt.newPpt');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::resource('link_external', LinkExternalController::class);

@@ -39,6 +39,9 @@
                                         {{ $loop->iteration }}</td>
                                     <td rowspan="{{ $subTopics->where('topic_id', $topic->id)->count() }}">
                                         {{ $topic->name }}</td>
+                                    <td rowspan="{{ $subTopics->where('topic_id', $topic->id)->count() }}">
+                                        <a class="btn btn-warning" href="{{ 'topic.edit', $topic->id }}">Edit</a>
+                                    </td>
                                     @foreach ($subTopics->where('topic_id', $topic->id) as $subTopic)
                                         @if (!$loop->first)
                                 <tr>
@@ -52,18 +55,19 @@
                                 </ul>
                             </td>
                             <td>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 70%;" aria-valuenow="70"
-                                        aria-valuemin="0" aria-valuemax="100">70%</div>
-                                </div>
+                                <a href="{{ route('subTopic.show', $subTopic->id) }}" class="progress-link">
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 70%;" aria-valuenow="70"
+                                            aria-valuemin="0" aria-valuemax="100">70%</div>
+                                    </div>
+                                </a>
                             </td>
-                            <td>
-                                <a class="btn btn-warning" href="#">Edit</a>
-                            </td>
+
                             @if (!$loop->last)
                                 </tr>
                             @endif
                             @endforeach
+
                             </tr>
                             @endforeach
                         </tbody>

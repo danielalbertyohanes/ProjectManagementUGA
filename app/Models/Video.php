@@ -55,4 +55,16 @@ class Video extends Model
             ->orderBy('videos.id', 'asc')
             ->get();
     }
+
+    public static function getVideosBySubTopicId($subTopic)
+    {
+        return DB::table('videos')
+
+            ->join('ppts', 'videos.ppt_id', '=', 'ppts.id')
+            ->join('sub_topics', 'ppts.sub_topic_id', '=', 'sub_topics.id')
+            ->where('sub_topics.id', $subTopic)
+            ->select('videos.*', 'ppts.name as ppt_name')
+            ->orderBy('videos.progress', 'asc')
+            ->get();
+    }
 }

@@ -50,4 +50,14 @@ class Ppt extends Model
             ->orderBy('ppts.id', 'asc')
             ->get();
     }
+
+    public static function getPptsBySubTopicId($subTopic)
+    {
+        return DB::table('ppts')
+            ->join('sub_topics', 'ppts.sub_topic_id', '=', 'sub_topics.id')
+            ->where('sub_topics.id', $subTopic)
+            ->select('ppts.*')
+            ->orderBy('ppts.id', 'asc')
+            ->get();
+    }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ppt;
 use App\Models\SubTopic;
 use App\Models\Topic;
+use App\Models\Video;
 use Illuminate\Http\Request;
 
 class SubTopicController extends Controller
@@ -13,6 +15,13 @@ class SubTopicController extends Controller
     {
         $subTopics = SubTopic::all();
         return view('subTopic.index', compact('subTopics'));
+    }
+    public function show(String $id)
+    {
+        $videos = Video::getVideosBySubTopicId($id);
+        $ppts = Ppt::getPptsBySubTopicId($id);
+        $subTopic = SubTopic::findSubTopicById($id);
+        return view('subTopic.detail', compact('videos', 'ppts', 'subTopic'));
     }
 
     // Get sub-topics by topic_id

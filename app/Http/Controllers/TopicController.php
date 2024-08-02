@@ -61,8 +61,6 @@ class TopicController extends Controller
         return view('topic.create', compact('course'));
     }
 
-
-
     //update
     public function update(Request $request, $id)
     {
@@ -75,7 +73,7 @@ class TopicController extends Controller
         $topic = Topic::updateTopic($id, $validatedData); // Memanggil updateTopic dengan $id
 
         if ($topic) {
-            return redirect()->route('topic.index')
+            return redirect()->route('course.show', $request->course_id)
                 ->with('status', 'Topic updated successfully');
         } else {
             return back()->withInput()->with('status', 'Topic not found or update failed');
@@ -89,8 +87,16 @@ class TopicController extends Controller
             return redirect()->route('topic.index')->with('status', 'Topic soft deleted successfully');
         } catch (\PDOException $ex) {
             $msg = "Failed to soft delete topic. Please make sure there are no related records before deleting.";
-            return redirect()->route('topics.index')->with('status', $msg);
+            return redirect()->route('topic.index')->with('status', $msg);
         }
+    }
+
+    public function edit(string $id)
+    {
+        $topic = Topic::with('subTopics')->findOrFail($id);
+        $course = $topic->course; // Asumsi ada relasi antara Topic dan Course
+
+        return view('topic.edit', compact('topic', 'course'));
     }
 
     // Force delete topic

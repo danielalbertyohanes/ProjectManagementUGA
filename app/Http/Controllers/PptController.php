@@ -24,10 +24,10 @@ class PptController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create(String $id)
     {
-        $subTopics = SubTopic::all();
-        return view('ppt.create', compact('subTopics'));
+        $subTopic = SubTopic::findSubTopicById($id);
+        return view('ppt.create', compact('subTopic'));
     }
 
     /**
@@ -40,7 +40,7 @@ class PptController extends Controller
         $datappt = $request->validate([
             'user_id' => 'required|integer',
             'name_ppt' => 'required|string|max:255',
-            'sub_topic_id_ppt' => 'required|integer',
+            'sub_topic_id' => 'required|integer',
             'status_ppt' => 'required|string|max:255',
         ]);
 
@@ -48,7 +48,7 @@ class PptController extends Controller
         $ppt = Ppt::create([
             'user_id' => $datappt['user_id'],
             'name' => $datappt['name_ppt'],
-            'sub_topic_id' => $datappt['sub_topic_id_ppt'],
+            'sub_topic_id' => $datappt['sub_topic_id'],
             'status' => $datappt['status_ppt'],
         ]);
 
@@ -65,7 +65,7 @@ class PptController extends Controller
             'status' => $datavideo['status_video'],
         ]);
 
-        return redirect()->route('course.index')->with('status', 'Berhasil Tambah');
+        return redirect()->route('subTopic.show', $datappt['sub_topic_id'])->with('status', 'Berhasil Tambah');
     }
 
 

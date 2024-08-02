@@ -6,16 +6,13 @@
         <div class="form-group">
             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
 
+            <label for="subTopicId_ppt">Nama Sub Topic</label>
+            <input type="hidden" name="sub_topic_id" value="{{ $subTopic->id }}">
+            <input type="text" class="form-control" id="name_ppt" name="name_ppt" placeholder="Enter Name PPT"
+                value="{{ $subTopic->name }}" required readonly>
+
             <label for="name_ppt">Name Of PPT</label>
             <input type="text" class="form-control" id="name_ppt" name="name_ppt" placeholder="Enter Name PPT" required>
-
-            <label for="subTopicId_ppt">Sub Topic</label>
-            <select class="form-control" id="subTopicId_ppt" name="sub_topic_id_ppt" required>
-                <option value="" selected disabled>Pilih Sub Topic</option>
-                @foreach ($subTopics as $s)
-                    <option value="{{ $s->id }}">{{ $s->name }}</option>
-                @endforeach
-            </select>
 
             <label for="status_ppt">Status</label>
             <select class="form-control" id="status_ppt" name="status_ppt" required>
