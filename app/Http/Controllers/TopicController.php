@@ -13,16 +13,17 @@ class TopicController extends Controller
     // Get all topics
     public function index()
     {
-        $topics = Topic::getAllTopics();
+        $topics = Topic::all();
         return view('topic.index', compact('topics'));
     }
 
     // Get topics by course_id
     public function getTopicByCourseId($course_id)
     {
-        $topics = Topic::getTopicsByCourseId($course_id);
+        $topics = Topic::where('course_id', $course_id)->get();
         return view('topic.index', compact('topics'));
     }
+
     public function store(Request $request)
     {
         // Validate the topic data
@@ -54,10 +55,9 @@ class TopicController extends Controller
             ->with('status', 'Topic and subtopics created successfully');
     }
 
-
     public function create(string $course_id)
     {
-        $course = Course::findCourseById($course_id);
+        $course = Course::findOrFail($course_id);
         return view('topic.create', compact('course'));
     }
 
@@ -66,19 +66,37 @@ class TopicController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'status' => 'nullable|string|in:active,inactive,pending',
+            'status' => 'required|in:Not Yet,Progres,Finish,Cancel',
             'progres' => 'nullable|integer|min:0|max:100',
+            'name_subTopic.*' => 'required|string|max:255',
+            'drive_url.*' => 'required|string|max:255',
         ]);
 
-        $topic = Topic::updateTopic($id, $validatedData); // Memanggil updateTopic dengan $id
+        $topic = Topic::findOrFail($id);
+        $topic->update($validatedData);
 
-        if ($topic) {
-            return redirect()->route('course.show', $request->course_id)
-                ->with('status', 'Topic updated successfully');
-        } else {
-            return back()->withInput()->with('status', 'Topic not found or update failed');
+        // Update subtopics
+        foreach ($request->name_subTopic as $index => $name_subTopic) {
+            $subTopic = SubTopic::where('topic_id', $topic->id)->skip($index)->first();
+            if ($subTopic) {
+                $subTopic->update([
+                    'name' => $name_subTopic,
+                    'drive_url' => $request->drive_url[$index],
+                ]);
+            } else {
+                SubTopic::create([
+                    'name' => $name_subTopic,
+                    'drive_url' => $request->drive_url[$index],
+                    'topic_id' => $topic->id,
+                ]);
+            }
         }
+
+        return redirect()->route('course.show', $topic->course_id)
+            ->with('status', 'Topic updated successfully');
     }
+
+
     // Soft delete topic
     public function softDelete(Topic $topic)
     {
@@ -98,6 +116,17 @@ class TopicController extends Controller
 
         return view('topic.edit', compact('topic', 'course'));
     }
+
+    public function getEditForm(Request $request)
+    {
+        $id = $request->id;
+        $topic = Topic::findOrFail($id);
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('topic.edit', compact('topic'))->render()
+        ], 200);
+    }
+
 
     // Force delete topic
     public function forceDelete($id)

@@ -51,6 +51,18 @@ Route::post('/periode/getCreateForm', [PeriodeController::class, 'getCreateForm'
 
 Route::post('/periode/getEditForm', [PeriodeController::class, 'getEditForm'])->name('periode.getEditForm');
 
+Route::post('topic/geEditForm', [TopicController::class,'getEditForm'])->name('topic.getEditForm');
+
+Route::post('subtopic/geEditForm', [SubTopicController::class,'getEditForm'])->name('subtopic.getEditForm');
+// Route::post('/topic/get-edit-form', [TopicController::class, 'getEditForm'])->name('topic.getEditForm');
+
+
+
+
+
+// Route::put('/topic/update/{id}', [TopicController::class, 'update'])->name('topic.update');
+
+
 
 
 Route::get('/welcome', function () {

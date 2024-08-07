@@ -16,6 +16,7 @@ class SubTopicController extends Controller
         $subTopics = SubTopic::all();
         return view('subTopic.index', compact('subTopics'));
     }
+
     public function show(String $id)
     {
         $videos = Video::getVideosBySubTopicId($id);
@@ -34,14 +35,12 @@ class SubTopicController extends Controller
     // Store a new sub-topic
     public function store(Request $request)
     {
-        //dd($request);
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'topic_id' => 'required|exists:topics,id',
             'status' => 'nullable|string|in:Not Yet,Progres,Finish,Cancel',
-
         ]);
-        //dd($validatedData);
+
         SubTopic::create($validatedData);
 
         return redirect()->route('course.index')
@@ -53,6 +52,23 @@ class SubTopicController extends Controller
     {
         $topics = Topic::all();
         return view('subTopic.create', compact('topics'));
+    }
+
+    public function edit($id)
+    {
+        $subTopic = SubTopic::findOrFail($id);
+        $topics = Topic::all();
+        return view('subTopic.edit', compact('subTopic', 'topics'));
+    }
+
+    public function getEditForm(Request $request)
+    {
+        $id = $request->id;
+        $subTopic = SubTopic::findOrFail($id);
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('subTopic.edit', compact('subTopic'))->render()
+        ], 200);
     }
 
     // Update sub-topic
