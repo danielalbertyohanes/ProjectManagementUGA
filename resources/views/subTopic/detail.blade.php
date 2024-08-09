@@ -40,26 +40,34 @@
                                     <td>{{ $ppt->name }}</td>
                                     <td>{{ $ppt->status }}</td>
                                     <td>
-                                        {{-- {{ $ppt->progress }}% --}}
-
                                         <div class="progress">
-                                            <div class="progress-bar" role="progressbar" style="width: 70%;"
-                                                aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">70%</div>
+                                            <div class="progress-bar" role="progressbar"
+                                                style="width: {{ $ppt->progress }}%;" aria-valuenow="{{ $ppt->progress }}"
+                                                aria-valuemin="0" aria-valuemax="100">{{ $ppt->progress }}%</div>
                                         </div>
                                     </td>
                                     <td>{{ $ppt->created_at }}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
+                                            data-target="#modalEdit"
+                                            onclick="getEditForm({{ $ppt->id }}, 'ppt')">Edit</a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
                 <div class="d-flex justify-content-right">
-                    {{-- {{ $topics->links() }} untuk pindah halaman yang < 1 2 3 4 ... 10> --}}
+                    {{-- {{ $ppts->links() }} --}}
                 </div>
             </div>
         </div>
 
         <div class="card shadow mb-4">
+            @if ($videos->isNotEmpty())
+                <a class="btn btn-success mb-3" href="{{ route('video.newVideo', $subTopic->id) }}">+ New Video</a>
+            @endif
+
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Video</h6>
             </div>
@@ -93,10 +101,11 @@
                                     <td>{{ $video->name }}</td>
                                     <td>{{ $video->status }}</td>
                                     <td>
-                                        {{-- {{ $video->progress }}% --}}
                                         <div class="progress">
-                                            <div class="progress-bar" role="progressbar" style="width: 70%;"
-                                                aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">70%</div>
+                                            <div class="progress-bar" role="progressbar"
+                                                style="width: {{ $video->progress }}%;"
+                                                aria-valuenow="{{ $video->progress }}" aria-valuemin="0"
+                                                aria-valuemax="100">{{ $video->progress }}%</div>
                                         </div>
                                     </td>
                                     <td>{{ $video->location }}</td>
@@ -107,51 +116,76 @@
                                     <td>{{ $video->recording_ppt_finished_at }}</td>
                                     <td>{{ $video->editing_started_at }}</td>
                                     <td>{{ $video->editing_finished_at }}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
+                                            data-target="#modalEdit"
+                                            onclick="getEditForm({{ $video->id }}, 'video')">Edit</a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
                 <div class="d-flex justify-content-right">
-                    {{-- {{ $topics->links() }} untuk pindah halaman yang < 1 2 3 4 ... 10> --}}
+                    {{-- {{ $videos->links() }} --}}
                 </div>
             </div>
         </div>
-    @endsection
+    </div>
 
-    @section('javascript')
-        <script>
-            // Create
-            function loadCreateForm() {
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route('dosen.getCreateForm') }}',
-                    data: {
-                        '_token': '{{ csrf_token() }}',
-                    },
-                    success: function(data) {
-                        if (data.status === 'ok') {
-                            $('#modalCreateContent').html(data.msg);
-                        }
-                    }
-                });
+    {{-- Edit Modal --}}
+    <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditLabel">Edit</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modalEditContent">
+                    {{-- Content will be loaded here via AJAX --}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('javascript')
+    <script>
+        // Function to load the edit form based on type (ppt or video) and id
+        function getEditForm(id, type) {
+            let url = '';
+
+            // Determine the URL based on type
+            if (type === 'ppt') {
+                url = '{{ route('ppt.getEditForm') }}';
+            } else if (type === 'video') {
+                url = '{{ route('video.getEditForm') }}';
             }
 
-            // EDIT
-            function getEditForm(dosen_id) {
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route('dosen.getEditForm') }}',
-                    data: {
-                        '_token': '{{ csrf_token() }}',
-                        'id': dosen_id
-                    },
-                    success: function(data) {
-                        if (data.status === 'ok') {
-                            $('#modalContent').html(data.msg);
-                        }
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'id': id
+                },
+                success: function(data) {
+                    if (data.status === 'ok') {
+                        $('#modalEditContent').html(data.msg);
+                    } else {
+                        $('#modalEditContent').html('<p>Error loading form. Please try again.</p>');
                     }
-                });
-            }
-        </script>
-    @endsection
+                },
+                error: function() {
+                    $('#modalEditContent').html('<p>An error occurred. Please try again later.</p>');
+                }
+            });
+        }
+    </script>
+@endsection

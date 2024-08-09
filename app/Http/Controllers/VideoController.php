@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ppt;
 use App\Models\Video;
 use Illuminate\Http\Request;
 
@@ -19,16 +20,11 @@ class VideoController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create(string $id)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-
-        // Simpan data ppt
-        Video::create($request);
-
-        return redirect()->route('video.index')->with('status', 'Berhasil Tambah');
+        $ppts = Ppt::getPptsBySubTopicId($id);
+        $subTopicId = $id; // Pass the subtopic ID to the view
+        return view('video.create', compact('ppts', 'subTopicId'));
     }
 
     /**
@@ -36,8 +32,21 @@ class VideoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'location' => 'required|string',
+            'detail_location' => 'required|string|max:255',
+            'status_video' => 'required|string',
+            'ppt_id' => 'required|integer',  // Ensure that the selected PPT exists
+            'sub_topic_id' => 'required|integer',  // Ensure that the sub_topic_id is valid
+        ]);
+
+        // Simpan data video
+        Video::create($data);
+
+        return redirect()->route('subTopic.show', $data['sub_topic_id'])->with('status', 'Successfully added');
     }
+
 
     /**
      * Display the specified resource.

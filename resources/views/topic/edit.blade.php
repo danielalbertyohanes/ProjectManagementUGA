@@ -48,13 +48,13 @@
 </form>
 
 @section('javascript')
-<script>
-    $(document).ready(function() {
-        let subtopicIndex = {{ $topic->sub_topics->count() }};
+    <script>
+        $(document).ready(function() {
+            let subtopicIndex = {{ $topic->sub_topics->count() }};
 
-        $('#addSubTopic').click(function() {
-            $('#subtopicInputs').append(
-                `<div class="form-group">
+            $('#addSubTopic').click(function() {
+                $('#subtopicInputs').append(
+                    `<div class="form-group">
                     <label for="name_subTopic_${subtopicIndex}">Nama Sub Topic</label>
                     <input type="text" class="form-control" id="name_subTopic_${subtopicIndex}" name="name_subTopic[]"
                         placeholder="Enter Name Sub Topic" required>
@@ -65,13 +65,13 @@
 
                     <button type="button" class="btn btn-sm btn-danger remove-input">Remove</button>
                 </div>`
-            );
-            subtopicIndex++;
-        });
+                );
+                subtopicIndex++;
+            });
 
-        $(document).on('click', '.remove-input', function() {
-            $(this).closest('.form-group').remove();
+            $(document).on('click', '.remove-input', function() {
+                $(this).closest('.form-group').remove();
+            });
         });
-    });
-</script>
+    </script>
 @endsection
