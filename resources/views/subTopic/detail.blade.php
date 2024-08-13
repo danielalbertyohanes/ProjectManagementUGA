@@ -8,8 +8,6 @@
 
         <div class="mb-2">
             <h5 class="text-primary">NAMA SUB TOPIC: <span class="text-gray-800">{{ $subTopic->name }}</span></h5>
-            <h5 class="text-primary">DRIVE URL PPT: <span class="text-gray-800"><a
-                        href="{{ $subTopic->drive_url }}">{{ $subTopic->drive_url }}</a></span></h5>
         </div>
         <a class="btn btn-success mb-3" href="{{ route('ppt.newPpt', $subTopic->id) }}">+ New PPT</a>
         @if (session('status'))
@@ -49,8 +47,7 @@
                                     <td>{{ $ppt->created_at }}</td>
                                     <td>
                                         <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
-                                            data-target="#modalEdit"
-                                            onclick="getEditForm({{ $ppt->id }}, 'ppt')">Edit</a>
+                                            data-target="#modalEdit" onclick="getPptEditForm({{ $ppt->id }})">Edit</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -119,7 +116,7 @@
                                     <td>
                                         <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
                                             data-target="#modalEdit"
-                                            onclick="getEditForm({{ $video->id }}, 'video')">Edit</a>
+                                            onclick="getVideoEditForm({{ $video->id }})">Edit</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -147,9 +144,7 @@
                 <div class="modal-body" id="modalEditContent">
                     {{-- Content will be loaded here via AJAX --}}
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+
             </div>
         </div>
     </div>
@@ -157,20 +152,33 @@
 
 @section('javascript')
     <script>
-        // Function to load the edit form based on type (ppt or video) and id
-        function getEditForm(id, type) {
-            let url = '';
-
-            // Determine the URL based on type
-            if (type === 'ppt') {
-                url = '{{ route('ppt.getEditForm') }}';
-            } else if (type === 'video') {
-                url = '{{ route('video.getEditForm') }}';
-            }
+        function getPptEditForm(id) {
 
             $.ajax({
                 type: 'POST',
-                url: url,
+                url: '{{ route('ppt.getPptEditForm') }}',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'id': id
+                },
+                success: function(data) {
+                    if (data.status === 'ok') {
+                        $('#modalEditContent').html(data.msg);
+                    } else {
+                        $('#modalEditContent').html('<p>Error loading form. Please try again.</p>');
+                    }
+                },
+                error: function() {
+                    $('#modalEditContent').html('<p>An error occurred. Please try again later.</p>');
+                }
+            });
+        }
+
+        function getVideoEditForm(id) {
+
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('video.getVideoEditForm') }}',
                 data: {
                     '_token': '{{ csrf_token() }}',
                     'id': id

@@ -54,6 +54,10 @@ Route::post('/periode/getEditForm', [PeriodeController::class, 'getEditForm'])->
 Route::post('topic/geEditForm', [TopicController::class, 'getEditForm'])->name('topic.getEditForm');
 
 Route::post('subtopic/geEditForm', [SubTopicController::class, 'getEditForm'])->name('subtopic.getEditForm');
+
+Route::post('subtopic/ppt/getPptEditForm', [PptController::class, 'getPptEditForm'])->name('ppt.getPptEditForm');
+
+Route::post('subtopic/video/getVideoEditForm', [VideoController::class, 'getVideoEditForm'])->name('video.getVideoEditForm');
 // Route::post('/topic/get-edit-form', [TopicController::class, 'getEditForm'])->name('topic.getEditForm');
 
 

@@ -88,10 +88,23 @@ class PptController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Ppt $ppt)
     {
-        //
+        $data = $request->validate([
+            'name' => 'nullable|string',
+            'status' => 'nullable|in:Not Yet,Progress,Finished,Cancel',
+        ]);
+
+        // Debugging line: Remove or comment out this line in production
+        // dd($data);
+
+        $ppt->update($data);
+
+        return redirect()->route('subTopic.show', $ppt->sub_topic_id)
+            ->with('status', 'PPT updated successfully');
     }
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -99,5 +112,14 @@ class PptController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getPptEditForm(Request $request)
+    {
+        $ppt = Ppt::findOrFail($request->id);
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('ppt.edit', compact('ppt'))->render()
+        ], 200);
     }
 }
