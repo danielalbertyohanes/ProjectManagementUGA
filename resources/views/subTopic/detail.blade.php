@@ -62,7 +62,8 @@
 
         <div class="card shadow mb-4">
             @if ($videos->isNotEmpty())
-                <a class="btn btn-success mb-3" href="{{ route('video.newVideo', $subTopic->id) }}">+ New Video</a>
+            <a class="btn btn-success mb-3" href="{{ route('video.newVideo', $subTopic->id) }}">+ New Video</a>
+
             @endif
 
             <div class="card-header py-3">
@@ -152,11 +153,12 @@
 
 @section('javascript')
     <script>
-        function getPptEditForm(id) {
+       
+       function getPptEditForm(id) {
 
             $.ajax({
                 type: 'POST',
-                url: '{{ route('ppt.getPptEditForm') }}',
+                url: '{{route('ppt.getPptEditForm')}}',
                 data: {
                     '_token': '{{ csrf_token() }}',
                     'id': id
@@ -174,13 +176,14 @@
             });
         }
 
+
         function getVideoEditForm(id) {
 
             $.ajax({
                 type: 'POST',
-                url: '{{ route('video.getVideoEditForm') }}',
+                url: '{{route('video.getVideoEditForm')}}',
                 data: {
-                    '_token': '{{ csrf_token() }}',
+                    '_token': '{{ csrf_token() }}', 
                     'id': id
                 },
                 success: function(data) {
