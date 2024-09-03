@@ -44,47 +44,67 @@
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" width="100%" cellspacing="0">
-                        <thead>
+                <table class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Topik</th>
+                            <th>Sub-Topik</th>
+                            <th>Progres</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php $number = 1; @endphp
+                        @foreach ($topics as $topic)
+                            @php
+                                $subTopicsForThisTopic = $subTopics->where('topic_id', $topic->id);
+                                $rowspan = $subTopicsForThisTopic->count();
+                            @endphp
                             <tr>
-                                <th>No</th>
-                                <th>Topik</th>
-                                <th>Sub-Topik</th>
-                                <th>Progres</th>
-                                <th>Aksi</th>
+                                <td rowspan="{{ $rowspan }}">{{ $number }}</td>
+                                <td rowspan="{{ $rowspan }}">{{ $topic->name }}</td>
+                                <td>{{ $subTopicsForThisTopic->first()->name }}</td>
+                                <td>
+                                    <a href="{{ route('subTopic.show', $subTopicsForThisTopic->first()->id) }}" class="progress-link">
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" style="width: 70%;"
+                                                aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">70%</div>
+                                        </div>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
+                                        data-target="#modalEditSubTopics"
+                                        onclick="getEditSubTopicForm({{ $subTopicsForThisTopic->first()->id }})">Edit</a>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($topics as $topic)
-                                @php
-                                    $subTopicsForThisTopic = $subTopics->where('topic_id', $topic->id);
-                                    $rowspan = $subTopicsForThisTopic->count();
-                                @endphp
-                                @foreach ($subTopicsForThisTopic as $index => $subTopic)
-                                    <tr>
-                                        @if ($index == 0)
-                                            <td rowspan="{{ $rowspan }}">{{ $loop->parent->iteration }}</td>
-                                            <td rowspan="{{ $rowspan }}">{{ $topic->name }}</td>
-                                        @endif
-                                        <td>{{ $subTopic->name }}</td>
-                                        <td>
-                                            <a href="{{ route('subTopic.show', $subTopic->id) }}" class="progress-link">
-                                                <div class="progress">
-                                                    <div class="progress-bar" role="progressbar" style="width: 70%;"
-                                                        aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">70%</div>
-                                                </div>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
-                                                data-target="#modalEditSubTopics"
-                                                onclick="getEditSubTopicForm({{ $subTopic->id }})">Edit</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                            @php $number++; @endphp
+
+                            @foreach ($subTopicsForThisTopic->slice(1) as $subTopic)
+                                <tr>
+                                    <td>{{ $subTopic->name }}</td>
+                                    <td>
+                                        <a href="{{ route('subTopic.show', $subTopic->id) }}" class="progress-link">
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" style="width: 70%;"
+                                                    aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">70%</div>
+                                            </div>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
+                                            data-target="#modalEditSubTopics"
+                                            onclick="getEditSubTopicForm({{ $subTopic->id }})">Edit</a>
+                                    </td>
+                                </tr>
                             @endforeach
-                        </tbody>
-                    </table>
+                        @endforeach
+                    </tbody>
+                </table>
+
+
+
                 </div>
                 <div class="d-flex justify-content-right">
                     {{-- {{ $topics->links() }} untuk pindah halaman yang < 1 2 3 4 ... 10> --}}
