@@ -6,12 +6,28 @@
             display: block;
             margin-bottom: 10px;
         }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group input {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .input-group button {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
     </style>
 
     <div class="container-fluid">
         <h1 class="h3 mb-2 text-gray-800">COURSE</h1>
         {{-- ini harus di tambah dan di ubah lagi --}}
-        <p>Info terkait course agar informative</p>
+        <p>Master Course adalah modul yang digunakan untuk mendefinisikan dan mengelola informasi terkait kursus atau mata
+            pelajaran.</p>
         <br>
         @if ($links->isNotEmpty())
             <p>Dibawah ini adalah Link yang bisa di akses: </p>
@@ -33,12 +49,32 @@
         @endif
 
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
-
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">DataTables</h6>
+                <div class="input-group" style="max-width: 300px;">
+                    <input type="search" id="form1" class="form-control" placeholder="Search" aria-label="Search" />
+                    <button type="button" class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                {{-- template search untuk table --}}
+
+
+                {{-- <div class="input-group">
+                    <div class="form-outline" data-mdb-input-init>
+                        <input id="search-focus" type="search" id="form1" class="form-control" />
+                        <label class="form-label" for="form1">Search</label>
+                    </div>
+                    <button type="button" class="btn btn-primary" data-mdb-ripple-init>
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div> --}}
             </div>
+
+
             <div class="card-body">
                 <div class="table-responsive">
+
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>

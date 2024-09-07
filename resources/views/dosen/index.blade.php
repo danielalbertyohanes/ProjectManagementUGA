@@ -2,8 +2,9 @@
 
 @section('content')
     <div class="container-fluid">
-        <h1 class="h3 mb-2 text-gray-800">DOSEN</h1>
-        <p>Info terkait dosen agar informative</p>
+        <h1 class="h3 mb-2 text-gray-800">KONTRIBUTOR</h1>
+        <p>Master Kontributor adalah modul yang digunakan untuk mendefinisikan dan mengelola data dosen atau
+            kontributor.</p>
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
@@ -24,11 +25,11 @@
                             <tr>
                                 <th class="text-center">NO</th>
                                 <th class="text-center">NPK</th>
-                                <th class="text-center">Name</th>
-                                <th class="text-center">Faculty</th>
-                                <th class="text-center">Phone Number</th>
-                                <th class="text-center">Description</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-center">Nama</th>
+                                <th class="text-center">Fakultas</th>
+                                <th class="text-center">Nomor Telpon</th>
+                                <th class="text-center">Deskripsi</th>
+                                <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -41,18 +42,18 @@
                                     <td>{{ $d->no_telp }}</td>
                                     <td>{{ $d->description }}</td>
                                     <td>
-                                        @if (Auth::user()->position_id == '3')
-                                            <a href="#" class="btn btn-warning" data-toggle="modal"
-                                                data-target="#modalEditA" onclick="getEditForm({{ $d->id }})">EDIT
-                                            </a>
-                                            <form method="POST" action="{{ route('dosen.destroy', $d->id) }}"
-                                                style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <input type="submit" value="Delete" class="btn btn-danger"
-                                                    onclick="return confirm('Are you sure to delete {{ $d->id }} - {{ $d->name }}?');">
-                                            </form>
-                                        @endif
+                                        {{-- @if (Auth::user()->position_id == '3') --}}
+                                        <a href="#" class="btn btn-warning" data-toggle="modal"
+                                            data-target="#modalEditA" onclick="getEditForm({{ $d->id }})">EDIT
+                                        </a>
+                                        <form method="POST" action="{{ route('dosen.destroy', $d->id) }}"
+                                            style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="submit" value="Delete" class="btn btn-danger"
+                                                onclick="return confirm('Are you sure to delete {{ $d->id }} - {{ $d->name }}?');">
+                                        </form>
+                                        {{-- @endif --}}
                                     </td>
                                 </tr>
                             @endforeach

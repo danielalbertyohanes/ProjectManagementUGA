@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="container-fluid">
-        <h1 class="h3 mb-2 text-gray-800">Employee</h1>
-        <p>Info terkait dosen agar informative</p>
+        <h1 class="h3 mb-2 text-gray-800">EMPLOYEE</h1>
+        <p>Master Employee adalah modul yang digunakan untuk mendefinisikan dan mengelola data karyawan.</p>
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
