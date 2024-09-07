@@ -4,12 +4,12 @@
     <form method="POST" action="{{ route('video.store') }}">
         @csrf
         <div class="form-group">
-
             <label for="name">Name</label>
             <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" required>
 
             <label for="location">Location</label>
             <select class="form-control" id="location" name="location" required>
+                <option value="" selected disabled>Select Location</option>
                 <option value="UBAYA">UBAYA</option>
                 <option value="Not UBAYA">Not UBAYA</option>
             </select>
@@ -20,8 +20,16 @@
 
             <input type="hidden" id="status_video" name="status_video" value="Not Yet">
 
-            <label for="ppt_id">PPT ID</label>
-            <input type="text" class="form-control" id="ppt_id" name="ppt_id" placeholder="Enter PPT ID" required>
+            <label for="ppt">PPT</label>
+            <select class="form-control" id="ppt" name="ppt_id" required>
+                <option value="" selected disabled>Select PPT</option>
+                @foreach ($ppts as $ppt)
+                    <option value="{{ $ppt->id }}">{{ $ppt->name }}</option>
+                @endforeach
+            </select>
+
+            <input type="hidden" name="sub_topic_id" value="{{ $subTopicId }}">
+
         </div>
 
         <div class="modal-footer">

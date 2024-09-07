@@ -23,6 +23,6 @@
     </div>
     <div class="modal-footer">
         <button type="submit" class="btn btn-primary">Submit</button>
-        <a href="{{ route('subTopic.index') }}" class="btn btn-danger">Cancel</a>
+        <a href="{{ route('course.show', $subTopic->topic->course_id) }}" class="btn btn-danger">Cancel</a>
     </div>
 </form>

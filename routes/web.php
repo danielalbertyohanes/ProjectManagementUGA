@@ -51,9 +51,13 @@ Route::post('/periode/getCreateForm', [PeriodeController::class, 'getCreateForm'
 
 Route::post('/periode/getEditForm', [PeriodeController::class, 'getEditForm'])->name('periode.getEditForm');
 
-Route::post('topic/geEditForm', [TopicController::class,'getEditForm'])->name('topic.getEditForm');
+Route::post('topic/geEditForm', [TopicController::class, 'getEditForm'])->name('topic.getEditForm');
 
-Route::post('subtopic/geEditForm', [SubTopicController::class,'getEditForm'])->name('subtopic.getEditForm');
+Route::post('subtopic/geEditForm', [SubTopicController::class, 'getEditForm'])->name('subtopic.getEditForm');
+
+Route::post('subtopic/ppt/getPptEditForm', [PptController::class, 'getPptEditForm'])->name('ppt.getPptEditForm');
+
+Route::post('subtopic/video/getVideoEditForm', [VideoController::class, 'getVideoEditForm'])->name('video.getVideoEditForm');
 // Route::post('/topic/get-edit-form', [TopicController::class, 'getEditForm'])->name('topic.getEditForm');
 
 
@@ -73,6 +77,8 @@ Route::get('/welcome', function () {
 Route::get('/topic/create/{course_id}', [TopicController::class, 'create'])->name('topic.newtopic');
 
 Route::get('/ppt/create/{sub_topic_id}', [PptController::class, 'create'])->name('ppt.newPpt');
+
+Route::get('/video/create/{sub_topic_id}', [VideoController::class, 'create'])->name('video.newVideo');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::resource('link_external', LinkExternalController::class);

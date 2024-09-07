@@ -68,40 +68,83 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
+            @if (Auth::user()->position_id == '1')
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('periode.index') }}">
+                        <i class="fa fa-user"></i>
+                        <span>Master Periode</span></a>
+                </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('course.index') }}">
+                        <i class="fa fa-book"></i>
+                        <span>Master Courses</span></a>
+                </li>
 
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('periode.index') }}">
-                    <i class="fa fa-user"></i>
-                    <span>Periode</span></a>
-            </li>
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('course.index') }}">
-                    <i class="fa fa-book"></i>
-                    <span>Courses</span></a>
-            </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('dosen.index') }}">
+                        <i class="fa fa-user"></i>
+                        <span>Master Kontributor</span></a>
+                </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('employee.index') }}">
+                        <i class="fa fa-user"></i>
+                        <span>Master Employee</span></a>
+                </li>
 
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('dosen.index') }}">
-                    <i class="fa fa-user"></i>
-                    <span>Dosens</span></a>
-            </li>
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('employee.index') }}">
-                    <i class="fa fa-user"></i>
-                    <span>Employee</span></a>
-            </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('link_external.index') }}">
+                        <i class="fa fa-user"></i>
+                        <span>Master External Link</span></a>
+                </li>
+            @endif
+            @if (Auth::user()->position_id == '2')
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('course.index') }}">
+                        <i class="fa fa-book"></i>
+                        <span>Course Bimbinganku
+                        </span></a>
+                </li>
 
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('link_external.index') }}">
-                    <i class="fa fa-user"></i>
-                    <span>Link External</span></a>
-            </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('course.index') }}">
+                        <i class="fa fa-book"></i>
+                        <span>Riwayat Course Bimbinganku
+                        </span></a>
+                </li>
 
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('course.index') }}">
+                        <i class="fa fa-book"></i>
+                        <span>Master Courses</span></a>
+                </li>
+            @endif
+
+            @if (Auth::user()->position_id == '3')
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('course.index') }}">
+                        <i class="fa fa-book"></i>
+                        <span>Master Courses</span></a>
+                </li>
+            @endif
+
+            @if (Auth::user()->position_id == '4')
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('course.index') }}">
+                        <i class="fa fa-book"></i>
+                        <span>Courseku
+                        </span></a>
+                </li>
+            @endif
             {{-- <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCustomers"
                     aria-expanded="true" aria-controls="collapseCustomers">
