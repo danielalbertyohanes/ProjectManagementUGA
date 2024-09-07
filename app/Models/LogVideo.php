@@ -34,26 +34,40 @@ class LogVideo extends Model
     {
         return $this->belongsTo(Video::class);
     }
-    //get all
+
+    // Get all log videos
     public static function logVideos()
     {
         return self::all();
     }
-    //get log (status, desc)
+
+    // Get status and description for a specific user and video
     public static function getStatusAndDesc($user_id, $video_id)
     {
         return self::select('status', 'description')
-            ->where($user_id, $video_id)
+            ->where('user_id', $user_id)
+            ->where('video_id', $video_id)
             ->get();
     }
-    //update 
+
+    // Update log entry based on user_id and video_id
     public static function updateLog($user_id, $video_id, $data)
     {
-        $log = self::where($user_id, $video_id)->first();
+        $log = self::where('user_id', $user_id)
+            ->where('video_id', $video_id)
+            ->first();
+
         if ($log) {
             $log->update($data);
             return $log;
         }
+
         return null;
+    }
+
+    // Insert a new log entry
+    public static function insertLogVideo($data)
+    {
+        return self::create($data);
     }
 }

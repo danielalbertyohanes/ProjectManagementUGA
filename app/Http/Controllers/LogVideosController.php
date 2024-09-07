@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\LogVideo;
 
+use App\Models\Video;
 use Illuminate\Http\Request;
 
 class LogVideosController extends Controller
@@ -21,25 +22,36 @@ class LogVideosController extends Controller
 
     public function store(Request $request)
     {
+        // Validate the incoming request data
         $data = $request->validate([
             'status' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'video_id' => 'required|exists:videos,id', // Ensure video_id is valid
         ]);
 
-        $logVideo = LogVideo::insertLog($data);
+        /* // Update the status of the log video
+        LogVideo::where('video_id', $request->video_id)
+            ->where('user_id', auth()->id()) // Assumes the log is for the currently authenticated user
+            ->update(['status' => $data['status']]); */
 
-        return redirect()->route('logVideos.index')->with('status', 'Berhasil Tambah');
+        // Insert a new log entry with description
+        LogVideo::insertLogVideo([
+            'status' => $data['status'],
+            'description' => $data['description'],
+            'user_id' => auth()->id(), // Assuming the user is authenticated
+            'video_id' => $data['video_id'],
+        ]);
+
+        // Optionally, return a response or redirect
+        return redirect()->route('course.index')->with('status', 'Log entry updated and new log added.');
     }
-    //update
-    public function update($user_id, $video_id, Request $request)
+    public function getLogVideoForm(Request $request)
     {
-        $data = $request->validate([
-            'status' => 'required|string|max:255',
-            'description' => 'nullable|string',
+        $video = Video::findOrFail($request->id);
+
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('log_Video.formlog', compact('video'))->render()
         ]);
-
-        $logVideo = LogVideo::updateLog($user_id, $video_id, $data);
-
-        return redirect()->route('logVideos.index')->with('status', 'Berhasil Update');
     }
 }

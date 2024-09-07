@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LogPpt;
 use App\Models\Ppt;
 use App\Models\Course;
 use App\Models\SubTopic;
@@ -103,6 +104,7 @@ class PptController extends Controller
         return redirect()->route('subTopic.show', $ppt->sub_topic_id)
             ->with('status', 'PPT updated successfully');
     }
+
 
 
 
