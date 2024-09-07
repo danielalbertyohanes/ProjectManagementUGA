@@ -30,6 +30,8 @@ class CourseController extends Controller
         $subTopics = SubTopic::getSubTopicsByCourseId($course_id);
         return view('course.detail', compact('course', 'topics', 'subTopics'));
     }
+
+
     public function store(Request $request)
     {
         $data = $request->validate([

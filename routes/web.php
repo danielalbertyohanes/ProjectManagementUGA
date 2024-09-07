@@ -80,6 +80,7 @@ Route::get('/ppt/create/{sub_topic_id}', [PptController::class, 'create'])->name
 
 Route::get('/video/create/{sub_topic_id}', [VideoController::class, 'create'])->name('video.newVideo');
 
+
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::resource('link_external', LinkExternalController::class);
 Route::resource('video', VideoController::class);

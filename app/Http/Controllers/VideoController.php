@@ -62,15 +62,27 @@ class VideoController extends Controller
     public function edit(string $id)
     {
         //
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Video $video)
     {
-        //
+        $data = $request->validate([
+            'name' => 'nullable|string',
+            'location' => 'nullable|in:UBAYA,Not UBAYA',
+            'description_location' => 'nullable|string',
+            'status' => 'nullable|in:Not Yet,Recording,Recorded,PPT Recording,PPT Recorded,Editing,Edited,Pause Recording',
+        ]);
+    
+        $video->update($data);
+    
+        return redirect()->route('course.show', $video->id)
+            ->with('status', 'Video updated successfully');
     }
+    
 
     /**
      * Remove the specified resource from storage.
@@ -80,7 +92,11 @@ class VideoController extends Controller
         //
     }
 
-    public function getVideoEditForm(){
-        
+    public function getVideoEditForm(Request $request){
+        $video = Video::findOrFail($request->id);
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('video.edit', compact('video'))->render()
+        ],200);
     }
 }
