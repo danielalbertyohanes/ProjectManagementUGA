@@ -16,10 +16,26 @@ use PhpParser\Node\Expr\Cast\String_;
 
 class CourseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // Ambil data links eksternal
         $links = LinkExternal::getLinkOrderedByStatusActive();
-        $courses = Course::getAllCourses();
+
+        // Buat query untuk Course
+        $query = Course::query();
+
+        // Cek apakah ada parameter pencarian dari request
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'like', '%' . $search . '%')
+                ->orWhere('kode_course', 'like', '%' . $search . '%')
+                ->orWhere('description', 'like', '%' . $search . '%');
+        }
+
+        // Dapatkan hasil pencarian atau semua data jika tidak ada pencarian
+        $courses = $query->get();
+
+        // Kembalikan view dengan data courses dan links
         return view('course.index', compact('courses', 'links'));
     }
 
@@ -63,6 +79,7 @@ class CourseController extends Controller
         $dosens = Dosen::getAllDosens();
         $pic = User::getUserPIC();
         return view("course.create", compact('pic', 'dosens'));
+        
     }
 
     public function getCreateForm()

@@ -51,11 +51,15 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">DataTables</h6>
+
                 <div class="input-group" style="max-width: 300px;">
-                    <input type="search" id="form1" class="form-control" placeholder="Search" aria-label="Search" />
-                    <button type="button" class="btn btn-primary">
-                        <i class="fas fa-search"></i>
-                    </button>
+                    <form action="{{ route('course.index') }}" method="GET" class="d-flex">
+                        <input type="search" name="search" id="form1" class="form-control" placeholder="Search"
+                            aria-label="Search" />
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
                 </div>
                 {{-- template search untuk table --}}
 
@@ -219,5 +223,22 @@
                 }
             });
         }
+    </script>
+    <script>
+        // Client-side search function
+        document.getElementById('form1').addEventListener('input', function() {
+            var input = this.value.toLowerCase();
+            var rows = document.querySelectorAll('#dataTable tbody tr');
+
+            rows.forEach(function(row) {
+                var found = false;
+                row.querySelectorAll('td').forEach(function(td) {
+                    if (td.innerText.toLowerCase().indexOf(input) > -1) {
+                        found = true;
+                    }
+                });
+                row.style.display = found ? '' : 'none';
+            });
+        });
     </script>
 @endsection
