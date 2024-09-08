@@ -14,6 +14,7 @@ class Course extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'kode_course',
         'name',
         'description',
         'jumlah_video',
@@ -22,7 +23,7 @@ class Course extends Model
         'pic_course',
         'updated_at',
         'created_at'
-        
+
     ];
     public function topics(): HasMany
     {
@@ -35,8 +36,13 @@ class Course extends Model
     }
     public function dosens()
     {
-        return $this->belongsToMany(Dosen::class, 'courses_has_dosens', 'courses_id', 'dosens_id')
+        return $this->belongsToMany(Dosen::class, 'course_has_dosen', 'courses_id', 'dosens_id')
             ->withPivot('role');
+    }
+
+    public function periode()
+    {
+        return $this->belongsToMany(Periode::class, 'course_has_periode', 'courses_id', 'periode_id');
     }
 
     // function tambah data 
@@ -70,5 +76,32 @@ class Course extends Model
     public static function findCourseById($id)
     {
         return DB::table('courses')->where('id', $id)->first();
+    }
+
+    public static function searchCourses($search, $userId, $positionId)
+    {
+        // Inisiasi query dasar
+        $query = self::with('dosens', 'periode')
+            ->join('course_has_periode', 'courses.id', '=', 'course_has_periode.courses_id')
+            ->join('periode', 'course_has_periode.periode_id', '=', 'periode.id')
+            ->where('periode.status', 'active') // Hanya periode aktif
+            ->select('courses.*', 'periode.status as periode_status');
+
+        // Jika position_id = 2, filter berdasarkan PIC
+        if ($positionId == 2) {
+            $query->where('pic_course', $userId);
+        }
+
+        // Tambahkan filter pencarian jika ada
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('courses.name', 'like', '%' . $search . '%')
+                    ->orWhere('courses.kode_course', 'like', '%' . $search . '%')
+                    ->orWhere('courses.description', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Ambil hasil query
+        return $query->get();
     }
 }

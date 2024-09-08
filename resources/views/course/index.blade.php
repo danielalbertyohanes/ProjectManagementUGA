@@ -39,13 +39,14 @@
         @endif
 
 
-    @if (session('status'))
-    <div class="alert alert-success">{{ session('status') }}</div>
-    @endif
+        @if (session('status'))
+            <div class="alert alert-success">{{ session('status') }}</div>
+        @endif
 
-    @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
-    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateCourse" onclick="loadCreateForm()">+ New Course</button>
-    @endif
+        @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
+            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateCourse"
+                onclick="loadCreateForm()">+ New Course</button>
+        @endif
 
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
@@ -92,7 +93,9 @@
                                 <th class="text-center">Proggres</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Details</th>
-                                <th class="text-center">Action</th>
+                                @if (Auth::user()->position_id == '1')
+                                    <th class="text-center">Action</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -111,77 +114,81 @@
                                                 $anggota = $course->dosens->where('pivot.role', 'anggota');
                                             @endphp
 
-                                    @if ($ketua)
-                                    <li>
-                                        @if ($anggota->isNotEmpty())
-                                        <strong>Ketua:</strong>
+                                            @if ($ketua)
+                                                <li>
+                                                    @if ($anggota->isNotEmpty())
+                                                        <strong>Ketua:</strong>
+                                                    @endif
+                                                    {{ $ketua->name }}
+                                                </li>
+                                            @endif
+
+                                            @if ($anggota->isNotEmpty())
+                                                <li>
+                                                    <strong>Anggota:</strong>
+                                                    @foreach ($anggota as $dosen)
+                                                        {{ $dosen->name }},
+                                                    @endforeach
+                                                </li>
+                                            @endif
+
+                                            @if (!$ketua && $anggota->isEmpty())
+                                                <li>Tidak ada dosen</li>
+                                            @endif
+                                        </ul>
+                                    </td>
+                                    <td>{{ $course->user->name }}</td>
+                                    <td>{{ $course->progress }}%</td>
+                                    <td>{{ $course->status }}</td>
+                                    <td>
+                                        <a class="btn btn-success" href="{{ route('course.show', $course->id) }}">
+                                            Detail
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @if (Auth::user()->position_id == '1')
+                                            <a href="#" class="btn btn-warning" data-toggle="modal"
+                                                data-target="#modalEditA"
+                                                onclick="getEditForm({{ $course->id }})">EDIT</a>
+                                            <form method="POST" action="{{ route('course.destroy', $course->id) }}"
+                                                style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <input type="submit" value="Delete" class="btn btn-danger"
+                                                    onclick="return confirm('Are you sure to delete {{ $course->id }} - {{ $course->name }}?');">
+                                            </form>
                                         @endif
-                                        {{ $ketua->name }}
-                                    </li>
-                                    @endif
-
-                                    @if ($anggota->isNotEmpty())
-                                    <li>
-                                        <strong>Anggota:</strong>
-                                        @foreach ($anggota as $dosen)
-                                        {{ $dosen->name }},
-                                        @endforeach
-                                    </li>
-                                    @endif
-
-                                    @if (!$ketua && $anggota->isEmpty())
-                                    <li>Tidak ada dosen</li>
-                                    @endif
-                                </ul>
-                            </td>
-                            <td>{{ $course->user->name }}</td>
-                            <td>{{ $course->progress }}%</td>
-                            <td>{{ $course->status }}</td>
-                            <td>
-                                <a class="btn btn-success" href="{{ route('course.show', $course->id) }}">
-                                    Detail
-                                </a>
-                            </td>
-                            <td>
-                                @if (Auth::user()->position_id == '1')
-                                <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#modalEditA" onclick="getEditForm({{ $course->id }})">EDIT</a>
-                                <form method="POST" action="{{ route('course.destroy', $course->id) }}" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure to delete {{ $course->id }} - {{ $course->name }}?');">
-                                </form>
-                                @endif
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Modal ADD -->
-<div class="modal fade" id="modalCreateCourse" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-wide">
-        <div class="modal-content">
-            <div class="modal-body" id="modalCreateContent">
-                <!-- Content will be loaded dynamically -->
+    <!-- Modal ADD -->
+    <div class="modal fade" id="modalCreateCourse" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-wide">
+            <div class="modal-content">
+                <div class="modal-body" id="modalCreateContent">
+                    <!-- Content will be loaded dynamically -->
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Modal EDIT -->
-<div class="modal fade" id="modalEditA" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-wide">
-        <div class="modal-content">
-            <div class="modal-body" id="modalContent">
-                <!-- Content will be loaded dynamically -->
+    <!-- Modal EDIT -->
+    <div class="modal fade" id="modalEditA" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-wide">
+            <div class="modal-content">
+                <div class="modal-body" id="modalContent">
+                    <!-- Content will be loaded dynamically -->
+                </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
 
 @section('javascript')

@@ -42,6 +42,7 @@ class LogVideosController extends Controller
             'video_id' => $data['video_id'],
         ]);
 
+        return redirect()->route('subTopic.show', $data['sub_topic_id'])->with('status', 'Successfully added');
         // Optionally, return a response or redirect
         return redirect()->route('course.index')->with('status', 'Log entry updated and new log added.');
     }

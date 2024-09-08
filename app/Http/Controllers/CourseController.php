@@ -8,6 +8,7 @@ use App\Models\Dosen;
 use App\Models\Video;
 use App\Models\Course;
 use App\Models\LinkExternal;
+use App\Models\Periode;
 use App\Models\Topic;
 use App\Models\SubTopic;
 use Illuminate\Http\Request;
@@ -18,26 +19,20 @@ class CourseController extends Controller
 {
     public function index(Request $request)
     {
-        // Ambil data links eksternal
+        // Ambil data links eksternal yang diurutkan berdasarkan status aktif
         $links = LinkExternal::getLinkOrderedByStatusActive();
 
-        // Buat query untuk Course
-        $query = Course::query();
+        // Ambil kata kunci pencarian jika ada
+        $search = $request->input('search');
 
-        // Cek apakah ada parameter pencarian dari request
-        if ($request->has('search')) {
-            $search = $request->input('search');
-            $query->where('name', 'like', '%' . $search . '%')
-                ->orWhere('kode_course', 'like', '%' . $search . '%')
-                ->orWhere('description', 'like', '%' . $search . '%');
-        }
-
-        // Dapatkan hasil pencarian atau semua data jika tidak ada pencarian
-        $courses = $query->get();
+        // Panggil method di model untuk pencarian dan filter berdasarkan posisi user
+        $courses = Course::searchCourses($search, Auth::user()->id, Auth::user()->position_id);
 
         // Kembalikan view dengan data courses dan links
         return view('course.index', compact('courses', 'links'));
     }
+
+
 
     public function show(String $course_id)
     {
@@ -51,14 +46,18 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
+            'kode_course' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'jumlah_video' => 'nullable|integer',
             'pic_course' => 'required|integer',
+            'periode_id' => 'required|integer',
         ]);
 
         // Simpan data kursus
         $course = Course::create($data);
+
+        $course->periode()->attach($request->periode_id);
 
         // Simpan relasi dosen
         $dosens = $request->input('dosens', []);
@@ -74,21 +73,15 @@ class CourseController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        $dosens = Dosen::getAllDosens();
-        $pic = User::getUserPIC();
-        return view("course.create", compact('pic', 'dosens'));
-        
-    }
 
     public function getCreateForm()
     {
         $dosens = Dosen::getAllDosens();
         $pic = User::getUserPIC();
+        $periode = Periode::getAllPeriodeActive();
         return response()->json([
             'status' => 'ok',
-            'msg' => view('course.create', compact('pic', 'dosens'))->render()
+            'msg' => view('course.create', compact('pic', 'dosens', 'periode'))->render()
         ], 200);
     }
 

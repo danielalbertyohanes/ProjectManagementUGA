@@ -20,11 +20,22 @@ class Periode extends Model
         'status'
     ];
 
+    public function course()
+    {
+        return $this->belongsToMany(Course::class, 'course_has_periode', 'periode_id', 'courses_id');
+    }
+
+    public static function getAllPeriodeActive()
+    {
+        return DB::table('periode')
+            ->orderBy('name', 'asc')
+            ->where('status', 'active')
+            ->get();
+    }
     public static function getAllPeriode()
     {
         return DB::table('periode')
             ->orderBy('name', 'asc')
-            ->whereNull('deleted_at')
             ->get();
     }
 }

@@ -81,7 +81,7 @@ class User extends Authenticatable
     // function cari nama dosen
     public static function getUserPIC()
     {
-        return DB::table('users')->where('position_id', 1)->get();
+        return DB::table('users')->where('position_id', 2)->get();
     }
     //show employee
     public static function getEmployee()

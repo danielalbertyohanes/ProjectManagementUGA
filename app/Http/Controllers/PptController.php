@@ -124,12 +124,4 @@ class PptController extends Controller
         ], 200);
     }
 
-    public function getPptEditForm(Request $request)
-    {
-        $ppt = Ppt::findOrFail($request->id);
-        return response()->json([
-            'status' => 'ok',
-            'msg' => view('ppt.edit', compact('ppt'))->render()
-        ], 200);
-    }
 }
