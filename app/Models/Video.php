@@ -67,4 +67,9 @@ class Video extends Model
             ->orderBy('videos.progress', 'asc')
             ->get();
     }
+    //get status LogVideosController
+    public static function getStatus()
+    {
+        return self::select('status')->get();
+    }
 }

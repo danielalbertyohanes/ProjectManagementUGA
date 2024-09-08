@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LogPpt;
 use App\Models\Ppt;
 use App\Models\Course;
 use App\Models\SubTopic;
@@ -112,6 +113,15 @@ class PptController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getPptEditForm(Request $request)
+    {
+        $ppt = Ppt::findOrFail($request->id);
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('ppt.edit', compact('ppt'))->render()
+        ], 200);
     }
 
     public function getPptEditForm(Request $request)

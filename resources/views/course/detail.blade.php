@@ -4,16 +4,22 @@
     <div class="container-fluid">
         <h3 class="h3 mb-2 text-gray-800">Detail Course</h3>
         <p>Halaman details berisi topik. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-            Ipsum has been the industry's.</p>
+           
+        Ipsum has been the industry's.</p>
 
         <div class="mb-2">
             <h5 class="text-primary">
-                KODE COURSE:
-                <span class="text-gray-800">{{ $course->kode_course }}</span>
-            </h5>
+                
+            KODE COURSE:
+               
+            <span class="text-gray-800">{{ $course->kode_course }}</span>
+            
+        </h5>
             <h5 class="text-primary">
-                NAMA COURSE:
-                <span class="text-gray-800">{{ $course->name }}</span>
+                
+            NAMA COURSE:
+               
+            <span class="text-gray-800">{{ $course->name }}</span>
             </h5>
             <h5 class="text-primary">
                 DRIVE_URL:
@@ -26,15 +32,29 @@
                 <span class="text-gray-800">
                     <a href="{{ $course->video_url }}">{{ $course->video_url }}</a>
                 </span>
-            </h5>
+            
+        </h5>
+        <h5 class="text-primary">
+            DRIVE_URL:
+            <span class="text-gray-800">
+                <a href="{{ $course->drive_url }}">{{ $course->drive_url }}</a>
+            </span>
+        </h5>
+        <h5 class="text-primary">
+            VIDEO_URL:
+            <span class="text-gray-800">
+                <a href="{{ $course->video_url }}">{{ $course->video_url }}</a>
+            </span>
+        </h5>
         </div>
 
-        <a class="btn btn-success mb-3" href="{{ route('topic.newtopic', ['course_id' => $course->id]) }}">+ New Topic</a>
+    
+    <a class="btn btn-success mb-3" href="{{ route('topic.newtopic', ['course_id' => $course->id]) }}">+ New Topic</a>
         @if (session('status'))
-            <div class="alert alert-success">{{ session('status') }}</div>
+        <div class="alert alert-success">{{ session('status') }}</div>
         @endif
-        <a href="#" class="btn btn-warning mb-3" data-toggle="modal" data-target="#modalEditTopics"
-            onclick="getEditForm({{ $course->id }})">Edit Topic</a>
+    <a href="#" class="btn btn-warning mb-3" data-toggle="modal" data-target="#modalEditTopics"
+         onclick="getEditForm({{ $course->id }})">Edit Topic</a>
 
 
         <div class="card shadow mb-4">
@@ -116,49 +136,49 @@
     @endsection
 
     @section('javascript')
-        <script>
-            function getEditForm(course_id) {
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route('topic.getEditForm') }}', // Pastikan ini sesuai dengan nama rute Anda
-                    data: {
-                        '_token': '{{ csrf_token() }}',
-                        'id': course_id
-                    },
-                    success: function(data) {
-                        if (data.status === 'ok') {
-                            $('#modalContent').html(data.msg);
-                            $('#modalEditTopics').modal('show'); // Tampilkan modal setelah konten dimuat
-                        } else {
-                            console.error('Error:', data); // Log error jika status bukan 'ok'
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('AJAX Error:', error); // Log error jika terjadi kesalahan AJAX
+    <script>
+        function getEditForm(course_id) {
+            $.ajax({
+                type: 'POST',
+                url: '{{ route("topic.getEditForm") }}', // Removed the space after 'getEditForm'
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'id': course_id
+                },
+                success: function(data) {
+                    if (data.status === 'ok') {
+                        $('#modalContent').html(data.msg);
+                        $('#modalEditTopics').modal('show'); // Show modal after content is loaded
+                    } else {
+                        console.error('Error:', data); // Log error if status is not 'ok'
                     }
-                });
-            }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error:', error); // Log AJAX error
+                }
+            });
+        }
 
-            function getEditSubTopicForm(sub_topic_id) {
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route('subtopic.getEditForm') }}', // Pastikan ini sesuai dengan nama rute Anda
-                    data: {
-                        '_token': '{{ csrf_token() }}',
-                        'id': sub_topic_id
-                    },
-                    success: function(data) {
-                        if (data.status === 'ok') {
-                            $('#modalContentSubtopic').html(data.msg);
-                            $('#modalEditSubTopics').modal('show'); // Tampilkan modal setelah konten dimuat
-                        } else {
-                            console.error('Error:', data); // Log error jika status bukan 'ok'
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('AJAX Error:', error); // Log error jika terjadi kesalahan AJAX
+        function getEditSubTopicForm(sub_topic_id) {
+            $.ajax({
+                type: 'POST',
+                url: '{{ route("subtopic.getEditForm") }}', // Removed the space after 'getEditForm'
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'id': sub_topic_id
+                },
+                success: function(data) {
+                    if (data.status === 'ok') {
+                        $('#modalContentSubtopic').html(data.msg);
+                        $('#modalEditSubTopics').modal('show'); // Show modal after content is loaded
+                    } else {
+                        console.error('Error:', data); // Log error if status is not 'ok'
                     }
-                });
-            }
-        </script>
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error:', error); // Log AJAX error
+                }
+            });
+        }
+    </script>
     @endsection

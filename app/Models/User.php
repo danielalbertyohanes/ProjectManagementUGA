@@ -49,7 +49,15 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function logVideos()
+    {
+        return $this->hasMany(LogVideo::class);
+    }
 
+    public function logPpts()
+    {
+        return $this->hasMany(LogPpt::class);
+    }
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class, 'position_id');

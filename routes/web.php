@@ -12,6 +12,9 @@ use App\Http\Controllers\TopicController;
 use App\Http\Controllers\SubTopicController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
+use App\Http\Controllers\LogPptController;
+use App\Http\Controllers\LogVideosController;
+
 use App\Models\Ppt;
 
 /*
@@ -53,7 +56,15 @@ Route::post('/periode/getEditForm', [PeriodeController::class, 'getEditForm'])->
 
 Route::post('topic/geEditForm', [TopicController::class, 'getEditForm'])->name('topic.getEditForm');
 
-Route::post('subtopic/geEditForm', [SubTopicController::class, 'getEditForm'])->name('subtopic.getEditForm');
+Route::post('subtopic/geEditForm', [SubTopicController::class,  'getEditForm'])->name('subtopic.getEditForm');
+
+Route::post('subtopic/ppt/getPptEditForm', [PptController::class, 'getPptEditForm'])->name('ppt.getPptEditForm');
+
+Route::post('subtopic/video/getVideoEditForm', [VideoController::class, 'getVideoEditForm'])->name('video.getVideoEditForm');
+
+Route::post('subtopic/ppt/getLogPptForm', [LogPptController::class, 'getLogPptForm'])->name('logPpt.getLogPptForm');
+
+Route::Post('subtopic/video/getLogVideoForm', [LogVideosController::class, 'getLogVideoForm'])->name('logVideo.getLogVideoForm');
 
 Route::post('subtopic/ppt/getPptEditForm', [PptController::class, 'getPptEditForm'])->name('ppt.getPptEditForm');
 
@@ -80,6 +91,8 @@ Route::get('/ppt/create/{sub_topic_id}', [PptController::class, 'create'])->name
 
 Route::get('/video/create/{sub_topic_id}', [VideoController::class, 'create'])->name('video.newVideo');
 
+Route::get('/video/create/{sub_topic_id}', [VideoController::class, 'create'])->name('video.newVideo');
+
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::resource('link_external', LinkExternalController::class);
@@ -91,3 +104,5 @@ Route::resource('course', CourseController::class);
 Route::resource('dosen', DosenController::class);
 Route::resource('employee',  UserController::class);
 Route::resource('periode',  PeriodeController::class);
+Route::resource('logPpt', LogPptController::class);
+Route::resource('logVideo', LogVideosController::class);

@@ -61,4 +61,15 @@ class Ppt extends Model
             ->orderBy('ppts.id', 'asc')
             ->get();
     }
+    function getPptProgressFromStatus($status)
+    {
+        $statusMap = [
+            'Not Yet' => 0,
+            'Cancel' => 0,
+            'Progress' => 50,
+            'Finished' => 100
+        ];
+
+        return $statusMap[$status] ?? 0;
+    }
 }
