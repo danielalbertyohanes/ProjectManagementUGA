@@ -38,7 +38,7 @@
                                     <td>{{ $d->npk }}</td>
                                     <td>{{ $d->name }}</td>
                                     <td>{{ $d->fakultas }}</td>
-                                    <td>{{ $d->no_telp }}</td>
+                                    <td>{{ $d->no_tlpn }}</td>
                                     <td>{{ $d->description }}</td>
                                     <td>
                                         @if (Auth::user()->position_id == '3')

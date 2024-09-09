@@ -18,12 +18,31 @@
                 </thead>
                 <tbody>
                     @foreach ($ppts as $ppt)
+                    @php
+                        $statusProgressMapping = [
+                            'Not Yet' => 0,
+                            'Progress' => 50,
+                            'Finished' => 100,
+                            'Cancel' => 0,
+                        ];
+
+                        $progressPercentage = $statusProgressMapping[$ppt->status] ?? 0;
+                    @endphp
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $ppt->name }}</td>
-                            <td>{{ $ppt->status }}</td>
-                            <td>{{ $ppt->progress }}%</td>
-                            <td>{{ $ppt->created_at }}</td>
+                            <td class="text-center">{{ $loop->iteration }}</td>
+                            <td class="text-center">{{ $ppt->name }}</td>
+                            <td class="text-center">{{ $ppt->status }}</td>
+                            <td class="text-center">
+                                <div class="progress" style="height: 20px;">
+                                    <div class="progress-bar" role="progressbar" style="width: {{ $progressPercentage }}%;" aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0" aria-valuemax="100">
+                                        {{ $progressPercentage }}%
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center">{{ $ppt->created_at }}</td>
+                            <td class="text-center">
+                                <a href="{{ route('ppt.edit', $ppt->id) }}" class="btn btn-warning">Edit</a>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

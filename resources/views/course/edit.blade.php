@@ -16,10 +16,10 @@
 
         <label for="status">Status</label>
         <select class="form-control" id="status" name="status" required>
-            <option value="" selected disabled>Pilih Status</option>
-            @foreach (['Not Yet', 'Progres', 'Finish', 'Cancel'] as $status)
-                <option value="{{ $status }}" @if ($course->status == $status) selected @endif>
-                    {{ $status }}</option>
+            @foreach (['Not Yet', 'Progress', 'Finish Production', 'On Going CURATION', 'Publish', 'Cancel'] as $status)
+                <option value="{{ $status }}" {{ $course->status == $status ? 'selected' : '' }}>
+                    {{ $status }}
+                </option>
             @endforeach
         </select>
 

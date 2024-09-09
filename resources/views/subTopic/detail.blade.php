@@ -33,15 +33,25 @@
                         </thead>
                         <tbody>
                             @foreach ($ppts as $ppt)
+                            @php
+                                $statusProgressMapping = [
+                                    'Not Yet' => 0,
+                                    'Progress' => 50,
+                                    'Finished' => 100,
+                                    'Cancel' => 0,
+                                ];
+
+                                $progressPercentage = $statusProgressMapping[$ppt->status] ?? 0;
+                            @endphp
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $ppt->name }}</td>
                                     <td>{{ $ppt->status }}</td>
                                     <td>
-                                        <div class="progress">
-                                            <div class="progress-bar" role="progressbar"
-                                                style="width: {{ $ppt->progress }}%;" aria-valuenow="{{ $ppt->progress }}"
-                                                aria-valuemin="0" aria-valuemax="100">{{ $ppt->progress }}%</div>
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar" role="progressbar" style="width: {{ $progressPercentage }}%;" aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0" aria-valuemax="100">
+                                                {{ $progressPercentage }}%
+                                            </div>
                                         </div>
                                     </td>
                                     <td>{{ $ppt->created_at }}</td>
@@ -92,17 +102,32 @@
                         </thead>
                         <tbody>
                             @foreach ($videos as $video)
+                            @php
+                                $statusProgressMapping = [
+                                    'Not Yet' => 0,
+                                    'Recording' => 15,
+                                    'Recorded' => 30,
+                                    'PPT Recording' => 45,
+                                    'PPT Recorded' => 60,
+                                    'Editing' => 75,
+                                    'Edited' => 90,
+                                    'Pause Recording' => 50,
+                                ];
+
+                                $progressPercentage = $statusProgressMapping[$video->status] ?? 0;
+                            @endphp
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $video->ppt_name }}</td>
                                     <td>{{ $video->name }}</td>
                                     <td>{{ $video->status }}</td>
                                     <td>
-                                        <div class="progress">
+                                        <div class="progress" style="height: 20px;">
                                             <div class="progress-bar" role="progressbar"
-                                                style="width: {{ $video->progress }}%;"
-                                                aria-valuenow="{{ $video->progress }}" aria-valuemin="0"
-                                                aria-valuemax="100">{{ $video->progress }}%</div>
+                                                style="width: {{ $progressPercentage }}%;"
+                                                aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0" aria-valuemax="100">
+                                                {{ $progressPercentage }}%
+                                            </div>
                                         </div>
                                     </td>
                                     <td>{{ $video->location }}</td>
