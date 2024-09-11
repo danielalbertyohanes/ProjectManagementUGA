@@ -5,10 +5,10 @@
     <div class="form-group">
         <label for="status">Status</label>
         <select class="form-control" id="status" name="status">
-            @foreach (['Not Yet', 'Progress', 'Finish', 'Cancel'] as $status)
-            <option value="{{ $status }}" @if ($ppt->status == $status) selected @endif>
-                {{ $status }}
-            </option>
+            @foreach (['Start', 'Finish'] as $status)
+                <option value="{{ $status }}" @if ($ppt->status == $status) selected @endif>
+                    {{ $status }}
+                </option>
             @endforeach
         </select>
     </div>

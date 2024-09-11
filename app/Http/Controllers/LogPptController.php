@@ -21,18 +21,16 @@ class LogPptController extends Controller
         return LogPpt::getStatusAndDesc($user_id, $ppt_id);
     }
 
-    public function store(Request $request, Ppt $ppt)
+    public function store(Request $request)
     {
 
         $data = $request->validate([
-            'status' => 'required|string|max:255',
+            'status' => 'required',
             'description' => 'nullable|string',
         ]);
-        /* $ppt->update([
-            'status' => $data['status'],
-        ]); */
-        $logPpt = LogPpt::insertLogPpt([
-            //'status' => 'Finish',
+
+        LogPpt::insertLogPpt([
+
             'status' => $data['status'],
             'description' => $data['description'],
             'user_id' => auth()->id(),

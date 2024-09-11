@@ -13,10 +13,13 @@ class LogPpt extends Model
     protected $table = 'log_ppt';
 
     protected $fillable = [
-        'ppt_id',
         'status',
+        'ppt_id',
         'description',
         'user_id',
+        'created_at',
+        'updated_at',
+        'deleted_at',
     ];
 
     // Jika kolom `deleted_at` digunakan untuk soft deletes
