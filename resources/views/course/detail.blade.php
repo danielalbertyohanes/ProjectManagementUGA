@@ -27,14 +27,11 @@
                 </span>
             </h5>
         </div>
-
-
-        <a class="btn btn-success mb-3" href="{{ route('topic.newtopic', ['course_id' => $course->id]) }}">+ New Topic</a>
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
-        <a href="#" class="btn btn-warning mb-3" data-toggle="modal" data-target="#modalEditTopics"
-            onclick="getEditFormTopic({{ $course->id }})">Edit Topic</a>
+        {{-- Tombol  --}}
+        <a class="btn btn-success mb-3" href="{{ route('topic.newtopic', ['course_id' => $course->id]) }}">+ New Topic</a>
 
 
         <div class="card shadow mb-4">
@@ -68,7 +65,12 @@
 
                                     <!-- Row for the first sub-topic under this topic -->
                                     <tr>
-                                        <td rowspan="{{ $rowspan }}">{{ $loop->iteration }}</td>
+                                        <td rowspan="{{ $rowspan }}">{{ $loop->iteration }}
+                                            <a href="#" class="btn btn-info btn-circle btn-sm" data-toggle="modal"
+                                                data-target="#modalEdit" onclick="getEditFormTopic({{ $topic->id }})"><i
+                                                    class="fas fa-info-circle"></i></a>
+
+                                        </td>
                                         <td rowspan="{{ $rowspan }}">{{ $topic->name }}</td>
                                         <td>{{ $firstSubTopic->name }}</td>
 
@@ -85,10 +87,13 @@
 
                                         <!-- Progress Bar for the first sub-topic -->
                                         <td>
-                                            <a href="{{ route('subTopic.show', $firstSubTopic->id) }}" class="progress-link">
+                                            <a href="{{ route('subTopic.show', $firstSubTopic->id) }}"
+                                                class="progress-link">
                                                 <div class="progress">
-                                                    <div class="progress-bar" role="progressbar" style="width: {{ $progressPercentage }}%;"
-                                                        aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0" aria-valuemax="100">
+                                                    <div class="progress-bar" role="progressbar"
+                                                        style="width: {{ $progressPercentage }}%;"
+                                                        aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0"
+                                                        aria-valuemax="100">
                                                         {{ $progressPercentage }}%
                                                     </div>
                                                 </div>
@@ -98,6 +103,9 @@
                                             <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
                                                 data-target="#modalEditSubTopics"
                                                 onclick="getEditSubTopicForm({{ $firstSubTopic->id }})">Edit</a>
+                                            <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
+                                                data-target="#modalEditSubTopics"
+                                                onclick="getEditSubTopicForm({{ $firstSubTopic->id }})">Delete</a>
                                         </td>
                                     </tr>
 
@@ -111,10 +119,13 @@
                                         <tr>
                                             <td>{{ $subTopic->name }}</td>
                                             <td>
-                                                <a href="{{ route('subTopic.show', $subTopic->id) }}" class="progress-link">
+                                                <a href="{{ route('subTopic.show', $subTopic->id) }}"
+                                                    class="progress-link">
                                                     <div class="progress">
-                                                        <div class="progress-bar" role="progressbar" style="width: {{ $progressPercentage }}%;"
-                                                            aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0" aria-valuemax="100">
+                                                        <div class="progress-bar" role="progressbar"
+                                                            style="width: {{ $progressPercentage }}%;"
+                                                            aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0"
+                                                            aria-valuemax="100">
                                                             {{ $progressPercentage }}%
                                                         </div>
                                                     </div>
@@ -124,6 +135,9 @@
                                                 <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
                                                     data-target="#modalEditSubTopics"
                                                     onclick="getEditSubTopicForm({{ $subTopic->id }})">Edit</a>
+                                                <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
+                                                    data-target="#modalEditSubTopics"
+                                                    onclick="getEditSubTopicForm({{ $subTopic->id }})">Delete </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -168,20 +182,20 @@
 
     @section('javascript')
         <script>
-            function getEditFormTopic(course_id) {
+            function getEditFormTopic(topic_id) {
                 $.ajax({
                     type: 'POST',
-                    url: '{{ route('topic.getEditForm') }}', // Ensure this route is correct
+                    url: '{{ route('topic.getEditForm') }}', // URL route yang benar
                     data: {
                         '_token': '{{ csrf_token() }}',
-                        'id': course_id
+                        'id': topic_id
                     },
                     success: function(data) {
                         if (data.status === 'ok') {
                             $('#modalContent').html(data.msg);
-                            $('#modalEdit').modal('show'); // Show modal after content is loaded
+                            $('#modalEdit').modal('show'); // Menampilkan modal setelah content dimuat
                         } else {
-                            console.error('Error:', data); // Log error if status is not 'ok'
+                            console.error('Error:', data); // Log error jika status tidak 'ok'
                         }
                     },
                     error: function(xhr, status, error) {
@@ -190,10 +204,11 @@
                 });
             }
 
+
             function getEditSubTopicForm(sub_topic_id) {
                 $.ajax({
                     type: 'POST',
-                    url: '{{ route('subtopic.getEditForm') }}', // Ensure this route is correct
+                    url: '{{ route('subtopic.getEditForm') }}', // URL route yang benar
                     data: {
                         '_token': '{{ csrf_token() }}',
                         'id': sub_topic_id
@@ -201,9 +216,9 @@
                     success: function(data) {
                         if (data.status === 'ok') {
                             $('#modalContent').html(data.msg);
-                            $('#modalEdit').modal('show'); // Show modal after content is loaded
+                            $('#modalEdit').modal('show'); // Menampilkan modal setelah content dimuat
                         } else {
-                            console.error('Error:', data); // Log error if status is not 'ok'
+                            console.error('Error:', data); // Log error jika status tidak 'ok'
                         }
                     },
                     error: function(xhr, status, error) {

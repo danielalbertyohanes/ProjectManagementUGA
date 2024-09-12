@@ -30,7 +30,6 @@ class TopicController extends Controller
         $dataTopic = $request->validate([
             'name' => 'required|string|max:255',
             'course_id' => 'required|exists:courses,id',
-            'status' => 'required|in:Not Yet,Progres,Finish,Cancel',
         ]);
 
         // Create the topic
@@ -39,7 +38,6 @@ class TopicController extends Controller
         // Validate the subtopics data
         $subTopicsData = $request->validate([
             'name_subTopic.*' => 'required|string|max:255',
-            'drive_url.*' => 'required|string|max:255',
         ]);
 
         // Create the subtopics and associate them with the topic
@@ -54,11 +52,12 @@ class TopicController extends Controller
             ->with('status', 'Topic and subtopics created successfully');
     }
 
-    public function create(string $course_id)
+    public function create(Request $request)
     {
-        $course = Course::findOrFail($course_id);
+        $course = Course::findOrFail($request->course_id);
         return view('topic.create', compact('course'));
     }
+
 
     //update
     public function update(Request $request, $id)
@@ -66,7 +65,6 @@ class TopicController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'status' => 'required|in:Not Yet,Progres,Finish,Cancel',
-            'progres' => 'nullable|integer|min:0|max:100',
             'name_subTopic.*' => 'required|string|max:255',
             'drive_url.*' => 'required|string|max:255',
         ]);
@@ -80,12 +78,10 @@ class TopicController extends Controller
             if ($subTopic) {
                 $subTopic->update([
                     'name' => $name_subTopic,
-                    'drive_url' => $request->drive_url[$index],
                 ]);
             } else {
                 SubTopic::create([
                     'name' => $name_subTopic,
-                    'drive_url' => $request->drive_url[$index],
                     'topic_id' => $topic->id,
                 ]);
             }

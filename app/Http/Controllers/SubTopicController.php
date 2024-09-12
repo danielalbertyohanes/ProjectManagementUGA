@@ -79,7 +79,6 @@ class SubTopicController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'status' => 'nullable|string|in:Not Yet,Progres,Finish,Cancel',
-            'progress' => 'nullable|integer|min:0|max:100',
         ]);
 
         // Cari subTopic berdasarkan id

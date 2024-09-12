@@ -11,14 +11,6 @@
             <label for="name">Nama Topic</label>
             <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name Topic"
                 required>
-
-            <label for="status">Status</label>
-            <select class="form-control" id="status" name="status" required>
-                <option value="Not Yet">Not Yet</option>
-                <option value="Progres">Progres</option>
-                <option value="Finish">Finish</option>
-                <option value="Cancel">Cancel</option>
-            </select>
         </div>
 
         <hr>

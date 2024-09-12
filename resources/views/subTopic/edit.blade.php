@@ -17,11 +17,7 @@
             @endforeach
         </select>
     </div>
-    <div class="form-group">
-        <label for="progress">Progres</label>
-        <input type="number" class="form-control" id="progress" name="progress" placeholder="Enter Progress"
-            value="{{ $subTopic->progress }}" min="0" max="100">
-    </div>
+
     <div class="modal-footer">
         <button type="submit" class="btn btn-primary">Submit</button>
         <a href="{{ route('course.show', $subTopic->topic->course_id) }}" class="btn btn-danger">Cancel</a>

@@ -52,6 +52,8 @@ class CourseController extends Controller
             'jumlah_video' => 'nullable|integer',
             'pic_course' => 'required|integer',
             'periode_id' => 'required|integer',
+            'drive_url' => 'nullable|string|max:255',
+            'video_url' => 'nullable|string|max:255',
         ]);
 
         // Simpan data kursus
@@ -98,6 +100,7 @@ class CourseController extends Controller
             'drive_url' => 'nullable|string|max:255',
             'video_url' => 'nullable|string|max:255',
         ]);
+
 
         $course->update($data);
 
