@@ -9,10 +9,8 @@
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
 
-        @if (Auth::user()->position_id == '3')
-            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateDosen"
-                onclick="loadCreateForm()">+ New Course</button>
-        @endif
+        <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateDosen" onclick="loadCreateForm()">+
+            New Course</button>
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -39,7 +37,7 @@
                                     <td>{{ $d->npk }}</td>
                                     <td>{{ $d->name }}</td>
                                     <td>{{ $d->fakultas }}</td>
-                                    <td>{{ $d->no_tlpn }}</td>
+                                    <td>{{ $d->no_telp }}</td>
                                     <td>{{ $d->description }}</td>
                                     <td>
                                         {{-- @if (Auth::user()->position_id == '3') --}}

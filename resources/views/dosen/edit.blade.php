@@ -16,7 +16,7 @@
             value="{{ $dosen->fakultas }}">
 
         <label for="no_tlpn">Nomor Telpon Dosen</label>
-        <input type="text" class="form-control" id="no_tlpn" name="no_tlpn" placeholder="Enter No_tlpn"
+        <input type="text" class="form-control" id="no_tlpn" name="no_telp" placeholder="Enter No_tlpn"
             value="{{ $dosen->no_telp }}" required>
 
         <label for="dosenDescription">Description</label>

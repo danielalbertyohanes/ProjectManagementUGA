@@ -31,8 +31,9 @@
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
         {{-- Tombol  --}}
-        <a class="btn btn-success mb-3" href="{{ route('topic.newtopic', ['course_id' => $course->id]) }}">+ New Topic</a>
-
+        <!-- Button to trigger modal -->
+        <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreate"
+            onclick="loadCreateForm({{ $course->id }})">+ New Topic Modal</button>
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -48,7 +49,8 @@
                                 <th>Topik</th>
                                 <th>Sub-Topik</th>
                                 <th>Progres</th>
-                                <th>Aksi</th>
+                                <th>Aksi Sub Topic</th>
+                                <th>Aksi Topic</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,12 +67,7 @@
 
                                     <!-- Row for the first sub-topic under this topic -->
                                     <tr>
-                                        <td rowspan="{{ $rowspan }}">{{ $loop->iteration }}
-                                            <a href="#" class="btn btn-info btn-circle btn-sm" data-toggle="modal"
-                                                data-target="#modalEdit" onclick="getEditFormTopic({{ $topic->id }})"><i
-                                                    class="fas fa-info-circle"></i></a>
-
-                                        </td>
+                                        <td rowspan="{{ $rowspan }}">{{ $loop->iteration }}</td>
                                         <td rowspan="{{ $rowspan }}">{{ $topic->name }}</td>
                                         <td>{{ $firstSubTopic->name }}</td>
 
@@ -103,12 +100,38 @@
                                             <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
                                                 data-target="#modalEditSubTopics"
                                                 onclick="getEditSubTopicForm({{ $firstSubTopic->id }})">Edit</a>
-                                            <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
-                                                data-target="#modalEditSubTopics"
-                                                onclick="getEditSubTopicForm({{ $firstSubTopic->id }})">Delete</a>
+                                            <form method="POST"
+                                                action="{{ route('subTopic.destroy', $firstSubTopic->id) }}"
+                                                style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <input type="submit" value="Delete" class="btn btn-danger"
+                                                    onclick="return confirm('Are you sure to delete {{ $firstSubTopic->id }} - {{ $firstSubTopic->name }}?');">
+                                            </form>
+                                        </td>
+
+                                        <td>
+                                            <a href="#" class="btn btn-warning btn-circle" data-toggle="modal"
+                                                data-target="#modalEdit" onclick="getEditFormTopic({{ $topic->id }})"><i
+                                                    class="fas fa-info-circle"></i></a>
+
+                                            <form method="POST" action="{{ route('topic.destroy', $topic->id) }}"
+                                                style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <form method="POST" action="{{ route('topic.destroy', $topic->id) }}"
+                                                    style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-circle"
+                                                        onclick="return confirm('Are you sure to delete {{ $topic->id }} - {{ $topic->name }}?');">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+
+                                            </form>
                                         </td>
                                     </tr>
-
                                     <!-- Loop for the remaining sub-topics under the same topic -->
                                     @foreach ($subTopicsForThisTopic->skip(1) as $subTopic)
                                         @php
@@ -135,9 +158,14 @@
                                                 <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
                                                     data-target="#modalEditSubTopics"
                                                     onclick="getEditSubTopicForm({{ $subTopic->id }})">Edit</a>
-                                                <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
-                                                    data-target="#modalEditSubTopics"
-                                                    onclick="getEditSubTopicForm({{ $subTopic->id }})">Delete </a>
+                                                <form method="POST"
+                                                    action="{{ route('subTopic.destroy', $subTopic->id) }}"
+                                                    style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <input type="submit" value="Delete" class="btn btn-danger"
+                                                        onclick="return confirm('Are you sure to delete {{ $subTopic->id }} - {{ $subTopic->name }}?');">
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -161,6 +189,25 @@
         </div>
 
 
+        {{-- create Modal --}}
+        <!-- Modal -->
+        <div class="modal fade" id="modalCreate" tabindex="-1" role="dialog" aria-labelledby="modalCreateLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalCreateLabel">Create</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="modalCreateContent">
+                        <!-- Content will be loaded here via AJAX -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Modal Edit-->
         <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel"
             aria-hidden="true">
@@ -182,6 +229,29 @@
 
     @section('javascript')
         <script>
+            function loadCreateForm(course_id) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('topic.getCreateForm') }}',
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                        'course_id': course_id
+                    },
+                    success: function(data) {
+                        console.log(data); // Check if data is being received
+                        if (data.status === 'ok') {
+                            $('#modalCreateContent').html(data.msg); // Load content into modal
+                            $('#modalCreate').modal('show'); // Show modal
+                        } else {
+                            console.error('Error:', data); // Log error if status is not 'ok'
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', error); // Log AJAX error
+                    }
+                });
+            }
+
             function getEditFormTopic(topic_id) {
                 $.ajax({
                     type: 'POST',
@@ -203,7 +273,6 @@
                     }
                 });
             }
-
 
             function getEditSubTopicForm(sub_topic_id) {
                 $.ajax({

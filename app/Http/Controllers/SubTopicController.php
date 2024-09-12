@@ -11,12 +11,6 @@ use Illuminate\Http\Request;
 
 class SubTopicController extends Controller
 {
-    // Get all sub-topics
-    public function index()
-    {
-        $subTopics = SubTopic::all();
-        return view('subTopic.index', compact('subTopics'));
-    }
 
     public function show(String $id)
     {
@@ -26,12 +20,6 @@ class SubTopicController extends Controller
         return view('subTopic.detail', compact('videos', 'ppts', 'subTopic'));
     }
 
-    // Get sub-topics by topic_id
-    public function getSubTopicByTopicId($topic_id)
-    {
-        $subTopics = SubTopic::where('topic_id', $topic_id)->get();
-        return view('subTopic.index', compact('subTopics'));
-    }
 
     // Store a new sub-topic
     public function store(Request $request)
@@ -42,9 +30,10 @@ class SubTopicController extends Controller
             'status' => 'nullable|string|in:Not Yet,Progres,Finish,Cancel',
         ]);
 
-        SubTopic::create($validatedData);
+        $subTopic = SubTopic::create($validatedData);
 
-        return redirect()->route('course.index')
+        $course_id = $subTopic->topic->course_id;
+        return redirect()->route('course.show', [$course_id])
             ->with('success', 'SubTopic created successfully');
     }
 
@@ -88,40 +77,26 @@ class SubTopicController extends Controller
         $subTopic->update($validatedData);
 
         $course_id = $subTopic->topic->course_id;
-        $course = Course::findOrFail($course_id); // Ensure this is correct
-        $topics = Topic::getTopicsByCourseId($course_id); // Assuming the relationship is set up
-        $subTopics = SubTopic::getSubTopicsByCourseId($course_id);
-
-
         // Redirect ke halaman course.detail dengan data yang diperlukan dan pesan sukses
         return redirect()->route('course.show', [$course_id])
-            ->with(compact('course', 'topics', 'subTopics'))
             ->with('status', 'SubTopic updated successfully');
     }
 
 
     // Soft delete sub-topic
-    public function softDelete(SubTopic $subTopic)
+    public function destroy(SubTopic $subTopic)
     {
         try {
+            $course_id = $subTopic->topic->course_id;
             $subTopic->delete();
-            return redirect()->route('subTopic.index')->with('status', 'SubTopic soft deleted successfully');
+            return redirect()->route('course.show', [$course_id])
+                ->with('status', 'SubTopic deleted successfully');
         } catch (\PDOException $ex) {
-            $msg = "Failed to soft delete sub-topic. Please make sure there are no related records before deleting.";
-            return redirect()->route('subTopic.index')->with('status', $msg);
-        }
-    }
 
-    // Force delete sub-topic
-    public function forceDelete($id)
-    {
-        try {
-            $subTopic = SubTopic::withTrashed()->findOrFail($id);
-            $subTopic->forceDelete();
-            return redirect()->route('subTopic.index')->with('status', 'SubTopic permanently deleted');
-        } catch (\PDOException $ex) {
-            $msg = "Failed to permanently delete sub-topic.";
-            return redirect()->route('subTopic.index')->with('status', $msg);
+            $course_id = $subTopic->topic->course_id;
+            $msg = "Failed to soft delete sub-topic. Please make sure there are no related records before deleting.";
+            return redirect()->route('course.show', [$course_id])
+                ->with(compact('course', 'topics', 'subTopics'))->with('status', $msg);
         }
     }
 }

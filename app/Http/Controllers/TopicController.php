@@ -10,12 +10,6 @@ use Illuminate\Http\Request;
 
 class TopicController extends Controller
 {
-    // Get all topics
-    public function index()
-    {
-        $topics = Topic::all();
-        return view('topic.index', compact('topics'));
-    }
 
     // Get topics by course_id
     public function getTopicByCourseId($course_id)
@@ -52,12 +46,14 @@ class TopicController extends Controller
             ->with('status', 'Topic and subtopics created successfully');
     }
 
-    public function create(Request $request)
+    public function getCreateForm(Request $request)
     {
         $course = Course::findOrFail($request->course_id);
-        return view('topic.create', compact('course'));
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('topic.create', compact('course'))->render()
+        ], 200);
     }
-
 
     //update
     public function update(Request $request, $id)
@@ -86,21 +82,19 @@ class TopicController extends Controller
                 ]);
             }
         }
-
-        return redirect()->route('course.show', $topic->course_id)
-            ->with('status', 'Topic updated successfully');
+        return redirect()->back()->with('status', 'Topic updated successfully');
     }
 
 
     // Soft delete topic
-    public function softDelete(Topic $topic)
+    public function destroy(Topic $topic)
     {
         try {
             $topic->delete(); // Soft delete
-            return redirect()->route('topic.index')->with('status', 'Topic soft deleted successfully');
+            return redirect()->back()->with('status', 'Topic deleted successfully');
         } catch (\PDOException $ex) {
-            $msg = "Failed to soft delete topic. Please make sure there are no related records before deleting.";
-            return redirect()->route('topic.index')->with('status', $msg);
+            $msg = "Failed to delete topic";
+            return redirect()->back()->with('status', $msg);
         }
     }
 

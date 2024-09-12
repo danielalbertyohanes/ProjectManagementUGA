@@ -61,18 +61,6 @@
                         </button>
                     </form>
                 </div>
-                {{-- template search untuk table --}}
-
-
-                {{-- <div class="input-group">
-                    <div class="form-outline" data-mdb-input-init>
-                        <input id="search-focus" type="search" id="form1" class="form-control" />
-                        <label class="form-label" for="form1">Search</label>
-                    </div>
-                    <button type="button" class="btn btn-primary" data-mdb-ripple-init>
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div> --}}
             </div>
 
 
@@ -100,18 +88,18 @@
                         </thead>
                         <tbody>
                             @foreach ($courses as $course)
-                            @php
-                                $statusProgressMapping = [
-                                    'Not Yet' => 0,
-                                    'Progress' => 20,
-                                    'Finish Production' => 40,
-                                    'On Going CURATION' => 60,
-                                    'Publish' => 100,
-                                    'Cancel' => 0,
-                                ];
+                                @php
+                                    $statusProgressMapping = [
+                                        'Not Yet' => 0,
+                                        'Progress' => 20,
+                                        'Finish Production' => 40,
+                                        'On Going CURATION' => 60,
+                                        'Publish' => 100,
+                                        'Cancel' => 0,
+                                    ];
 
-                                $progressPercentage = $statusProgressMapping[$course->status] ?? 0;
-                            @endphp
+                                    $progressPercentage = $statusProgressMapping[$course->status] ?? 0;
+                                @endphp
                                 <tr id="tr_{{ $course->id }}">
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $course->kode_course }}</td>
@@ -155,7 +143,8 @@
                                         <div class="progress" style="height: 20px;">
                                             <div class="progress-bar" role="progressbar"
                                                 style="width: {{ $progressPercentage }}%;"
-                                                aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0" aria-valuemax="100">
+                                                aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0"
+                                                aria-valuemax="100">
                                                 {{ $progressPercentage }}%
                                             </div>
                                         </div>
@@ -163,9 +152,6 @@
 
                                     <td>{{ $course->status }}</td>
                                     <td>
-                                        {{-- <a class="btn btn-info btn-circle" href="{{ route('course.show', $course->id) }}">
-                                            <i class="fas fa-info-circle"></i>
-                                        </a> --}}
                                         <a class="btn btn-info" href="{{ route('course.show', $course->id) }}">
                                             Detail
                                         </a>
