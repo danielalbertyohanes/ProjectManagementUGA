@@ -29,10 +29,6 @@
                 <label for="name_subTopic_0">Nama Sub Topic</label>
                 <input type="text" class="form-control" id="name_subTopic_0" name="name_subTopic[]"
                     placeholder="Enter Name Sub Topic" required>
-
-                <label for="drive_url_0">Url Sub Topic</label>
-                <input type="text" class="form-control" id="drive_url_0" name="drive_url[]" placeholder="Enter Drive URL"
-                    required>
             </div>
         </div>
         <button type="button" class="btn btn-sm btn-primary" id="addSubTopic">Tambah Sub Topic</button>
@@ -55,10 +51,6 @@
                 <label for="name_subTopic_${subtopicIndex}">Nama Sub Topic</label>
                 <input type="text" class="form-control" id="name_subTopic_${subtopicIndex}" name="name_subTopic[]"
                     placeholder="Enter Name Sub Topic" required>
-
-                <label for="drive_url_${subtopicIndex}">Url Sub Topic</label>
-                <input type="text" class="form-control" id="drive_url_${subtopicIndex}" name="drive_url[]"
-                    placeholder="Enter Drive URL" required>
 
                 <button type="button" class="btn btn-sm btn-danger remove-input">Remove</button>
             </div>`

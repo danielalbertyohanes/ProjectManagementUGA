@@ -141,7 +141,10 @@
                                     <td>{{ $course->progress }}%</td>
                                     <td>{{ $course->status }}</td>
                                     <td>
-                                        <a class="btn btn-success" href="{{ route('course.show', $course->id) }}">
+                                        {{-- <a class="btn btn-info btn-circle" href="{{ route('course.show', $course->id) }}">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a> --}}
+                                        <a class="btn btn-info" href="{{ route('course.show', $course->id) }}">
                                             Detail
                                         </a>
                                     </td>

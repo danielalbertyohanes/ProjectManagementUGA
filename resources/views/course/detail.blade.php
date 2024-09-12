@@ -34,7 +34,7 @@
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
         <a href="#" class="btn btn-warning mb-3" data-toggle="modal" data-target="#modalEditTopics"
-            onclick="getEditForm({{ $course->id }})">Edit Topic</a>
+            onclick="getEditFormTopic({{ $course->id }})">Edit Topic</a>
 
 
         <div class="card shadow mb-4">
@@ -92,22 +92,19 @@
             </div>
         </div>
 
-        <!-- Modal Edit -->
-        <div class="modal fade" id="modalEditTopics" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-wide">
-                <div class="modal-content">
-                    <div class="modal-body" id="modalContent">
-                        <!-- Content will be loaded dynamically -->
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Modal Edit SubTopic -->
-        <div class="modal fade" id="modalEditSubTopics" tabindex="-1" role="dialog" aria-hidden="true">
+        <!-- Modal Edit-->
+        <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-wide">
                 <div class="modal-content">
-                    <div class="modal-body" id="modalContentSubtopic">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalEditLabel">Edit</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="modalContent">
                         <!-- Content will be loaded dynamically -->
                     </div>
                 </div>
@@ -117,10 +114,10 @@
 
     @section('javascript')
         <script>
-            function getEditForm(course_id) {
+            function getEditFormTopic(course_id) {
                 $.ajax({
                     type: 'POST',
-                    url: '{{ route('topic.getEditForm') }}', // Removed the space after 'getEditForm'
+                    url: '{{ route('topic.getEditForm') }}', // Ensure this route is correct
                     data: {
                         '_token': '{{ csrf_token() }}',
                         'id': course_id
@@ -128,7 +125,7 @@
                     success: function(data) {
                         if (data.status === 'ok') {
                             $('#modalContent').html(data.msg);
-                            $('#modalEditTopics').modal('show'); // Show modal after content is loaded
+                            $('#modalEdit').modal('show'); // Show modal after content is loaded
                         } else {
                             console.error('Error:', data); // Log error if status is not 'ok'
                         }
@@ -142,15 +139,15 @@
             function getEditSubTopicForm(sub_topic_id) {
                 $.ajax({
                     type: 'POST',
-                    url: '{{ route('subtopic.getEditForm') }}', // Removed the space after 'getEditForm'
+                    url: '{{ route('subtopic.getEditForm') }}', // Ensure this route is correct
                     data: {
                         '_token': '{{ csrf_token() }}',
                         'id': sub_topic_id
                     },
                     success: function(data) {
                         if (data.status === 'ok') {
-                            $('#modalContentSubtopic').html(data.msg);
-                            $('#modalEditSubTopics').modal('show'); // Show modal after content is loaded
+                            $('#modalContent').html(data.msg);
+                            $('#modalEdit').modal('show'); // Show modal after content is loaded
                         } else {
                             console.error('Error:', data); // Log error if status is not 'ok'
                         }

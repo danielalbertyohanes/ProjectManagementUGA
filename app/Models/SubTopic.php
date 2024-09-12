@@ -16,9 +16,9 @@ class SubTopic extends Model
 
     protected $fillable = [
         'name',
-        'drive_url',
+        'status',
+        'progress',
         'topic_id',
-        'status'
     ];
     public function topic(): BelongsTo
     {

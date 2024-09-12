@@ -36,7 +36,7 @@ class CourseController extends Controller
 
     public function show(String $course_id)
     {
-        $course = Course::findCourseById($course_id);
+        $course = Course::findOrFail($course_id);
         $topics = Topic::getTopicsByCourseId($course_id);
         $subTopics = SubTopic::getSubTopicsByCourseId($course_id);
         return view('course.detail', compact('course', 'topics', 'subTopics'));
@@ -95,6 +95,8 @@ class CourseController extends Controller
             'description' => 'nullable|string|max:255',
             'jumlah_video' => 'nullable|integer',
             'status' => 'required|in:Not Yet,Progres,Finish,Cancel',
+            'drive_url' => 'nullable|string|max:255',
+            'video_url' => 'nullable|string|max:255',
         ]);
 
         $course->update($data);

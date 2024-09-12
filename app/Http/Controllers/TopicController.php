@@ -46,7 +46,6 @@ class TopicController extends Controller
         foreach ($request->name_subTopic as $index => $name_subTopic) {
             SubTopic::create([
                 'name' => $name_subTopic,
-                'drive_url' => $request->drive_url[$index],
                 'topic_id' => $topic->id,
             ]);
         }

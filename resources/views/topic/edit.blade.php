@@ -52,6 +52,7 @@
         $(document).ready(function() {
             let subtopicIndex = {{ $topic->sub_topics->count() }};
 
+            // Function to add a new sub-topic input
             $('#addSubTopic').click(function() {
                 $('#subtopicInputs').append(
                     `<div class="form-group">
@@ -69,6 +70,7 @@
                 subtopicIndex++;
             });
 
+            // Function to remove a sub-topic input
             $(document).on('click', '.remove-input', function() {
                 $(this).closest('.form-group').remove();
             });

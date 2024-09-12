@@ -23,6 +23,14 @@
             @endforeach
         </select>
 
+        <label for="courseDescription">Drive_URL Course</label>
+        <input type="text" class="form-control" id="courseDrive" name="drive_url" placeholder="Enter Drive_URL"
+            value="{{ $course->drive_url }}" required>
+
+        <label for="courseDescription">Video_URL Course</label>
+        <input type="text" class="form-control" id="courseVide" name="video_url" placeholder="Enter Video_URL"
+            value="{{ $course->video_url }}" required>
+
         <label for="exampleInputPicCourse">PIC Course</label>
         <input type="text" class="form-control" id="exampleInputPicCourse" name=""
             placeholder="Enter Pic Course" value="{{ $course->user->name }}" disabled>

@@ -21,8 +21,8 @@ class Course extends Model
         'progres',
         'status',
         'pic_course',
-        'updated_at',
-        'created_at'
+        'drive_url',
+        'video_url'
 
     ];
     public function topics(): HasMany
@@ -73,10 +73,7 @@ class Course extends Model
     }
 
     // function cari course by id
-    public static function findCourseById($id)
-    {
-        return DB::table('courses')->where('id', $id)->first();
-    }
+
 
     public static function searchCourses($search, $userId, $positionId)
     {

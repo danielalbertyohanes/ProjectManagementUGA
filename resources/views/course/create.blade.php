@@ -33,6 +33,14 @@
             @endforeach
         </select>
 
+        <label for="courseDescription">Drive_URL Course</label>
+        <input type="text" class="form-control" id="courseDrive" name="drive_url" placeholder="Enter Drive_URL"
+            required>
+
+        <label for="courseDescription">Video_URL Course</label>
+        <input type="text" class="form-control" id="courseVide" name="video_url" placeholder="Enter Video_URL"
+            required>
+
         <hr>
 
         <label for="dosen">Dosen</label>
