@@ -57,33 +57,87 @@
                         <tbody>
                             @foreach ($topics as $topic)
                                 @php
+                                    // Get subtopics associated with the current topic
                                     $subTopicsForThisTopic = $subTopics->where('topic_id', $topic->id);
-                                    $rowspan = $subTopicsForThisTopic->count();
+                                    $subTopicCount = $subTopicsForThisTopic->count();
+                                    $rowspan = $subTopicCount > 0 ? $subTopicCount : 1;
                                 @endphp
-                                @foreach ($subTopicsForThisTopic as $index => $subTopic)
+
+                                @if ($subTopicCount > 0)
+                                    @php $firstSubTopic = $subTopicsForThisTopic->first(); @endphp
+
+                                    <!-- Row for the first sub-topic under this topic -->
                                     <tr>
-                                        @if ($index == 0)
-                                            <td rowspan="{{ $rowspan }}">{{ $loop->parent->iteration }}</td>
-                                            <td rowspan="{{ $rowspan }}">{{ $topic->name }}</td>
-                                        @endif
-                                        <td>{{ $subTopic->name }}</td>
+                                        <td rowspan="{{ $rowspan }}">{{ $loop->iteration }}</td>
+                                        <td rowspan="{{ $rowspan }}">{{ $topic->name }}</td>
+                                        <td>{{ $firstSubTopic->name }}</td>
+
+                                        <!-- Calculate the progress for the first sub-topic -->
+                                        @php
+                                            $statusProgressMapping = [
+                                                'Not Yet' => 0,
+                                                'Progres' => 50,
+                                                'Finish' => 100,
+                                                'Cancel' => 0,
+                                            ];
+                                            $progressPercentage = $statusProgressMapping[$firstSubTopic->status] ?? 0;
+                                        @endphp
+
+                                        <!-- Progress Bar for the first sub-topic -->
                                         <td>
-                                            <a href="{{ route('subTopic.show', $subTopic->id) }}" class="progress-link">
+                                            <a href="{{ route('subTopic.show', $firstSubTopic->id) }}" class="progress-link">
                                                 <div class="progress">
-                                                    <div class="progress-bar" role="progressbar" style="width: 70%;"
-                                                        aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">70%</div>
+                                                    <div class="progress-bar" role="progressbar" style="width: {{ $progressPercentage }}%;"
+                                                        aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0" aria-valuemax="100">
+                                                        {{ $progressPercentage }}%
+                                                    </div>
                                                 </div>
                                             </a>
                                         </td>
                                         <td>
                                             <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
                                                 data-target="#modalEditSubTopics"
-                                                onclick="getEditSubTopicForm({{ $subTopic->id }})">Edit</a>
+                                                onclick="getEditSubTopicForm({{ $firstSubTopic->id }})">Edit</a>
                                         </td>
                                     </tr>
-                                @endforeach
+
+                                    <!-- Loop for the remaining sub-topics under the same topic -->
+                                    @foreach ($subTopicsForThisTopic->skip(1) as $subTopic)
+                                        @php
+                                            // Calculate the progress for each remaining sub-topic
+                                            $progressPercentage = $statusProgressMapping[$subTopic->status] ?? 0;
+                                        @endphp
+
+                                        <tr>
+                                            <td>{{ $subTopic->name }}</td>
+                                            <td>
+                                                <a href="{{ route('subTopic.show', $subTopic->id) }}" class="progress-link">
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar" style="width: {{ $progressPercentage }}%;"
+                                                            aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0" aria-valuemax="100">
+                                                            {{ $progressPercentage }}%
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
+                                                    data-target="#modalEditSubTopics"
+                                                    onclick="getEditSubTopicForm({{ $subTopic->id }})">Edit</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <!-- If there are no sub-topics, show a single row with 'No Subtopics' -->
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $topic->name }}</td>
+                                        <td colspan="3" class="text-center">No Subtopics</td>
+                                    </tr>
+                                @endif
                             @endforeach
                         </tbody>
+
                     </table>
                 </div>
                 <div class="d-flex justify-content-right">

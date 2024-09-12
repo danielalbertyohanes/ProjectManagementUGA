@@ -90,7 +90,7 @@
                                 <th class="text-center">Jumlah_video</th>
                                 <th class="text-center">Dosen</th>
                                 <th class="text-center">Pic_course</th>
-                                <th class="text-center">Proggres</th>
+                                <th class="text-center">Proggress</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Details</th>
                                 @if (Auth::user()->position_id == '1')
@@ -100,6 +100,18 @@
                         </thead>
                         <tbody>
                             @foreach ($courses as $course)
+                            @php
+                                $statusProgressMapping = [
+                                    'Not Yet' => 0,
+                                    'Progress' => 20,
+                                    'Finish Production' => 40,
+                                    'On Going CURATION' => 60,
+                                    'Publish' => 100,
+                                    'Cancel' => 0,
+                                ];
+
+                                $progressPercentage = $statusProgressMapping[$course->status] ?? 0;
+                            @endphp
                                 <tr id="tr_{{ $course->id }}">
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $course->kode_course }}</td>
@@ -138,7 +150,17 @@
                                         </ul>
                                     </td>
                                     <td>{{ $course->user->name }}</td>
-                                    <td>{{ $course->progress }}%</td>
+
+                                    <td>
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar" role="progressbar"
+                                                style="width: {{ $progressPercentage }}%;"
+                                                aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0" aria-valuemax="100">
+                                                {{ $progressPercentage }}%
+                                            </div>
+                                        </div>
+                                    </td>
+
                                     <td>{{ $course->status }}</td>
                                     <td>
                                         {{-- <a class="btn btn-info btn-circle" href="{{ route('course.show', $course->id) }}">
