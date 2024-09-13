@@ -21,4 +21,10 @@ class Position extends Model
     {
         return $this->hasMany(User::class, 'position_id', 'id'); // hasmany buat many karena 1 hotel bisa banyak product
     }
+
+
+    public static function getAll()
+    {
+        return Position::all();
+    }
 }

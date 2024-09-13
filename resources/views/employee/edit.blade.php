@@ -1,31 +1,32 @@
-<form method="POST" action="{{ route('user.update', $dosen->id) }}">
+<form method="POST" action="{{ route('employee.update', $user->id) }}">
     @csrf
     @method('PUT')
     <div class="form-group">
-        <label for="dosenName">Name dosen</label>
-        <input type="text" class="form-control" id="dosenName" name="name" placeholder="Enter Name of dosen"
-            value="{{ $dosen->name }}" required>
+        <label for="dosenName">Name</label>
+        <input type="text" class="form-control" id="dosenName" name="name" placeholder="Enter Name"
+            value="{{ old('name', $user->name) }}" required>
 
         <label for="dosenNpk">NPK</label>
         <input type="text" class="form-control" id="dosenNpk" name="npk" placeholder="Enter NPK" required
             maxlength="6" pattern="\d{6}" inputmode="numeric"
-            title="NPK must be exactly 6 digits and only numbers are allowed" value="{{ $dosen->npk }}">
+            title="NPK must be exactly 6 digits and only numbers are allowed" value="{{ old('npk', $user->npk) }}">
 
-        <label for="dosenFakutlas">Fakultas</label>
-        <input type="text" class="form-control" id="fakultas" name="fakultas" placeholder="Enter Fakultas" required
-            value="{{ $dosen->fakultas }}">
+        <label for="no_tlpn">Phone Number</label>
+        <input type="text" class="form-control" id="no_tlpn" name="no_telp" placeholder="Enter Phone Number"
+            value="{{ old('no_tlpn', $user->no_telp) }}" required>
 
-        <label for="no_tlpn">Nomor Telpon Dosen</label>
-        <input type="text" class="form-control" id="no_tlpn" name="no_tlpn" placeholder="Enter No_tlpn"
-            value="{{ $dosen->no_telp }}" required>
-
-        <label for="dosenDescription">Description</label>
-        <input type="text" class="form-control" id="dosenDescription" name="description"
-            placeholder="Enter Description" value="{{ $dosen->description }}" required>
+        <label for="status">Position</label>
+        <select class="form-control" id="status" name="position_id" required>
+            @foreach ($positions as $position)
+                <option value="{{ $position->id }}" {{ $user->position_id == $position->id ? 'selected' : '' }}>
+                    {{ $position->name }}
+                </option>
+            @endforeach
+        </select>
     </div>
 
     <div class="modal-footer">
         <button type="submit" class="btn btn-primary">Submit</button>
-        <a href="{{ route('dosen.index') }}" class="btn btn-danger">Cancel</a>
+        <a href="{{ route('employee.index') }}" class="btn btn-danger">Cancel</a>
     </div>
 </form>

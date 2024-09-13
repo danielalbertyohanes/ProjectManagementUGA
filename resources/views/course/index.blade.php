@@ -6,12 +6,28 @@
             display: block;
             margin-bottom: 10px;
         }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group input {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .input-group button {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
     </style>
 
     <div class="container-fluid">
         <h1 class="h3 mb-2 text-gray-800">COURSE</h1>
         {{-- ini harus di tambah dan di ubah lagi --}}
-        <p>Info terkait course agar informative</p>
+        <p>Master Course adalah modul yang digunakan untuk mendefinisikan dan mengelola informasi terkait kursus atau mata
+            pelajaran.</p>
         <br>
         @if ($links->isNotEmpty())
             <p>Dibawah ini adalah Link yang bisa di akses: </p>
@@ -33,12 +49,24 @@
         @endif
 
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
-
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">DataTables</h6>
+
+                <div class="input-group" style="max-width: 300px;">
+                    <form action="{{ route('course.index') }}" method="GET" class="d-flex">
+                        <input type="search" name="search" id="form1" class="form-control" placeholder="Search"
+                            aria-label="Search" />
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
             </div>
+
+
             <div class="card-body">
                 <div class="table-responsive">
+
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
@@ -50,14 +78,28 @@
                                 <th class="text-center">Jumlah_video</th>
                                 <th class="text-center">Dosen</th>
                                 <th class="text-center">Pic_course</th>
-                                <th class="text-center">Proggres</th>
+                                <th class="text-center">Proggress</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Details</th>
-                                <th class="text-center">Action</th>
+                                @if (Auth::user()->position_id == '1')
+                                    <th class="text-center">Action</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($courses as $course)
+                                @php
+                                    $statusProgressMapping = [
+                                        'Not Yet' => 0,
+                                        'Progress' => 20,
+                                        'Finish Production' => 40,
+                                        'On Going CURATION' => 60,
+                                        'Publish' => 100,
+                                        'Cancel' => 0,
+                                    ];
+
+                                    $progressPercentage = $statusProgressMapping[$course->status] ?? 0;
+                                @endphp
                                 <tr id="tr_{{ $course->id }}">
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $course->kode_course }}</td>
@@ -96,10 +138,21 @@
                                         </ul>
                                     </td>
                                     <td>{{ $course->user->name }}</td>
-                                    <td>{{ $course->progress }}%</td>
+
+                                    <td>
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar" role="progressbar"
+                                                style="width: {{ $progressPercentage }}%;"
+                                                aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0"
+                                                aria-valuemax="100">
+                                                {{ $progressPercentage }}%
+                                            </div>
+                                        </div>
+                                    </td>
+
                                     <td>{{ $course->status }}</td>
                                     <td>
-                                        <a class="btn btn-success" href="{{ route('course.show', $course->id) }}">
+                                        <a class="btn btn-info" href="{{ route('course.show', $course->id) }}">
                                             Detail
                                         </a>
                                     </td>
@@ -183,5 +236,22 @@
                 }
             });
         }
+    </script>
+    <script>
+        // Client-side search function
+        document.getElementById('form1').addEventListener('input', function() {
+            var input = this.value.toLowerCase();
+            var rows = document.querySelectorAll('#dataTable tbody tr');
+
+            rows.forEach(function(row) {
+                var found = false;
+                row.querySelectorAll('td').forEach(function(td) {
+                    if (td.innerText.toLowerCase().indexOf(input) > -1) {
+                        found = true;
+                    }
+                });
+                row.style.display = found ? '' : 'none';
+            });
+        });
     </script>
 @endsection

@@ -10,12 +10,6 @@ use Illuminate\Http\Request;
 
 class TopicController extends Controller
 {
-    // Get all topics
-    public function index()
-    {
-        $topics = Topic::all();
-        return view('topic.index', compact('topics'));
-    }
 
     // Get topics by course_id
     public function getTopicByCourseId($course_id)
@@ -30,7 +24,6 @@ class TopicController extends Controller
         $dataTopic = $request->validate([
             'name' => 'required|string|max:255',
             'course_id' => 'required|exists:courses,id',
-            'status' => 'required|in:Not Yet,Progres,Finish,Cancel',
         ]);
 
         // Create the topic
@@ -39,14 +32,12 @@ class TopicController extends Controller
         // Validate the subtopics data
         $subTopicsData = $request->validate([
             'name_subTopic.*' => 'required|string|max:255',
-            'drive_url.*' => 'required|string|max:255',
         ]);
 
         // Create the subtopics and associate them with the topic
         foreach ($request->name_subTopic as $index => $name_subTopic) {
             SubTopic::create([
                 'name' => $name_subTopic,
-                'drive_url' => $request->drive_url[$index],
                 'topic_id' => $topic->id,
             ]);
         }
@@ -55,10 +46,13 @@ class TopicController extends Controller
             ->with('status', 'Topic and subtopics created successfully');
     }
 
-    public function create(string $course_id)
+    public function getCreateForm(Request $request)
     {
-        $course = Course::findOrFail($course_id);
-        return view('topic.create', compact('course'));
+        $course = Course::findOrFail($request->course_id);
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('topic.create', compact('course'))->render()
+        ], 200);
     }
 
     //update
@@ -67,7 +61,6 @@ class TopicController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'status' => 'required|in:Not Yet,Progres,Finish,Cancel',
-            'progres' => 'nullable|integer|min:0|max:100',
             'name_subTopic.*' => 'required|string|max:255',
             'drive_url.*' => 'required|string|max:255',
         ]);
@@ -81,31 +74,27 @@ class TopicController extends Controller
             if ($subTopic) {
                 $subTopic->update([
                     'name' => $name_subTopic,
-                    'drive_url' => $request->drive_url[$index],
                 ]);
             } else {
                 SubTopic::create([
                     'name' => $name_subTopic,
-                    'drive_url' => $request->drive_url[$index],
                     'topic_id' => $topic->id,
                 ]);
             }
         }
-
-        return redirect()->route('course.show', $topic->course_id)
-            ->with('status', 'Topic updated successfully');
+        return redirect()->back()->with('status', 'Topic updated successfully');
     }
 
 
     // Soft delete topic
-    public function softDelete(Topic $topic)
+    public function destroy(Topic $topic)
     {
         try {
             $topic->delete(); // Soft delete
-            return redirect()->route('topic.index')->with('status', 'Topic soft deleted successfully');
+            return redirect()->back()->with('status', 'Topic deleted successfully');
         } catch (\PDOException $ex) {
-            $msg = "Failed to soft delete topic. Please make sure there are no related records before deleting.";
-            return redirect()->route('topic.index')->with('status', $msg);
+            $msg = "Failed to delete topic";
+            return redirect()->back()->with('status', $msg);
         }
     }
 

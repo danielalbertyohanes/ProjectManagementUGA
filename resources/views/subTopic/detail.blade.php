@@ -6,9 +6,7 @@
         <p>Halaman details berisi topik. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
             Ipsum has been the industry's.</p>
 
-        <div class="mb-2">
-            <h5 class="text-primary">NAMA SUB TOPIC: <span class="text-gray-800">{{ $subTopic->name }}</span></h5>
-        </div>
+
         <a class="btn btn-success mb-3" href="{{ route('ppt.newPpt', $subTopic->id) }}">+ New PPT</a>
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
@@ -33,21 +31,43 @@
                         </thead>
                         <tbody>
                             @foreach ($ppts as $ppt)
+                                @php
+                                    $statusProgressMapping = [
+                                        'Not Yet' => 0,
+                                        'Progress' => 50,
+                                        'Finished' => 100,
+                                        'Cancel' => 0,
+                                    ];
+
+                                    $progressPercentage = $statusProgressMapping[$ppt->status] ?? 0;
+                                @endphp
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $ppt->name }}</td>
                                     <td>{{ $ppt->status }}</td>
                                     <td>
-                                        <div class="progress">
+                                        <div class="progress" style="height: 20px;">
                                             <div class="progress-bar" role="progressbar"
-                                                style="width: {{ $ppt->progress }}%;" aria-valuenow="{{ $ppt->progress }}"
-                                                aria-valuemin="0" aria-valuemax="100">{{ $ppt->progress }}%</div>
+                                                style="width: {{ $ppt->progress }}%;"
+                                                aria-valuenow="{{ $ppt->progress }}" aria-valuemin="0"
+                                                aria-valuemax="100">
+                                                {{ $ppt->progress }}%
+                                            </div>
                                         </div>
                                     </td>
                                     <td>{{ $ppt->created_at }}</td>
                                     <td>
-                                        <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
-                                            data-target="#modalEdit" onclick="getPptEditForm({{ $ppt->id }})">Edit</a>
+                                        <ul class="d-flex list-unstyled ">
+                                            <li><a href="#" class="btn btn-warning m-1" data-toggle="modal"
+                                                    data-target="#modalEdit"
+                                                    onclick="getPptEditForm({{ $ppt->id }})">Edit</a></li>
+                                            <li>
+                                                <a href="#" class="btn btn-info  m-1" data-toggle="modal"
+                                                    data-target="#modalEditContent"
+                                                    onclick="getLogPptForm({{ $ppt->id }})">Log</a>
+                                            </li>
+                                        </ul>
+
                                     </td>
                                 </tr>
                             @endforeach
@@ -62,8 +82,7 @@
 
         <div class="card shadow mb-4">
             @if ($videos->isNotEmpty())
-            <a class="btn btn-success mb-3" href="{{ route('video.newVideo', $subTopic->id) }}">+ New Video</a>
-
+                <a class="btn btn-success mb-3" href="{{ route('video.newVideo', $subTopic->id) }}">+ New Video</a>
             @endif
 
             <div class="card-header py-3">
@@ -93,17 +112,33 @@
                         </thead>
                         <tbody>
                             @foreach ($videos as $video)
+                                @php
+                                    $statusProgressMapping = [
+                                        'Not Yet' => 0,
+                                        'Recording' => 15,
+                                        'Recorded' => 30,
+                                        'PPT Recording' => 45,
+                                        'PPT Recorded' => 60,
+                                        'Editing' => 75,
+                                        'Edited' => 90,
+                                        'Pause Recording' => 50,
+                                    ];
+
+                                    $progressPercentage = $statusProgressMapping[$video->status] ?? 0;
+                                @endphp
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $video->ppt_name }}</td>
                                     <td>{{ $video->name }}</td>
                                     <td>{{ $video->status }}</td>
                                     <td>
-                                        <div class="progress">
+                                        <div class="progress" style="height: 20px;">
                                             <div class="progress-bar" role="progressbar"
-                                                style="width: {{ $video->progress }}%;"
-                                                aria-valuenow="{{ $video->progress }}" aria-valuemin="0"
-                                                aria-valuemax="100">{{ $video->progress }}%</div>
+                                                style="width: {{ $progressPercentage }}%;"
+                                                aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0"
+                                                aria-valuemax="100">
+                                                {{ $progressPercentage }}%
+                                            </div>
                                         </div>
                                     </td>
                                     <td>{{ $video->location }}</td>
@@ -115,9 +150,19 @@
                                     <td>{{ $video->editing_started_at }}</td>
                                     <td>{{ $video->editing_finished_at }}</td>
                                     <td>
-                                        <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
-                                            data-target="#modalEdit"
-                                            onclick="getVideoEditForm({{ $video->id }})">Edit</a>
+                                        <ul class="d-flex list-unstyled ">
+                                            <li>
+                                                <a href="#" class="btn btn-warning m-1" data-toggle="modal"
+                                                    data-target="#modalEdit"
+                                                    onclick="getVideoEditForm({{ $video->id }})">Edit</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="btn btn-info  m-1" data-toggle="modal"
+                                                    data-target="#modalEditContent"
+                                                    onclick="getLogVideoForm({{ $video->id }})">Log</a>
+                                            </li>
+                                        </ul>
+
                                     </td>
                                 </tr>
                             @endforeach
@@ -153,12 +198,10 @@
 
 @section('javascript')
     <script>
-       
-       function getPptEditForm(id) {
-
+        function getPptEditForm(id) {
             $.ajax({
                 type: 'POST',
-                url: '{{route('ppt.getPptEditForm')}}',
+                url: '{{ route('ppt.getPptEditForm') }}', // Removed the extra space
                 data: {
                     '_token': '{{ csrf_token() }}',
                     'id': id
@@ -176,14 +219,57 @@
             });
         }
 
-
-        function getVideoEditForm(id) {
-
+        function getLogPptForm(id) {
             $.ajax({
                 type: 'POST',
-                url: '{{route('video.getVideoEditForm')}}',
+                url: '{{ route('logPpt.getLogPptForm') }}',
                 data: {
-                    '_token': '{{ csrf_token() }}', 
+                    '_token': '{{ csrf_token() }}',
+                    'id': id
+                },
+                success: function(data) {
+                    if (data.status === 'ok') {
+                        $('#modalEditContent').html(data.msg);
+                        $('#modalEdit').modal('show');
+                    } else {
+                        $('#modalEditContent').html('<p>Error loading form. Please try again.</p>');
+                    }
+                },
+                error: function() {
+                    $('#modalEditContent').html('<p>An error occurred. Please try again later.</p>');
+                }
+            });
+        }
+
+        function getLogVideoForm(id) {
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('logVideo.getLogVideoForm') }}',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'id': id
+                },
+                success: function(data) {
+                    if (data.status === 'ok') {
+                        $('#modalEditContent').html(data.msg);
+                        $('#modalEdit').modal('show');
+                    } else {
+                        $('#modalEditContent').html('<p>Error loading form. Please try again.</p>');
+                    }
+                },
+                error: function() {
+                    $('#modalEditContent').html('<p>An error occurred. Please try again later.</p>');
+                }
+            });
+        }
+
+
+        function getVideoEditForm(id) {
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('video.getVideoEditForm') }}', // Removed the extra space
+                data: {
+                    '_token': '{{ csrf_token() }}',
                     'id': id
                 },
                 success: function(data) {

@@ -2,8 +2,9 @@
 
 @section('content')
     <div class="container-fluid">
-        <h1 class="h3 mb-2 text-gray-800">Link External</h1>
-        <p>Info terkait link agar informative</p>
+        <h1 class="h3 mb-2 text-gray-800">EXTERNAL LINK</h1>
+        <p>Modul External Link adalah modul yang digunakan untuk mengelola tautan (link) yang akan tampil pada modul course.
+        </p>
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif

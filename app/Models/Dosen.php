@@ -20,7 +20,7 @@ class Dosen extends Model
     ];
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'courses_has_dosens', 'dosens_id', 'courses_id')
+        return $this->belongsToMany(Course::class, 'course_has_dosen', 'dosens_id', 'courses_id')
             ->withPivot('role');
     }
 

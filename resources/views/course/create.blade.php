@@ -1,13 +1,25 @@
 <form method="POST" action="{{ route('course.store') }}">
     @csrf
     <div class="form-group">
-        <label for="courseName">Name Course</label>
+        <label for="courseKode">Kode Course</label>
+        <input type="text" class="form-control" id="courseKode" name="kode_course" placeholder="Enter Name of Course"
+            required>
+
+        <label for="courseName">Nama Course</label>
         <input type="text" class="form-control" id="courseName" name="name" placeholder="Enter Name of Course"
             required>
 
-        <label for="courseDescription">Description Course</label>
+        <label for="courseDescription">Deskripsi Course</label>
         <input type="text" class="form-control" id="courseDescription" name="description"
             placeholder="Enter Description" required>
+
+        <label for="picCourse">Periode Course</label>
+        <select class="form-control" id="periodeCourse" name="periode_id" required>
+            <option value="" selected disabled>Pilih Periode</option>
+            @foreach ($periode as $p)
+                <option value="{{ $p->id }}">{{ $p->name }}</option>
+            @endforeach
+        </select>
 
         <label for="videoCount">Jumlah Video</label>
         <input type="number" class="form-control" id="videoCount" name="jumlah_video" placeholder="Enter Jumlah Video"
@@ -20,6 +32,14 @@
                 <option value="{{ $p->id }}">{{ $p->name }}</option>
             @endforeach
         </select>
+
+        <label for="courseDescription">Drive_URL Course</label>
+        <input type="text" class="form-control" id="courseDrive" name="drive_url" placeholder="Enter Drive_URL"
+            required>
+
+        <label for="courseDescription">Video_URL Course</label>
+        <input type="text" class="form-control" id="courseVide" name="video_url" placeholder="Enter Video_URL"
+            required>
 
         <hr>
 
@@ -35,7 +55,7 @@
                 </select>
             </div>
         </div>
-        <button type="button" class="btn btn-sm btn-primary" id="addDosen">Add Dosen</button>
+        <button type="button" class="btn btn-sm btn-primary" id="addDosen">Tambah Dosen</button>
     </div>
 
     <div class="modal-footer">
@@ -56,7 +76,7 @@
                 '<option value="{{ $dosen->id }}">{{ $dosen->name }} - {{ $dosen->npk }} - {{ $dosen->fakultas }}</option>' +
                 '@endforeach' +
                 '</select>' +
-                '<button type="button" class="btn btn-sm btn-danger remove-input">Remove</button>' +
+                '<button type="button" class="btn btn-sm btn-danger remove-input">Hapus</button>' +
                 '</div>'
             );
         });

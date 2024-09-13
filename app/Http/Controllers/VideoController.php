@@ -76,13 +76,13 @@ class VideoController extends Controller
             'description_location' => 'nullable|string',
             'status' => 'nullable|in:Not Yet,Recording,Recorded,PPT Recording,PPT Recorded,Editing,Edited,Pause Recording',
         ]);
-    
+
         $video->update($data);
-    
-        return redirect()->route('course.show', $video->id)
+
+        return redirect()->route('subTopic.show', $video->ppt->sub_topic_id)
             ->with('status', 'Video updated successfully');
     }
-    
+
 
     /**
      * Remove the specified resource from storage.
@@ -92,11 +92,12 @@ class VideoController extends Controller
         //
     }
 
-    public function getVideoEditForm(Request $request){
+    public function getVideoEditForm(Request $request)
+    {
         $video = Video::findOrFail($request->id);
         return response()->json([
             'status' => 'ok',
             'msg' => view('video.edit', compact('video'))->render()
-        ],200);
+        ], 200);
     }
 }

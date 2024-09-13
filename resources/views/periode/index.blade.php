@@ -2,8 +2,10 @@
 
 @section('content')
     <div class="container-fluid">
-        <h1 class="h3 mb-2 text-gray-800">Periode</h1>
-        <p>Info terkait periode agar informative</p>
+        <h1 class="h3 mb-2 text-gray-800">PERIODE</h1>
+        <p>Master Periode adalah modul yang digunakan untuk mendefinisikan dan mengelola periode waktu akademik
+            di mana kursus-kursus atau mata pelajaran diselenggarakan.</p>
+
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif

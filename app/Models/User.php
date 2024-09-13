@@ -23,9 +23,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'npk',
-        'no_telp',
         'email',
         'password',
+        'no_telp',
         'position_id'
     ];
 
@@ -49,7 +49,15 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function logVideos()
+    {
+        return $this->hasMany(LogVideo::class);
+    }
 
+    public function logPpts()
+    {
+        return $this->hasMany(LogPpt::class);
+    }
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class, 'position_id');
@@ -73,15 +81,12 @@ class User extends Authenticatable
     // function cari nama dosen
     public static function getUserPIC()
     {
-        return DB::table('users')->where('position_id', 1)->get();
+        return DB::table('users')->where('position_id', 2)->get();
     }
-    //show employee
-    public static function getEmployee()
+
+    //show user
+    public static function getAll()
     {
-        return DB::table('users')
-            ->join('positions', 'users.position_id', '=', 'positions.id')
-            ->select('users.npk', 'users.name as user_name', 'positions.name as position_name', 'users.email', 'users.no_telp')
-            ->orderBy('users.position_id')
-            ->get();
+        return User::orderBy('position_id')->get();
     }
 }
