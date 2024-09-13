@@ -145,98 +145,6 @@
                         </span></a>
                 </li>
             @endif
-            {{-- <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCustomers"
-                    aria-expanded="true" aria-controls="collapseCustomers">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Customers</span>
-                </a>
-                <div id="collapseCustomers" class="collapse" aria-labelledby="headingCustomers"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Components:</h6>
-                        <a class="collapse-item" href="{{ route('customer.index') }}">Table</a>
-
-    </div>
-    </div>
-    </li> --}}
-
-            {{-- <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFacilities"
-                    aria-expanded="true" aria-controls="collapseFacilities">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Facilities</span>
-                </a>
-                <div id="collapseFacilities" class="collapse" aria-labelledby="headingFacilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Components</h6>
-                        <a class="collapse-item" href="{{ route('facilities.index') }}">Table</a>
-    <a class="collapse-item" href="{{ route('facilities.create') }}">Create</a>
-    </div>
-    </div>
-    </li> --}}
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <!-- <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHotel"
-                    aria-expanded="true" aria-controls="collapseHotel">
-                    <i class="fa fa-bed"></i>
-                    <span>Hotel</span>
-                </a>
-                <div id="collapseHotel" class="collapse" aria-labelledby="headingHotel" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Hotel:</h6>
-                        <a class="collapse-item" href=""> Table </a>
-                        <a class="collapse-item" href="">Create </a>
-                        <h6 class="collapse-header">Type of Hotel:</h6>
-                        <a class="collapse-item" href="">Table </a>
-                        <a class="collapse-item" href="">Create </a>
-                    </div>
-
-                </div> -->
-            </li>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <!-- <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProduct"
-                    aria-expanded="true" aria-controls="collapseProduct">
-                    <i class="fa fa-th"></i>
-                    <span>Product</span>
-                </a>
-                <div id="collapseProduct" class="collapse" aria-labelledby="headingProduct"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Product:</h6>
-                        <a class="collapse-item" href="">Table</a>
-                        <a class="collapse-item" href="">Create</a>
-                        <h6 class="collapse-header">Facilities of Product:</h6>
-                        <a class="collapse-item" href="">Table</a>
-                        <a class="collapse-item" href="">Create</a>
-                    </div>
-                </div>
-            </li> -->
-            {{-- <!-- Nav Item - Utilities Collapse Menu -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTypeHotel"
-                    aria-expanded="true" aria-controls="collapseTypeHotel">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Type Hotel</span>
-                </a>
-                <div id="collapseTypeHotel" class="collapse" aria-labelledby="headingTypeHotel"
-                    data-parent="#accordionSidebar">
-
-                </div>
-            </li> --}}
-
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="">
-                    <i class="fa fa-money-bill"></i>
-                    <span>Transaction</span></a>
-            </li> -->
-
 
 
             <!-- Untuk Report/Rekap -->
@@ -246,8 +154,7 @@
                     <i class="fa fa-book"></i>
                     <span>Laporan/Rekap</span>
                 </a>
-                <div id="collapseRekap" class="collapse" aria-labelledby="headingHotel"
-                    data-parent="#accordionSidebar">
+                <div id="collapseRekap" class="collapse" aria-labelledby="headingHotel" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Laporan:</h6>
                         <a class="collapse-item" href=""> Laporan Pertama </a>
@@ -422,7 +329,8 @@
     <script src="{{ asset('admin/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
 
     <!-- Core plugin JavaScript-->
     <script src="{{ asset('admin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
@@ -436,9 +344,6 @@
     <!-- Page level custom scripts -->
     <script src="{{ asset('admin/js/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('admin/js/demo/chart-pie-demo.js') }}"></script>
-
-
-
 
     @yield('javascript')
 
