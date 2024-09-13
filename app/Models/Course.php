@@ -66,7 +66,7 @@ class Course extends Model
     // function ambil data 
     public static function getAllCourses()
     {
-        return Course::with(['user', 'dosens'])
+        return Course::with(['user', 'dosens', 'periode'])
             ->whereNull('deleted_at')
             ->orderBy('name', 'asc')
             ->get();

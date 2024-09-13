@@ -28,30 +28,6 @@ use App\Models\Ppt;
 |
 */
 
-Route::get('/welcome', function () {
-    return view('layouts.welcome');
-})->name('welcome');
-
-Route::get('/', function () {
-    return view('auth.login');
-});
-
-Auth::routes();
-
-
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::resource('link_external', LinkExternalController::class);
-Route::resource('video', VideoController::class);
-Route::resource('ppt', PptController::class);
-Route::resource('topic', TopicController::class);
-Route::resource('subTopic', SubTopicController::class);
-Route::resource('course', CourseController::class);
-Route::resource('dosen', DosenController::class);
-Route::resource('employee',  UserController::class);
-Route::resource('periode',  PeriodeController::class);
-Route::resource('logPpt', LogPptController::class);
-Route::resource('logVideo', LogVideosController::class);
-
 
 // routes/web.php
 
@@ -59,6 +35,7 @@ Route::resource('logVideo', LogVideosController::class);
 Route::post('/user/getEditForm', [UserController::class, 'getEditForm'])->name('employee.getEditForm');
 Route::put('/employee/{user}', [UserController::class, 'update'])->name('employee.update');
 
+Route::get('/employee/{id}', [UserController::class, 'show'])->name('employee.show');
 
 Route::post('/course/showDataPptAndVideo/', [CourseController::class, 'showAjax'])->name('course.showAjax');
 
@@ -94,8 +71,32 @@ Route::post('/subtopic/ppt/getPptEditForm', [PptController::class, 'getPptEditFo
 
 Route::post('subtopic/video/getVideoEditForm', [VideoController::class, 'getVideoEditForm'])->name('video.getVideoEditForm');
 
-
-
 Route::get('/ppt/create/{sub_topic_id}', [PptController::class, 'create'])->name('ppt.newPpt');
 
 Route::get('/video/create/{sub_topic_id}', [VideoController::class, 'create'])->name('video.newVideo');
+
+
+
+Route::get('/welcome', function () {
+    return view('layouts.welcome');
+})->name('welcome');
+
+Route::get('/', function () {
+    return view('auth.login');
+});
+
+Auth::routes();
+
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::resource('link_external', LinkExternalController::class);
+Route::resource('video', VideoController::class);
+Route::resource('ppt', PptController::class);
+Route::resource('topic', TopicController::class);
+Route::resource('subTopic', SubTopicController::class);
+Route::resource('course', CourseController::class);
+Route::resource('dosen', DosenController::class);
+Route::resource('employee',  UserController::class);
+Route::resource('periode',  PeriodeController::class);
+Route::resource('logPpt', LogPptController::class);
+Route::resource('logVideo', LogVideosController::class);

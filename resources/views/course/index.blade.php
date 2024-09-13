@@ -74,7 +74,7 @@
                                 <th class="text-center">Kode Course</th>
                                 <th class="text-center">Name</th>
                                 <th class="text-center">Description</th>
-                                <th class="text-center">Created_at</th>
+                                <th class="text-center">Periode</th>
                                 <th class="text-center">Jumlah_video</th>
                                 <th class="text-center">Dosen</th>
                                 <th class="text-center">Pic_course</th>
@@ -105,7 +105,12 @@
                                     <td>{{ $course->kode_course }}</td>
                                     <td>{{ $course->name }}</td>
                                     <td>{{ $course->description }}</td>
-                                    <td>{{ $course->created_at }}</td>
+                                    <td>
+                                        @foreach ($course->periode as $periode)
+                                            {{ $periode->name }}<br>
+                                        @endforeach
+                                    </td>
+
                                     <td>{{ $course->jumlah_video }}</td>
                                     <td>
                                         <ul>

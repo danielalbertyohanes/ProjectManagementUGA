@@ -10,7 +10,7 @@
         @endif
 
         <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateDosen" onclick="loadCreateForm()">+
-            New Course</button>
+            New Kontributor</button>
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">

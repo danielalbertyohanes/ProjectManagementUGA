@@ -15,6 +15,30 @@
                 NAMA COURSE: <span class="text-gray-800">{{ $course->name }}</span>
             </h5>
             <h5 class="text-primary">
+                PERIODE: <span class="text-gray-800">
+                    @foreach ($course->periode as $periode)
+                        {{ $periode->name }}<br>
+                    @endforeach
+                </span>
+            </h5>
+
+            <h5 class="text-primary">
+                TANGGAL_MULAI: <span class="text-gray-800">
+                    @foreach ($course->periode as $periode)
+                        {{ $periode->start_date }}<br>
+                    @endforeach
+                </span>
+            </h5>
+
+            <h5 class="text-primary">
+                TANGGAL_SELESAI: <span class="text-gray-800">
+                    @foreach ($course->periode as $periode)
+                        {{ $periode->end_date }}<br>
+                    @endforeach
+                </span>
+            </h5>
+
+            <h5 class="text-primary">
                 DRIVE_URL:
                 <span class="text-gray-800">
                     <a href="{{ $course->drive_url }}">{{ $course->drive_url }}</a>
