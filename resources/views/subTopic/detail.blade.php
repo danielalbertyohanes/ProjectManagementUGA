@@ -76,7 +76,7 @@
                                             <li>
                                                 <a href="#" class="btn btn-info  m-1" data-toggle="modal"
                                                     data-target="#modalEditContent"
-                                                    onclick="getLogPptForm({{ $ppt->id }})">Log</a>
+                                                    onclick="getLogPpt({{ $ppt->id }})">Log</a>
                                             </li>
                                         </ul>
 
@@ -238,7 +238,7 @@
                                             <li>
                                                 <a href="#" class="btn btn-info  m-1" data-toggle="modal"
                                                     data-target="#modalEditContent"
-                                                    onclick="getLogVideoForm({{ $video->id }})">Log</a>
+                                                    onclick="getLogVideo({{ $video->id }})">Log</a>
                                             </li>
                                         </ul>
 
@@ -271,6 +271,27 @@
                     {{-- Content will be loaded here via AJAX --}}
                 </div>
 
+            </div>
+        </div>
+    </div>
+
+
+
+    {{-- Log Modal --}}
+    <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditLabel">Activity Logs</h5>
+                    <!-- Button to close modal -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modalEditContent">
+                    {{-- Content will be loaded here via AJAX --}}
+                </div>
             </div>
         </div>
     </div>
@@ -604,13 +625,13 @@
         }
 
         //function to Get Form
-        function getLogPptForm(id) {
+        // Function to Get LogPpt Form
+        function getLogPpt(id) {
             $.ajax({
-                type: 'POST',
-                url: '{{ route('logPpt.getLogPptForm') }}', // Menghapus spasi ekstra
+                type: 'GET', // GET sesuai konvensi
+                url: '{{ route('logPpt.getLogPpt') }}',
                 data: {
-                    '_token': '{{ csrf_token() }}',
-                    'id': id
+                    'id': id // Tidak perlu CSRF token untuk GET secara default
                 },
                 success: function(data) {
                     if (data.status === 'ok') {
@@ -626,12 +647,13 @@
             });
         }
 
-        function getLogVideoForm(id) {
+
+        function getLogVideo(id) {
             $.ajax({
-                type: 'POST',
-                url: '{{ route('logVideo.getLogVideoForm') }}', // Menghapus spasi ekstra
+                type: 'GET',
+                url: '{{ route('logVideo.getLogVideo') }}', // Menghapus spasi ekstra
                 data: {
-                    '_token': '{{ csrf_token() }}',
+
                     'id': id
                 },
                 success: function(data) {

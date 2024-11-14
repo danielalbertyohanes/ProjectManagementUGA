@@ -63,9 +63,9 @@ Route::post('/subtopic/ppt/getPptEditForm', [PptController::class, 'getPptEditFo
 
 Route::post('/subtopic/video/getVideoEditForm', [VideoController::class, 'getVideoEditForm'])->name('video.getVideoEditForm');
 
-Route::post('/subtopic/ppt/getLogPptForm', [LogPptController::class, 'getLogPptForm'])->name('logPpt.getLogPptForm');
+Route::get('/subtopic/ppt/getLogPpt', [LogPptController::class, 'getLogPpt'])->name('logPpt.getLogPpt');
 
-Route::Post('/subtopic/video/getLogVideoForm', [LogVideosController::class, 'getLogVideoForm'])->name('logVideo.getLogVideoForm');
+Route::get('/subtopic/video/getLogVideo', [LogVideosController::class, 'getLogVideo'])->name('logVideo.getLogVideo');
 
 Route::post('/subtopic/ppt/getPptEditForm', [PptController::class, 'getPptEditForm'])->name('ppt.getPptEditForm');
 

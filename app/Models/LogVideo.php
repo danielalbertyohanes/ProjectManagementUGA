@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class LogVideo extends Model
 {
@@ -69,5 +70,15 @@ class LogVideo extends Model
     public static function insertLogVideo($data)
     {
         return self::create($data);
+    }
+
+    public static function getLogVideo($video_id)
+    {
+        return DB::table('log_video')
+            ->join('users', 'log_video.user_id', '=', 'users.id')  // Join dengan tabel 'users' berdasarkan 'user_id'
+            ->join('videos', 'log_video.video_id', '=', 'videos.id')  // Join dengan tabel 'videos' berdasarkan 'video_id'
+            ->where('log_video.video_id', $video_id)
+            ->select('log_video.*', 'users.name as user_name', 'videos.name as video_name') // Pilih kolom yang dibutuhkan
+            ->get();  // Menggunakan get() untuk mendapatkan banyak entitas
     }
 }

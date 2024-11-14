@@ -1,24 +1,24 @@
-<form method="POST" action="{{ route('logPpt.store', $ppt->id) }}">
-    @csrf
-    @method('POST')
-
-    <div class="form-group">
-        <label for="status">Status</label>
-        <select class="form-control" id="status" name="status">
-            @foreach (['Start', 'Finish'] as $status)
-                <option value="{{ $status }}" @if ($ppt->status == $status) selected @endif>
-                    {{ $status }}
-                </option>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Action</th>
+                <th>Performed By</th>
+                <th>Details</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody id="logTableBody">
+            @foreach ($log_ppt as $log)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $log->status }}</td>
+                    <td>{{ $log->user_name }}</td>
+                    <td>{{ $log->description }}</td>
+                    <td>{{ \Carbon\Carbon::parse($log->created_at)->format('d M Y') }}</td>
+                </tr>
             @endforeach
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label for="description" class="form-label">Masukan Log</label>
-        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-    </div>
-
-    <input type="hidden" name="ppt_id" value="{{ $ppt->id }}">
-
-    <button type="submit" class="btn btn-primary">Save</button>
-</form>
+        </tbody>
+    </table>
+</div>

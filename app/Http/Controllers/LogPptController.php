@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\LogPpt;
-use App\Models\Ppt;
-
 use Illuminate\Http\Request;
 
 class LogPptController extends Controller
@@ -50,13 +48,16 @@ class LogPptController extends Controller
 
         return redirect()->route('logPpts.index')->with('status', 'Berhasil Update');
     }
-    public function getLogPptForm(Request $request)
+    public function getLogPpt(Request $request)
     {
-        $ppt = Ppt::findOrFail($request->id);
+        $id = $request->input('id');
+
+        // Mengambil log_ppt pertama berdasarkan ppt_id
+        $log_ppt = LogPpt::getLogPpt($id); // Sekarang mengembalikan satu entitas
 
         return response()->json([
             'status' => 'ok',
-            'msg' => view('log_Ppt.formlog', compact('ppt'))->render()
+            'msg' => view('log_Ppt.formlog', compact('log_ppt'))->render()
         ], 200);
     }
 }
