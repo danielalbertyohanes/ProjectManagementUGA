@@ -75,7 +75,15 @@ Route::get('/ppt/create/{sub_topic_id}', [PptController::class, 'create'])->name
 
 Route::get('/video/create/{sub_topic_id}', [VideoController::class, 'create'])->name('video.newVideo');
 
+Route::post('/video/{video}/recording/{action}', [VideoController::class, 'catatRecording'])
+    ->name('video.recording');
 
+Route::post('/video/check-button/{id}', [VideoController::class, 'checkFinishStatus']);
+
+Route::post('/ppt/{ppt}/editing/{action}', [PptController::class, 'catatRecording'])
+    ->name('ppt.editing');
+
+Route::post('/ppt/check-button/{id}', [PptController::class, 'checkFinishStatus']);
 
 Route::get('/welcome', function () {
     return view('layouts.welcome');

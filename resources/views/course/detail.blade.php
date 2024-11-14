@@ -73,8 +73,9 @@
                                 <th>Topik</th>
                                 <th>Sub-Topik</th>
                                 <th>Progres</th>
+                                <th>Detail</th>
                                 <th>Aksi Sub Topic</th>
-                                <th>Aksi Topic</th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -108,16 +109,21 @@
 
                                         <!-- Progress Bar for the first sub-topic -->
                                         <td>
-                                            <a href="{{ route('subTopic.show', $firstSubTopic->id) }}"
-                                                class="progress-link">
-                                                <div class="progress">
-                                                    <div class="progress-bar" role="progressbar"
-                                                        style="width: {{ $progressPercentage }}%;"
-                                                        aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0"
-                                                        aria-valuemax="100">
-                                                        {{ $progressPercentage }}%
-                                                    </div>
+
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar"
+                                                    style="width: {{ $progressPercentage }}%;"
+                                                    aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                    {{ $progressPercentage }}%
                                                 </div>
+                                            </div>
+
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-info"
+                                                href="{{ route('subTopic.show', $firstSubTopic->id) }}">
+                                                Detail
                                             </a>
                                         </td>
                                         <td>
@@ -135,27 +141,9 @@
                                         </td>
 
                                         <td>
-                                            <a href="#" class="btn btn-warning btn-circle" data-toggle="modal"
-                                                data-target="#modalEdit" onclick="getEditFormTopic({{ $topic->id }})"><i
-                                                    class="fas fa-info-circle"></i></a>
 
-                                            <form method="POST" action="{{ route('topic.destroy', $topic->id) }}"
-                                                style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <form method="POST" action="{{ route('topic.destroy', $topic->id) }}"
-                                                    style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-circle"
-                                                        onclick="return confirm('Are you sure to delete {{ $topic->id }} - {{ $topic->name }}?');">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-
-                                            </form>
-                                        </td>
                                     </tr>
+
                                     <!-- Loop for the remaining sub-topics under the same topic -->
                                     @foreach ($subTopicsForThisTopic->skip(1) as $subTopic)
                                         @php
@@ -176,6 +164,11 @@
                                                             {{ $progressPercentage }}%
                                                         </div>
                                                     </div>
+                                                </a>
+                                            </td>
+                                            <td> <a class="btn btn-info"
+                                                    href="{{ route('subTopic.show', $subTopic->id) }}">
+                                                    Detail
                                                 </a>
                                             </td>
                                             <td>

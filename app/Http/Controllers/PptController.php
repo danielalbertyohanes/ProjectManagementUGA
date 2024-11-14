@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LogPpt;
 use App\Models\Ppt;
+use App\Models\Video;
 use App\Models\Course;
+use App\Models\LogPpt;
 use App\Models\SubTopic;
 use App\Models\LinkExternal;
-use App\Models\Video;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PptController extends Controller
 {
@@ -124,4 +125,43 @@ class PptController extends Controller
         ], 200);
     }
 
+    public function catatRecording(Ppt $ppt, $action)
+    {
+        //dd($video, $action);
+        // Catat aksi ke dalam database melalui model
+
+        Ppt::catatTanggalRecording(Auth::user()->id, $ppt->id, $action);
+
+        $newppt = Ppt::findOrFail($ppt->id);
+
+        // Response JSON untuk AJAX
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Action recorded successfully',
+            'status' => $newppt->status,
+            'progress' => $newppt->progress,
+        ]);
+    }
+
+    public function checkFinishStatus($id)
+    {
+        $ppt = Ppt::find($id);
+   
+        if (!$ppt) {
+            return response()->json(['error' => 'PPT not found'], 404);
+        }
+
+        // Proper status checks
+        $isPptStart = !is_null($ppt->start_click_ppt);
+        $isPptFinished = !is_null($ppt->finish_click_ppt);
+
+        
+
+        return response()->json([
+            'ppt' => [
+                'started' => $isPptStart,
+                'finished' => $isPptFinished,
+            ]
+        ]);
+    }
 }

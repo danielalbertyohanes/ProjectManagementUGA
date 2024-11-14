@@ -7,11 +7,6 @@
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
-
-        @if (Auth::user()->position_id == '3')
-            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateDosen">+ New Course</button>
-        @endif
-
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">DataTables</h6>

@@ -4,7 +4,7 @@
     <div class="form-group">
         <label for="dosenName">Name</label>
         <input type="text" class="form-control" id="dosenName" name="name" placeholder="Enter Name"
-            value="{{ old('name', $user->name) }}" required>
+            value="{{ old('name', $user->name) }}" readonly>
 
         <label for="dosenNpk">NPK</label>
         <input type="text" class="form-control" id="dosenNpk" name="npk" placeholder="Enter NPK" required

@@ -22,7 +22,7 @@
                             <tr>
                                 <th class="text-center">No</th>
                                 <th class="text-center">Nama</th>
-                                <th class="text-center">Value</th>
+                                <th class="text-center">URL</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Action</th>
                             </tr>

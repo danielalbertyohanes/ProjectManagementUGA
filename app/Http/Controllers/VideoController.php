@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ppt;
 use App\Models\Video;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VideoController extends Controller
 {
@@ -99,5 +100,62 @@ class VideoController extends Controller
             'status' => 'ok',
             'msg' => view('video.edit', compact('video'))->render()
         ], 200);
+    }
+
+
+    public function catatRecording(Video $video, $action)
+    {
+        //dd($video, $action);
+        // Catat aksi ke dalam database melalui model
+        Video::catatTanggalRecording(Auth::user()->id, $video->id, $action);
+
+        $newvideo = Video::findOrFail($video->id);
+
+        // Response JSON untuk AJAX
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Action recorded successfully',
+            'status' => $newvideo->status,
+            'progress' => $newvideo->progress,
+        ]);
+    }
+    public function checkFinishStatus($id)
+    {
+        $video = Video::find($id);
+
+        if (!$video) {
+            return response()->json(['error' => 'Video not found'], 404);
+        }
+
+        // Proper status checks
+        $isVideoFinished = !is_null($video->finish_click_video);
+        $isPptFinished = !is_null($video->finish_click_ppt);
+        $isEditingFinished = !is_null($video->finish_click_editing);
+
+        $isVideoStart = !is_null($video->started_at_video);
+        $isPptStart = !is_null($video->started_at_ppt);
+        $isEditingStart = !is_null($video->started_at_editing);
+
+        $isVideoPause = !is_null($video->pause_click_video);
+        $isPptPause = !is_null($video->pause_click_ppt);
+        $isEditingPause = !is_null($video->pause_click_editing);
+
+        return response()->json([
+            'video' => [
+                'started' => $isVideoStart,
+                'paused' => $isVideoPause,
+                'finished' => $isVideoFinished,
+            ],
+            'ppt' => [
+                'started' => $isPptStart,
+                'paused' => $isPptPause,
+                'finished' => $isPptFinished,
+            ],
+            'editing' => [
+                'started' => $isEditingStart,
+                'paused' => $isEditingPause,
+                'finished' => $isEditingFinished,
+            ],
+        ]);
     }
 }
