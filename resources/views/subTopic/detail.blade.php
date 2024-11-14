@@ -278,18 +278,18 @@
 
 
     {{-- Log Modal --}}
-    <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel"
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditLabel">Activity Logs</h5>
+                    <h5 class="modal-title" id="modalLabel">Activity Logs</h5>
                     <!-- Button to close modal -->
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" id="modalEditContent">
+                <div class="modal-body" id="modalContent">
                     {{-- Content will be loaded here via AJAX --}}
                 </div>
             </div>
@@ -635,14 +635,15 @@
                 },
                 success: function(data) {
                     if (data.status === 'ok') {
-                        $('#modalEditContent').html(data.msg);
-                        $('#modalEdit').modal('show');
+                        $('#modalContent').html(data.msg);
+                        $('#modal').modal('show');
                     } else {
-                        $('#modalEditContent').html('<p>Error loading form. Please try again.</p>');
+                        $('#modalContent').html('<p>Error loading form. Please try again.</p>');
+
                     }
                 },
                 error: function() {
-                    $('#modalEditContent').html('<p>An error occurred. Please try again later.</p>');
+                    $('#modalContent').html('<p>An error occurred. Please try again later.</p>');
                 }
             });
         }
@@ -658,14 +659,14 @@
                 },
                 success: function(data) {
                     if (data.status === 'ok') {
-                        $('#modalEditContent').html(data.msg);
-                        $('#modalEdit').modal('show');
+                        $('#modalContent').html(data.msg);
+                        $('#modal').modal('show');
                     } else {
-                        $('#modalEditContent').html('<p>Error loading form. Please try again.</p>');
+                        $('#modalContent').html('<p>Error loading form. Please try again.</p>');
                     }
                 },
                 error: function() {
-                    $('#modalEditContent').html('<p>An error occurred. Please try again later.</p>');
+                    $('#modalContent').html('<p>An error occurred. Please try again later.</p>');
                 }
             });
         }
