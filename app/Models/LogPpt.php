@@ -51,6 +51,7 @@ class LogPpt extends Model
             ->join('ppts', 'log_ppt.ppt_id', '=', 'ppts.id')      // Join dengan tabel 'ppt' berdasarkan 'ppt_id'
             ->where('log_ppt.ppt_id', $ppt_id)
             ->select('log_ppt.*', 'users.name as user_name', 'ppts.name as ppt_name') // Pilih kolom yang dibutuhkan
+            ->orderBy('log_ppt.id', 'DESC')
             ->get();  // Menggunakan first() untuk mendapatkan satu entitas
     }
 }

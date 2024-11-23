@@ -160,4 +160,52 @@ class CourseController extends Controller
             'msg' => $topicHtml . $subTopicHtml .  $pptHtml . $videoHtml
         ], 200);
     }
+    public function catatRecording(Course $course, $action)
+    {
+
+        $allowedActions = ['kurasi', 'publish'];
+        if (!in_array($action, $allowedActions)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid action',
+            ], 400);
+        }
+
+        // Panggil metode catatTanggalRecording dari model
+        $success = Course::catatTanggalRecording(Auth::id(), $course->id, $action);
+        $new = Course::find($course->id);
+
+        if ($success) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Action recorded successfully',
+                'progress' => $new->progress,
+                'status_text' => $new->status,
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid action or failed to update',
+            ], 400);
+        }
+    }
+    public function checkButton($id)
+    {
+        $course = Course::find($id);
+
+        if (!$course) {
+            return response()->json(['error' => 'Course not found'], 404);
+        }
+
+        // Logic to determine button states
+        $status = $course->status;  
+        $progress = $course->progress;
+
+        return response()->json([
+            'course' => [
+                'status' => $status,
+                'progress' => $progress
+            ]
+        ]);
+    }
 }

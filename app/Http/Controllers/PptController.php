@@ -43,7 +43,6 @@ class PptController extends Controller
             'user_id' => 'required|integer',
             'name_ppt' => 'required|string|max:255',
             'sub_topic_id' => 'required|integer',
-            'status_ppt' => 'required|string|max:255',
         ]);
 
         // Create PPT record
@@ -51,20 +50,17 @@ class PptController extends Controller
             'user_id' => $datappt['user_id'],
             'name' => $datappt['name_ppt'],
             'sub_topic_id' => $datappt['sub_topic_id'],
-            'status' => $datappt['status_ppt'],
         ]);
 
         // Validate data for Video
         $datavideo = $request->validate([
             'name_video' => 'required|string|max:255',
-            'status_video' => 'required|string|max:255',
         ]);
 
         // Create Video record
         Video::create([
             'name' => $datavideo['name_video'],
             'ppt_id' => $ppt->id,
-            'status' => $datavideo['status_video'],
         ]);
 
         return redirect()->route('subTopic.show', $datappt['sub_topic_id'])->with('status', 'Berhasil Tambah');
@@ -95,6 +91,7 @@ class PptController extends Controller
         $data = $request->validate([
             'name' => 'nullable|string',
             'status' => 'nullable|in:Not Yet,Progress,Finished,Cancel',
+
         ]);
 
         // Debugging line: Remove or comment out this line in production
@@ -146,7 +143,7 @@ class PptController extends Controller
     public function checkFinishStatus($id)
     {
         $ppt = Ppt::find($id);
-   
+
         if (!$ppt) {
             return response()->json(['error' => 'PPT not found'], 404);
         }
@@ -155,7 +152,7 @@ class PptController extends Controller
         $isPptStart = !is_null($ppt->start_click_ppt);
         $isPptFinished = !is_null($ppt->finish_click_ppt);
 
-        
+
 
         return response()->json([
             'ppt' => [

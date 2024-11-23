@@ -85,6 +85,16 @@ Route::post('/ppt/{ppt}/editing/{action}', [PptController::class, 'catatRecordin
 
 Route::post('/ppt/check-button/{id}', [PptController::class, 'checkFinishStatus']);
 
+
+Route::post('/course/{course}/{action}', [CourseController::class, 'catatRecording']);
+Route::get('/course/check-button/{id}', [CourseController::class, 'checkButton'])->name('course.checkButton');
+
+
+
+
+
+
+
 Route::get('/welcome', function () {
     return view('layouts.welcome');
 })->name('welcome');

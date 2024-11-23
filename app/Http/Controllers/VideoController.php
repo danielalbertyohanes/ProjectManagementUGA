@@ -74,7 +74,7 @@ class VideoController extends Controller
         $data = $request->validate([
             'name' => 'nullable|string',
             'location' => 'nullable|in:UBAYA,Not UBAYA',
-            'description_location' => 'nullable|string',
+            'detail_location' => 'nullable|string',
             'status' => 'nullable|in:Not Yet,Recording,Recorded,PPT Recording,PPT Recorded,Editing,Edited,Pause Recording',
         ]);
 

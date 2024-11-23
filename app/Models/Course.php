@@ -12,13 +12,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Course extends Model
 {
     use HasFactory, SoftDeletes;
-
+    protected $table = 'courses';
     protected $fillable = [
         'kode_course',
         'name',
         'description',
         'jumlah_video',
-        'progres',
+        'progress',
         'status',
         'pic_course',
         'drive_url',
@@ -100,5 +100,37 @@ class Course extends Model
 
         // Ambil hasil query
         return $query->get();
+    }
+
+    public static function catatTanggalRecording($userId, $courseId, $action)
+    {
+        $updateData = [];
+
+        // Logika untuk menentukan update data berdasarkan action
+        if ($action === 'kurasi') {
+            $updateData = [
+                'progress' => 75,
+                'status' => 'On Going CURATION',
+            ];
+        } elseif ($action === 'publish') {
+            $updateData = [
+                'progress' => 100,
+                'status' => 'Publish',
+            ];
+        } else {
+            // Jika action tidak valid, return false (atau bisa lempar exception)
+            return false;
+        }
+        //dd($updateData);
+
+        // Cari dan update course
+        $course = self::findOrFail($courseId); // Akan throw exception jika tidak ditemukan
+        $course->update($updateData);
+
+        // // Tambahkan log pengguna yang mengupdate (opsional)
+        // $course->updated_by = $userId;
+        // $course->save();
+
+        return true; // Indikasi bahwa update berhasil
     }
 }
