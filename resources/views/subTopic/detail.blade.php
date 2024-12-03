@@ -311,8 +311,7 @@
                 checkButtonPpt(id);
             });
 
-
-            // Button Recording Video, Recording PPT, Editing Started    
+            // Button Recording Video, Recording PPT, Editing Started
             // Start Video
             $(document).on('click', '.start-video', function(e) {
                 e.preventDefault();
@@ -388,16 +387,26 @@
                 checkButtonPpt(id);
             });
 
-
             // Finish PPT Editing
             $(document).on('click', '.finish-ppt-editing', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
                 recordActionPpt(id, 'finish-ppt-editing'); // Record the finish action
                 checkButtonPpt(id);
-
             });
 
+            $('#modal').on('hidden.bs.modal', function () {
+                location.reload();
+            });
+
+            $('#modal').modal({
+                keyboard: true, // Allow ESC key to close modal
+                backdrop: true
+            });
+
+            $('.close').click(function () {
+                $('#modal').modal('hide');
+            });
         });
 
 
@@ -499,6 +508,20 @@
             });
         }
 
+        // Fungsi untuk mengubah tombol Start/Pause saat tombol ditekan
+        function togglePauseStartButton(id, type) {
+            // Cek status video atau ppt berdasarkan tipe
+            var actionButton = (type === 'video') ? '.start-video[data-id="' + id + '"]' : '.start-ppt[data-id="' + id + '"]';
+            var pauseButton = (type === 'video') ? '.pause-video[data-id="' + id + '"]' : '.pause-ppt[data-id="' + id + '"]';
+
+            console.log('Hiding button:', actionButton);
+            console.log('Showing button:', pauseButton);
+
+            // Cek tombol yang aktif dan lakukan toggling
+            $(actionButton).toggle();  // Menyembunyikan tombol Start
+            $(pauseButton).toggle();   // Menyembunyikan tombol Pause
+        }
+
         // Function to record actions
         function recordAction(id, action) {
             $.ajax({
@@ -518,12 +541,39 @@
                     progressBar.attr('aria-valuenow', response.progress); // Update ARIA value
                     progressBar.text(response.progress + '%'); // Update progress text
 
+                    // Menangani perubahan tombol Start/Pause
+                    togglePauseStartButton(id, type);
+
                 },
                 error: function(xhr, status, error) {
                     console.error('Error recording action:', error);
                 }
             });
         }
+
+        // Fungsi untuk menghandle klik tombol Start/Pause untuk Video
+        $('.start-video').on('click', function() {
+            var id = $(this).data('id');
+            recordAction(id, 'start', 'video');
+        });
+
+        // Fungsi untuk menghandle klik tombol Pause untuk Video
+        $('.pause-video').on('click', function() {
+            var id = $(this).data('id');
+            recordAction(id, 'pause', 'video');
+        });
+
+        // Fungsi untuk menghandle klik tombol Start/Pause untuk PPT
+        $('.start-ppt').on('click', function() {
+            var id = $(this).data('id');
+            recordAction(id, 'start', 'ppt');
+        });
+
+        // Fungsi untuk menghandle klik tombol Pause untuk PPT
+        $('.pause-ppt').on('click', function() {
+            var id = $(this).data('id');
+            recordAction(id, 'pause', 'ppt');
+        });
 
         function checkButtonPpt(id) {
             $.ajax({

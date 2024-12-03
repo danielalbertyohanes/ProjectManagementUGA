@@ -1,19 +1,47 @@
 @extends('layouts.admin')
 
 @section('content')
+    <style>
+        h1 {
+            color: royalblue;
+            font-weight: bold;
+            font-size: 2rem;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        p {
+            font-size: 1rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #232323;
+        }
+        th {
+            font-weight: bold;
+            text-align: center;
+            color: #232323;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        td {
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            color: #232323;
+        }
+    </style>
     <div class="container-fluid">
-        <h1 class="h3 mb-2 text-gray-800">EXTERNAL LINK</h1>
+        <h1>MASTER EXTERNAL LINK</h1>
         <p>Modul External Link adalah modul yang digunakan untuk mengelola tautan (link) yang akan tampil pada modul course.
         </p>
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
 
-        <a class="btn btn-success mb-3" href="{{ route('link_external.create') }}">+ New Link</a>
+        <a class="btn btn-success mb-3" href="{{ route('link_external.create') }}">Tambah Eksternal Link</a>
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">DataTables</h6>
+                <h6 class="m-0 font-weight-bold text-primary">DAFTAR EKSTERNAL LINK</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

@@ -1,20 +1,26 @@
+<style>
+    label {
+        color: #232323;
+        padding-top: 10px;
+    }
+</style>
 <form method="POST" action="{{ route('periode.update', $periode->id) }}">
     @csrf
     @method('PUT')
     <div class="form-group">
-        <label for="periodeName">Periode Name</label>
-        <input type="text" class="form-control" id="periodeName" name="name" placeholder="Enter Periode Name"
+        <label for="periodeName">Nama Periode</label>
+        <input type="text" class="form-control" id="periodeName" name="name" placeholder="Masukkan Nama Periode"
             value="{{ $periode->name }}" required>
 
-        <label for="startDate">Start Date</label>
+        <label for="startDate">Tanggal Mulai</label>
         <input type="date" class="form-control" id="startDate" name="start_date" value="{{ $periode->start_date }}"
             required>
 
-        <label for="endDate">End Date</label>
+        <label for="endDate">Tanggal Selesai</label>
         <input type="date" class="form-control" id="endDate" name="end_date" value="{{ $periode->end_date }}"
             required>
 
-        <label for="kurasiDate">Kurasi Date</label>
+        <label for="kurasiDate">Tanggal Kurasi</label>
         <input type="date" class="form-control" id="kurasiDate" name="kurasi_date"
             value="{{ $periode->kurasi_date }}" required>
 
@@ -26,7 +32,7 @@
     </div>
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Submit</button>
         <a href="{{ route('periode.index') }}" class="btn btn-danger">Cancel</a>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>

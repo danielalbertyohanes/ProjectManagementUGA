@@ -21,10 +21,101 @@
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
         }
+
+        .description {
+            max-width: 150px; /* Batas lebar kolom */
+            white-space: nowrap; /* Tampilkan hanya satu baris */
+            overflow: hidden; /* Potong teks jika terlalu panjang */
+            text-overflow: ellipsis; /* Tambahkan "..." di akhir teks */
+            cursor: pointer; /* Tampilkan kursor pointer saat dihover */
+        }
+
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip-container:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 5px;
+            position: absolute;
+            z-index: 9999;
+            bottom: 120%; /* Posisi tooltip di atas teks */
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: normal;
+            max-width: 200px;
+            word-wrap: break-word;
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%; /* Panah di bagian bawah tooltip */
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+
+        /* Tooltip otomatis berpindah ke bawah jika tidak cukup ruang */
+        .tooltip-container[data-position="top"] .tooltip {
+            bottom: auto;
+            top: 120%;
+            transform: translateX(-50%);
+        }
+
+        .tooltip-container[data-position="top"] .tooltip::after {
+            top: auto;
+            bottom: 100%;
+            border-color: transparent transparent #333 transparent;
+        }
+
+        .table-container {
+            position: relative;
+            overflow: visible; /* Pastikan tooltip bisa terlihat */
+        }
+
+        h1 {
+            color: royalblue;
+            font-weight: bold;
+            font-size: 2rem;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        p {
+            font-size: 1rem;
+            padding-top: 1rem;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #232323;
+        }
+        th {
+            font-weight: bold;
+            text-align: center;
+            color: #232323;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        td {
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            color: #232323;
+        }
     </style>
 
     <div class="container-fluid">
-        <h1 class="h3 mb-2 text-gray-800">COURSE</h1>
+        <h1>MASTER COURSE</h1>
         {{-- ini harus di tambah dan di ubah lagi --}}
         <p>Master Course adalah modul yang digunakan untuk mendefinisikan dan mengelola informasi terkait kursus atau mata
             pelajaran.</p>
@@ -45,12 +136,12 @@
 
         @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
             <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateCourse"
-                onclick="loadCreateForm()">+ New Course</button>
+                onclick="loadCreateForm()">Tambah Course</button>
         @endif
 
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">DataTables</h6>
+                <h6 class="m-0 font-weight-bold text-primary">DAFTAR COURSE</h6>
 
                 <div class="input-group" style="max-width: 300px;">
                     <form action="{{ route('course.index') }}" method="GET" class="d-flex">
@@ -70,7 +161,7 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th class="text-center">No</th>
+                                <th class="text-center" >No</th>
                                 <th class="text-center">Kode Course</th>
                                 <th class="text-center">Name</th>
                                 <th class="text-center">Description</th>
@@ -104,7 +195,12 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $course->kode_course }}</td>
                                     <td>{{ $course->name }}</td>
-                                    <td>{{ $course->description }}</td>
+                                    <td>
+                                        <div class="tooltip-container">
+                                            <span class="description">{{ $course->description }}</span>
+                                            <span class="tooltip">{{ $course->description }}</span>
+                                        </div>
+                                    </td>
                                     <td>
                                         @foreach ($course->periode as $periode)
                                             {{ $periode->name }}<br>
@@ -209,6 +305,46 @@
 
 @section('javascript')
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const descriptions = document.querySelectorAll('.description');
+
+            descriptions.forEach(description => {
+                const fullText = description.innerText; // Ambil teks penuh
+                const tooltip = document.createElement('span');
+                tooltip.className = 'tooltip';
+                tooltip.innerText = fullText;
+
+                const container = description.parentElement;
+                container.classList.add('tooltip-container');
+                container.appendChild(tooltip);
+
+                // Potong teks untuk tampilan di tabel
+                if (fullText.length > 20) {
+                    description.innerText = fullText.substring(0, 20) + '...';
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const tooltips = document.querySelectorAll('.tooltip-container');
+
+            tooltips.forEach(container => {
+                const tooltip = container.querySelector('.tooltip');
+                container.addEventListener('mouseenter', () => {
+                    const containerRect = container.getBoundingClientRect();
+                    const tooltipRect = tooltip.getBoundingClientRect();
+
+                    // Cek apakah tooltip keluar layar atas
+                    if (containerRect.top - tooltipRect.height < 0) {
+                        container.setAttribute('data-position', 'top');
+                    } else {
+                        container.removeAttribute('data-position');
+                    }
+                });
+            });
+        });
+
+
         // Load Create Form
         function loadCreateForm() {
             $.ajax({
