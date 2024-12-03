@@ -319,46 +319,6 @@
 
 @section('javascript')
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const descriptions = document.querySelectorAll('.description');
-
-            descriptions.forEach(description => {
-                const fullText = description.innerText; // Ambil teks penuh
-                const tooltip = document.createElement('span');
-                tooltip.className = 'tooltip';
-                tooltip.innerText = fullText;
-
-                const container = description.parentElement;
-                container.classList.add('tooltip-container');
-                container.appendChild(tooltip);
-
-                // Potong teks untuk tampilan di tabel
-                if (fullText.length > 20) {
-                    description.innerText = fullText.substring(0, 20) + '...';
-                }
-            });
-        });
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const tooltips = document.querySelectorAll('.tooltip-container');
-
-            tooltips.forEach(container => {
-                const tooltip = container.querySelector('.tooltip');
-                container.addEventListener('mouseenter', () => {
-                    const containerRect = container.getBoundingClientRect();
-                    const tooltipRect = tooltip.getBoundingClientRect();
-
-                    // Cek apakah tooltip keluar layar atas
-                    if (containerRect.top - tooltipRect.height < 0) {
-                        container.setAttribute('data-position', 'top');
-                    } else {
-                        container.removeAttribute('data-position');
-                    }
-                });
-            });
-        });
-
-
         $(document).ready(function() {
             $('.publish').each(function() {
                 var id = $(this).data('id');
@@ -461,6 +421,45 @@
                 }
             });
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const descriptions = document.querySelectorAll('.description');
+
+            descriptions.forEach(description => {
+                const fullText = description.innerText; // Ambil teks penuh
+                const tooltip = document.createElement('span');
+                tooltip.className = 'tooltip';
+                tooltip.innerText = fullText;
+
+                const container = description.parentElement;
+                container.classList.add('tooltip-container');
+                container.appendChild(tooltip);
+
+                // Potong teks untuk tampilan di tabel
+                if (fullText.length > 20) {
+                    description.innerText = fullText.substring(0, 20) + '...';
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const tooltips = document.querySelectorAll('.tooltip-container');
+
+            tooltips.forEach(container => {
+                const tooltip = container.querySelector('.tooltip');
+                container.addEventListener('mouseenter', () => {
+                    const containerRect = container.getBoundingClientRect();
+                    const tooltipRect = tooltip.getBoundingClientRect();
+
+                    // Cek apakah tooltip keluar layar atas
+                    if (containerRect.top - tooltipRect.height < 0) {
+                        container.setAttribute('data-position', 'top');
+                    } else {
+                        container.removeAttribute('data-position');
+                    }
+                });
+            });
+        });
     </script>
 
 
