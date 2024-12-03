@@ -96,29 +96,16 @@
                                         <td rowspan="{{ $rowspan }}">{{ $topic->name }}</td>
                                         <td>{{ $firstSubTopic->name }}</td>
 
-                                        <!-- Calculate the progress for the first sub-topic -->
-                                        @php
-                                            $statusProgressMapping = [
-                                                'Not Yet' => 0,
-                                                'Progres' => 50,
-                                                'Finish' => 100,
-                                                'Cancel' => 0,
-                                            ];
-                                            $progressPercentage = $statusProgressMapping[$firstSubTopic->status] ?? 0;
-                                        @endphp
-
                                         <!-- Progress Bar for the first sub-topic -->
                                         <td>
-
                                             <div class="progress">
                                                 <div class="progress-bar" role="progressbar"
-                                                    style="width: {{ $progressPercentage }}%;"
-                                                    aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0"
+                                                    style="width:{{ $firstSubTopic->progress }}%;"
+                                                    aria-valuenow="{{ $firstSubTopic->progress }}" aria-valuemin="0"
                                                     aria-valuemax="100">
-                                                    {{ $progressPercentage }}%
+                                                    {{ $firstSubTopic->progress }}%
                                                 </div>
                                             </div>
-
                                         </td>
                                         <td>
                                             <a class="btn btn-info"
@@ -139,32 +126,22 @@
                                                     onclick="return confirm('Are you sure to delete {{ $firstSubTopic->id }} - {{ $firstSubTopic->name }}?');">
                                             </form>
                                         </td>
-
-                                        <td>
-
                                     </tr>
 
                                     <!-- Loop for the remaining sub-topics under the same topic -->
                                     @foreach ($subTopicsForThisTopic->skip(1) as $subTopic)
-                                        @php
-                                            // Calculate the progress for each remaining sub-topic
-                                            $progressPercentage = $statusProgressMapping[$subTopic->status] ?? 0;
-                                        @endphp
-
                                         <tr>
                                             <td>{{ $subTopic->name }}</td>
                                             <td>
-                                                <a href="{{ route('subTopic.show', $subTopic->id) }}"
-                                                    class="progress-link">
-                                                    <div class="progress">
-                                                        <div class="progress-bar " role="progressbar"
-                                                            style="width: {{ $progressPercentage }}%;"
-                                                            aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0"
-                                                            aria-valuemax="100">
-                                                            {{ $progressPercentage }}%
-                                                        </div>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar"
+                                                        style="width:{{ $subTopic->progress }}%;"
+                                                        aria-valuenow="{{ $subTopic->progress }}" aria-valuemin="0"
+                                                        aria-valuemax="100">
+                                                        {{ $subTopic->progress }}%
                                                     </div>
-                                                </a>
+                                                </div>
+
                                             </td>
                                             <td> <a class="btn btn-info"
                                                     href="{{ route('subTopic.show', $subTopic->id) }}">

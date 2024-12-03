@@ -79,6 +79,7 @@ class LogVideo extends Model
             ->join('videos', 'log_video.video_id', '=', 'videos.id')  // Join dengan tabel 'videos' berdasarkan 'video_id'
             ->where('log_video.video_id', $video_id)
             ->select('log_video.*', 'users.name as user_name', 'videos.name as video_name') // Pilih kolom yang dibutuhkan
+            ->orderBy('log_video.id', 'DESC')
             ->get();  // Menggunakan get() untuk mendapatkan banyak entitas
     }
 }

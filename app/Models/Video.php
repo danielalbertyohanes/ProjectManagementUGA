@@ -54,6 +54,11 @@ class Video extends Model
         return $this->belongsTo(Ppt::class, 'ppt_id');
     }
 
+    public function subTopic()
+    {
+        return $this->ppt->subTopic();
+    }
+
     public static function getVideosByCourseId($courseId)
     {
         return DB::table('videos')
@@ -204,7 +209,7 @@ class Video extends Model
                         'durasi_editing' => $durasi,
                         'nilai_editing' => 30,
                         'status' => 'Edited',
-                        'progress' => 90,
+                        'progress' => 100,
                     ];
                 }
             }

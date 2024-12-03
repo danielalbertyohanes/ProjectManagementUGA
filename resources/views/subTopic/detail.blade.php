@@ -50,14 +50,15 @@
 
                                     </td>
                                     <td>
-                                        @if ($ppt->finish_click_ppt)
-                                            <span class="tanggalPpt" data-id="{{ $ppt->id }}"
-                                                data-ppt-editing-finished-at="{{ $ppt->finish_click_ppt }}">
-                                                {{ \Carbon\Carbon::parse($ppt->finish_click_ppt)->format('d-M-y') }}
-                                            </span>
-                                        @else
-                                            <ul class="d-flex list-unstyled"
-                                                style="justify-content: center; align-items: center; padding: 0;">
+                                        <ul class="d-flex list-unstyled"
+                                            style="justify-content: center; align-items: center; padding: 0;">
+                                            @if ($ppt->finish_click_ppt)
+                                                <span class="tanggalPpt" data-id="{{ $ppt->id }}"
+                                                    data-ppt-editing-finished-at="{{ $ppt->finish_click_ppt }}"
+                                                    style="justify-content: center; align-items: center; padding: 0;">
+                                                    {{ \Carbon\Carbon::parse($ppt->finish_click_ppt)->format('d-M-y') }}
+                                                </span>
+                                            @else
                                                 <li> <span class="tanggalPpt" data-id="{{ $ppt->id }}"
                                                         data-ppt-editing-finished-at="{{ $ppt->finish_click_ppt }}"style="display:none;">
                                                     </span></li>
@@ -65,14 +66,15 @@
                                                         data-id="{{ $ppt->id }}">Start</a></li>
                                                 <li><a href="#" class="btn btn-danger m-1 finish-ppt-editing"
                                                         data-id="{{ $ppt->id }}" style="display:none;">Finish</a></li>
-                                            </ul>
-                                        @endif
+                                            @endif
+                                        </ul>
                                     </td>
                                     <td>
                                         <ul class="d-flex list-unstyled ">
                                             <li><a href="#" class="btn btn-warning m-1" data-toggle="modal"
                                                     data-target="#modalEdit"
-                                                    onclick="getPptEditForm({{ $ppt->id }})">Edit</a></li>
+                                                    onclick="getPptEditForm({{ $ppt->id }})">Edit</a>
+                                            </li>
                                             <li>
                                                 <a href="#" class="btn btn-info  m-1" data-toggle="modal"
                                                     data-target="#modalEditContent"
@@ -147,14 +149,14 @@
 
                                     {{-- Recording Video --}}
                                     <td>
-                                        @if ($video->finish_click_video)
-                                            <span class="tanggalVideo" data-id="{{ $video->id }}"
-                                                data-video-finished-at="{{ $video->finish_click_video }}">
-                                                {{ \Carbon\Carbon::parse($video->finish_click_video)->format('d-M-y') }}
-                                            </span>
-                                        @else
-                                            <ul class="d-flex list-unstyled"
-                                                style="justify-content: center; align-items: center; padding: 0;">
+                                        <ul class="d-flex list-unstyled"
+                                            style="justify-content: center; align-items: center; padding: 0;">
+                                            @if ($video->finish_click_video)
+                                                <span class="tanggalVideo" data-id="{{ $video->id }}"
+                                                    data-video-finished-at="{{ $video->finish_click_video }}">
+                                                    {{ \Carbon\Carbon::parse($video->finish_click_video)->format('d-M-y') }}
+                                                </span>
+                                            @else
                                                 <li> <span class="tanggalVideo" data-id="{{ $video->id }}"
                                                         data-video-finished-at="{{ $video->finish_click_video }}"
                                                         style="display:none;">
@@ -167,16 +169,14 @@
                                                 <li><a href="#" class="btn btn-danger m-1 finish-video"
                                                         data-id="{{ $video->id }}" style="display:none;">Finish</a>
                                                 </li>
-                                            </ul>
-                                        @endif
+                                            @endif
+                                        </ul>
                                     </td>
 
                                     {{-- Recording PPT --}}
                                     <td>
-
                                         <ul class="d-flex list-unstyled"
                                             style="justify-content: center; align-items: center; padding: 0;">
-
                                             @if ($video->finish_click_ppt)
                                                 <li> <span class="tanggalPptVideo" data-id="{{ $video->id }}"
                                                         data-ppt-finished-at="{{ $video->finish_click_ppt }}">
@@ -196,18 +196,16 @@
                                                         data-id="{{ $video->id }}" style="display:none;">Finish</a>
                                                 </li>
                                             @endif
-
                                         </ul>
-
                                     </td>
 
                                     {{-- Editing --}}
                                     <td>
-                                        @if ($video->finish_click_editing)
-                                            <span>{{ \Carbon\Carbon::parse($video->finish_click_editing)->format('d-M-y') }}</span>
-                                        @else
-                                            <ul class="d-flex list-unstyled"
-                                                style="justify-content: center; align-items: center; padding: 0;">
+                                        <ul class="d-flex list-unstyled"
+                                            style="justify-content: center; align-items: center; padding: 0;">
+                                            @if ($video->finish_click_editing)
+                                                <span>{{ \Carbon\Carbon::parse($video->finish_click_editing)->format('d-M-y') }}</span>
+                                            @else
                                                 <li>
                                                     <p class="info" data-id="{{ $video->id }}">Harap selesaikan
                                                         rekaman Video dan PPT terlebih dahulu.</p>
@@ -224,8 +222,8 @@
                                                 <li><a href="#" class="btn btn-danger m-1 finish-editing"
                                                         data-id="{{ $video->id }}" style="display:none;">Finish</a>
                                                 </li>
-                                            </ul>
-                                        @endif
+                                            @endif
+                                        </ul>
                                     </td>
 
                                     <td>
@@ -418,11 +416,6 @@
                     _token: '{{ csrf_token() }}' // CSRF token
                 },
                 success: function(response) {
-
-                    console.log(id);
-                    console.log("Video Finished:", response.video);
-                    console.log("PPT Finished:", response.ppt);
-                    console.log("Editing Finished:", response.editing);
 
                     let video = response.video;
                     let ppt = response.ppt;

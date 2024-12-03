@@ -173,24 +173,13 @@
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Detail</th>
                                 @if (Auth::user()->position_id == '1')
+                                    <th class="text-center">Kurasi</th>
                                     <th class="text-center">Action</th>
                                 @endif
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($courses as $course)
-                                @php
-                                    $statusProgressMapping = [
-                                        'Not Yet' => 0,
-                                        'Progress' => 20,
-                                        'Finish Production' => 40,
-                                        'On Going CURATION' => 60,
-                                        'Publish' => 100,
-                                        'Cancel' => 0,
-                                    ];
-
-                                    $progressPercentage = $statusProgressMapping[$course->status] ?? 0;
-                                @endphp
                                 <tr id="tr_{{ $course->id }}">
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $course->kode_course }}</td>
@@ -242,23 +231,48 @@
 
                                     <td>
                                         <div class="progress" style="height: 20px;">
-                                            <div class="progress-bar progress-bar-striped bg-danger" role="progressbar"
-                                                style="width: {{ $progressPercentage }}%;"
-                                                aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0"
-                                                aria-valuemax="100">
-                                                {{ $progressPercentage }}%
+                                            <div class="progress-bar progress-bar-striped bg-danger progress-bar-course"
+                                                role="progressbar" style="width: {{ $course->progress }}%;"
+                                                aria-valuenow="{{ $course->progress }}" aria-valuemin="0"
+                                                aria-valuemax="100" data-id="{{ $course->id }}">
+                                                {{ $course->progress }}%
                                             </div>
                                         </div>
                                     </td>
 
-                                    <td>{{ $course->status }}</td>
+                                    <td class="status-course" data-status="{{ $course->status }}">{{ $course->status }}
+                                    </td>
                                     <td>
                                         <a class="btn btn-info" href="{{ route('course.show', $course->id) }}">
                                             Detail
                                         </a>
                                     </td>
-                                    <td>
-                                        @if (Auth::user()->position_id == '1')
+                                    @if (Auth::user()->position_id == '1')
+                                        <td>
+                                            @if ($course->progress >= 50)
+                                                <ul class="d-flex list-unstyled"
+                                                    style="justify-content: center; align-items: center; padding: 0;">
+                                                    <li>
+                                                        <a href="#" class="btn btn-primary m-1 kurasi"
+                                                            data-id="{{ $course->id }}">Kurasi</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" class="btn btn-danger m-1 publish"
+                                                            data-id="{{ $course->id }}" style="display:none;">
+                                                            Publish
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <p class="info" data-id="{{ $course->id }}"
+                                                            style="display:none;">Course Publish</p>
+                                                    </li>
+                                                </ul>
+                                            @else
+                                                <p>Harap selesaikan semua topik pada course ini terlebih dahulu.</p>
+                                            @endif
+                                        </td>
+
+                                        <td>
                                             <a href="#" class="btn btn-warning" data-toggle="modal"
                                                 data-target="#modalEditA"
                                                 onclick="getEditForm({{ $course->id }})">EDIT</a>
@@ -269,8 +283,8 @@
                                                 <input type="submit" value="Delete" class="btn btn-danger"
                                                     onclick="return confirm('Are you sure to delete {{ $course->id }} - {{ $course->name }}?');">
                                             </form>
-                                        @endif
-                                    </td>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>
@@ -344,6 +358,76 @@
             });
         });
 
+
+        $(document).ready(function() {
+            $('.publish').each(function() {
+                var id = $(this).data('id');
+                checkButton(id);
+            });
+        });
+
+        $(document).on('click', '.kurasi', function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            recordAction(id, 'kurasi'); // Record the start action
+            checkButton(id);
+        });
+
+
+        $(document).on('click', '.publish', function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            recordAction(id, 'publish'); // Record the start action
+            checkButton(id);
+        });
+
+        function checkButton(id) {
+            $.ajax({
+                url: '/course/check-button/' + id, // Ensure the URL matches your GET route
+                type: 'GET', // Change this to GET
+                success: function(response) {
+                    if (response.course) { // Validasi response.course
+                        let course = response.course;
+                        if (course.progress === 75 && course.status === 'On Going CURATION') {
+                            $('.kurasi[data-id="' + id + '"]').hide();
+                            $('.info[data-id="' + id + '"]').hide();
+                            $('.publish[data-id="' + id + '"]').show();
+                        } else if (course.progress === 100 && course.status === 'Publish') {
+                            $('.kurasi[data-id="' + id + '"]').hide();
+                            $('.publish[data-id="' + id + '"]').hide();
+                            $('.info[data-id="' + id + '"]').show();
+                        }
+                    } else {
+                        console.warn('Invalid response:', response);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+
+        function recordAction(id, action) {
+            $.ajax({
+                url: '/course/' + id + '/' + action, // Tambahkan '/' sebelum action
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}' // Ensure CSRF token is correctly injected
+                },
+                success: function(response) {
+                    $('td.status-course[data-id="' + id + '"]').text(response.status);
+                    // Update progress bar
+                    let progressBar = $('.progress-bar-course[data-id="' + id + '"]'); // Target progress bar
+                    progressBar.css('width', response.progress + '%'); // Update width
+                    progressBar.attr('aria-valuenow', response.progress); // Update ARIA value
+                    progressBar.text(response.progress + '%'); // Update progress text
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error recording action:', error);
+                }
+            });
+        }
 
         // Load Create Form
         function loadCreateForm() {
