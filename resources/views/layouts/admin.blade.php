@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,23 +20,31 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%; /* Lebar penuh layar */
-            height: 60px; /* Tinggi topbar */
-            background-color: white; /* Warna latar */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Efek bayangan */
+            width: 100%;
+            /* Lebar penuh layar */
+            height: 60px;
+            /* Tinggi topbar */
+            background-color: white;
+            /* Warna latar */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Efek bayangan */
             display: flex;
             align-items: center;
             justify-content: space-between;
-            z-index: 999; /* Pastikan topbar di atas navbar */
-            padding: 0 20px; /* Ruang horizontal */
+            z-index: 999;
+            /* Pastikan topbar di atas navbar */
+            padding: 0 20px;
+            /* Ruang horizontal */
         }
 
         .topbar img {
-            height: 70px; /* Ukuran logo */
+            height: 70px;
+            /* Ukuran logo */
         }
 
         .topbar ul {
-            list-style: none; /* Hilangkan bullet */
+            list-style: none;
+            /* Hilangkan bullet */
             display: flex;
             align-items: center;
             margin: 0;
@@ -43,7 +52,8 @@
         }
 
         .topbar ul li {
-            margin-left: 10px; /* Jarak antar item */
+            margin-left: 10px;
+            /* Jarak antar item */
         }
 
         /* Sidebar */
@@ -71,14 +81,19 @@
 
         /* Konten utama */
         .content {
-            margin-top: 60px; /* Ruang di bawah topbar */
-            margin-left: 250px; /* Ruang di samping navbar */
+            margin-top: 60px;
+            /* Ruang di bawah topbar */
+            margin-left: 250px;
+            /* Ruang di samping navbar */
             padding: 20px;
-            background-color: #f8f9fa; /* Warna latar konten */
-            min-height: calc(100vh - 60px); /* Tinggi minimal */
+            background-color: #f8f9fa;
+            /* Warna latar konten */
+            min-height: calc(100vh - 60px);
+            /* Tinggi minimal */
         }
     </style>
 </head>
+
 <body>
     <!-- Sidebar -->
     <aside class="sidebar">
@@ -86,12 +101,12 @@
         <ul>
             <li><a href="{{ route('welcome') }}"><i class="fas fa-fw fa-tachometer-alt"></i> Dashboard</a></li>
             <hr>
-            @if (Auth::user()->position_id == '1')
-                <li><a href="{{ route('employee.index') }}"><i class="fa fa-users"></i> Master Employee</a></li>
-                <li><a href="{{ route('dosen.index') }}"><i class="fa fa-users"></i> Master Kontributor</a></li>
-                <li><a href="{{ route('link_external.index') }}"><i class="fa fa-book"></i> Master External Link</a></li>
-                <li><a href="{{ route('periode.index') }}"><i class="fa fa-calendar"></i> Master Periode</a></li>
-                <li><a href="{{ route('course.index') }}"><i class="fa fa-book"></i> Master Courses</a></li>
+            @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
+            <li><a href="{{ route('employee.index') }}"><i class="fa fa-users"></i> Master Employee</a></li>
+            <li><a href="{{ route('dosen.index') }}"><i class="fa fa-users"></i> Master Kontributor</a></li>
+            <li><a href="{{ route('link_external.index') }}"><i class="fa fa-book"></i> Master External Link</a></li>
+            <li><a href="{{ route('periode.index') }}"><i class="fa fa-calendar"></i> Master Periode</a></li>
+            <li><a href="{{ route('course.index') }}"><i class="fa fa-book"></i> Master Courses</a></li>
             @endif
         </ul>
     </aside>
@@ -161,4 +176,5 @@
     <script src="{{ asset('admin/js/sb-admin-2.min.js') }}"></script>
     @yield('javascript')
 </body>
+
 </html>
