@@ -42,12 +42,34 @@ class UserController extends Controller
         // Redirect with success message
         return redirect()->route('employee.index')->with('status', 'User updated successfully');
     }
+    public function changePassword(Request $request, string $id)
+    {
+        // Validasi input
+        $data = $request->validate([
+            'current_password' => 'required|string|min:6', // Password saat ini
+            'new_password' => 'required|string|min:6|confirmed', // Password baru (dengan konfirmasi)
+        ]);
 
+        // Temukan user berdasarkan ID
+        $user = User::findOrFail($id);
 
+        // Periksa apakah password saat ini cocok
+        if (!\Hash::check($data['current_password'], $user->password)) {
+            return back()->withErrors(['current_password' => 'The current password is incorrect.']);
+        }
 
+        // Update password user
+        $user->update([
+            'password' => bcrypt($data['new_password']),
+        ]);
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('employee.show', $id)->with('status', 'Password updated successfully');
+    }
 
     public function show(string $id)
     {
+
         $user = User::findOrFail($id);
         return view('employee.show', compact('user'));
     }

@@ -92,6 +92,7 @@ Route::get('/course/check-button/{id}', [CourseController::class, 'checkButton']
 
 
 
+Route::put('/employee/{id}/change-password', [UserController::class, 'changePassword'])->name('employee.changePassword');
 
 
 
@@ -118,3 +119,4 @@ Route::resource('employee',  UserController::class);
 Route::resource('periode',  PeriodeController::class);
 Route::resource('logPpt', LogPptController::class);
 Route::resource('logVideo', LogVideosController::class);
+Route::resource('user', UserController::class);
