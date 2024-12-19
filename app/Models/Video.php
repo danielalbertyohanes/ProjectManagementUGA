@@ -106,12 +106,12 @@ class Video extends Model
                 'status' => match ($action) {
                     'start-video', 'start-ppt', 'start-editing' => 'Start',
                     'pause-video', 'pause-ppt' => 'Pause',
+                    'resume-video', 'resume-ppt' => 'Resume',
                     'finish-video', 'finish-ppt', 'finish-editing' => 'Finish',
                     default => 'Unknown',
                 },
                 'description' => ucfirst(str_replace('_', ' ', $action)), // Deskripsi menggunakan tindakan yang dibaca
             ]);
-
 
 
             // Aksi terkait Video
@@ -132,6 +132,12 @@ class Video extends Model
                     'pause_click_video' => now()->toDateString(),
                     'nilai_recording' => 20,
                     'status' => 'Pause Recording'
+                ];
+            } elseif ($action === 'resume-video') {
+                $updateData = [
+                    'started_at_video' => now()->toDateString(),
+                    'nilai_recording' => 20,
+                    'status' => 'Recording'
                 ];
             } elseif ($action === 'finish-video') {
                 $videoRecord = Video::find($videoId);

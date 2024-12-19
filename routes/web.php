@@ -14,8 +14,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\LogPptController;
 use App\Http\Controllers\LogVideosController;
-
+use App\Http\Controllers\ReportController;
 use App\Models\Ppt;
+use Spatie\FlareClient\Solutions\ReportSolution;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,12 +79,12 @@ Route::get('/video/create/{sub_topic_id}', [VideoController::class, 'create'])->
 Route::post('/video/{video}/recording/{action}', [VideoController::class, 'catatRecording'])
     ->name('video.recording');
 
-Route::post('/video/check-button/{id}', [VideoController::class, 'checkFinishStatus']);
+Route::get('/video/check-button/{id}', [VideoController::class, 'checkButton']);
 
 Route::post('/ppt/{ppt}/editing/{action}', [PptController::class, 'catatRecording'])
     ->name('ppt.editing');
 
-Route::post('/ppt/check-button/{id}', [PptController::class, 'checkFinishStatus']);
+Route::post('/ppt/check-button/{id}', [PptController::class, 'checkButton']);
 
 
 Route::post('/course/{course}/{action}', [CourseController::class, 'catatRecording']);
@@ -120,3 +121,4 @@ Route::resource('periode',  PeriodeController::class);
 Route::resource('logPpt', LogPptController::class);
 Route::resource('logVideo', LogVideosController::class);
 Route::resource('user', UserController::class);
+Route::resource('report', ReportController::class);

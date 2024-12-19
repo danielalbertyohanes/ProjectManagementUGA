@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 use App\Models\Position;
 use Illuminate\Http\Request;
-use App\Models\User;
 
 class UserController extends Controller
 {
@@ -54,7 +56,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         // Periksa apakah password saat ini cocok
-        if (!\Hash::check($data['current_password'], $user->password)) {
+        if (!Hash::check($data['current_password'], $user->password)) {
             return back()->withErrors(['current_password' => 'The current password is incorrect.']);
         }
 

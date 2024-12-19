@@ -9,7 +9,7 @@
     <div class="form-group">
         <label for="status">Status</label>
         <select class="form-control" id="status" name="status" required>
-            @foreach (['Not Yet', 'Progres', 'Finish', 'Cancel'] as $status)
+            @foreach (['Not Yet', 'Cancel'] as $status)
                 <option value="{{ $status }}" @if ($topic->status == $status) selected @endif>
                     {{ $status }}</option>
             @endforeach

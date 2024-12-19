@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ppt;
 use App\Models\Video;
+use App\Models\LogVideo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -119,43 +120,36 @@ class VideoController extends Controller
             'progress' => $newvideo->progress,
         ]);
     }
-    public function checkFinishStatus($id)
-    {
-        $video = Video::find($id);
 
-        if (!$video) {
-            return response()->json(['error' => 'Video not found'], 404);
+
+    public function checkButton($id)
+    {
+        $logPpt = LogVideo::where('description', 'like', '%-ppt')
+            ->where('video_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->select('status', 'description')
+            ->first();
+
+        $logVideo = LogVideo::where('description', 'like', '%-video')
+            ->where('video_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->select('status', 'description')
+            ->first();
+
+        $logEditing = LogVideo::where('description', 'like', '%-editing')
+            ->where('video_id', $id) // Anda bisa menambahkan status lain sesuai kebutuhan
+            ->orderBy('created_at', 'desc')
+            ->select('status', 'description')
+            ->first();
+
+        if (!$logEditing) {
+            $logEditing = (object) ['status' => null, 'description' => ''];  // jika tidak ada, return status null
         }
 
-        // Proper status checks
-        $isVideoFinished = !is_null($video->finish_click_video);
-        $isPptFinished = !is_null($video->finish_click_ppt);
-        $isEditingFinished = !is_null($video->finish_click_editing);
-
-        $isVideoStart = !is_null($video->started_at_video);
-        $isPptStart = !is_null($video->started_at_ppt);
-        $isEditingStart = !is_null($video->started_at_editing);
-
-        $isVideoPause = !is_null($video->pause_click_video);
-        $isPptPause = !is_null($video->pause_click_ppt);
-        $isEditingPause = !is_null($video->pause_click_editing);
-
         return response()->json([
-            'video' => [
-                'started' => $isVideoStart,
-                'paused' => $isVideoPause,
-                'finished' => $isVideoFinished,
-            ],
-            'ppt' => [
-                'started' => $isPptStart,
-                'paused' => $isPptPause,
-                'finished' => $isPptFinished,
-            ],
-            'editing' => [
-                'started' => $isEditingStart,
-                'paused' => $isEditingPause,
-                'finished' => $isEditingFinished,
-            ],
+            'video' => $logVideo,
+            'ppt' => $logPpt,
+            'editing' => $logEditing,  // Make sure `editing` is never null
         ]);
     }
 }

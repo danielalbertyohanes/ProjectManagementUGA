@@ -34,6 +34,16 @@ class Ppt extends Model
         'sub_topic_id',
     ];
 
+    public function topic()
+    {
+        return $this->belongsTo(Topic::class, 'sub_topic_id');
+    }
+
+    public function videos()
+    {
+        return $this->hasMany(Video::class, 'ppt_id');
+    }
+
     public function subTopic(): BelongsTo
     {
         return $this->belongsTo(SubTopic::class, 'sub_topic_id');

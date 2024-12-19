@@ -115,12 +115,12 @@
                                 <th class="text-center">Name</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Progress</th>
+                                <th class="text-center">Location</th>
                                 <th class="text-center">Detail Location</th>
                                 <th class="text-center">Recording Video</th>
                                 <th class="text-center">Recording PPT</th>
                                 <th class="text-center">Editing</th>
                                 <th class="text-center">Action</th>
-
                             </tr>
                         </thead>
                         <tbody>
@@ -144,7 +144,7 @@
                                             </div>
                                         </div>
                                     </td>
-
+                                    <td>{{ $video->location }}</td>
                                     <td>{{ $video->detail_location }}</td>
 
                                     {{-- Recording Video --}}
@@ -166,6 +166,8 @@
                                                 <li><a href="#" class="btn btn-warning m-1 pause-video"
                                                         data-id="{{ $video->id }}" style="display:none;">Pause</a>
                                                 </li>
+                                                <li><a href="#" class="btn btn-primary m-1 resume-video"
+                                                        data-id="{{ $video->id }}">Resume</a></li>
                                                 <li><a href="#" class="btn btn-danger m-1 finish-video"
                                                         data-id="{{ $video->id }}" style="display:none;">Finish</a>
                                                 </li>
@@ -302,7 +304,7 @@
 
             $('.start-editing').each(function() {
                 var id = $(this).data('id');
-                checkIfReadyForEditing(id);
+                checkButtonVideo(id);
             });
             $('.start-ppt-editing').each(function() {
                 var id = $(this).data('id');
@@ -314,8 +316,10 @@
             $(document).on('click', '.start-video', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
+
+
                 recordAction(id, 'start-video'); // Record the start action
-                checkIfReadyForEditing(id);
+                checkButtonVideo(id);
             });
 
             // Pause Video
@@ -323,7 +327,16 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 recordAction(id, 'pause-video'); // Record the pause action
-                checkIfReadyForEditing(id);
+                checkButtonVideo(id);
+            });
+
+            // Finish Video
+            $(document).on('click', '.resume-video', function(e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                recordAction(id, 'resume-video'); // Record the finish action
+                checkButtonVideo(id);
+
             });
 
             // Finish Video
@@ -331,7 +344,7 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 recordAction(id, 'finish-video'); // Record the finish action
-                checkIfReadyForEditing(id);
+                checkButtonVideo(id);
 
             });
 
@@ -340,7 +353,7 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 recordAction(id, 'start-ppt'); // Record the start action
-                checkIfReadyForEditing(id);
+                checkButtonVideo(id);
             });
 
             // Pause Video PPT
@@ -348,15 +361,16 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 recordAction(id, 'pause-ppt'); // Record the pause action
-                checkIfReadyForEditing(id);
+                checkButtonVideo(id);
             });
+
 
             // Finish Video PPT
             $(document).on('click', '.finish-ppt', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
                 recordAction(id, 'finish-ppt'); // Record the finish action
-                checkIfReadyForEditing(id);
+                checkButtonVideo(id);
             });
 
             // Start Video Editing
@@ -364,7 +378,7 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 recordAction(id, 'start-editing'); // Record the start action
-                checkIfReadyForEditing(id);
+                checkButtonVideo(id);
             });
 
 
@@ -373,7 +387,7 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 recordAction(id, 'finish-editing'); // Record the finish action
-                checkIfReadyForEditing(id);
+                checkButtonVideo(id);
             });
 
 
@@ -393,7 +407,7 @@
                 checkButtonPpt(id);
             });
 
-            $('#modal').on('hidden.bs.modal', function () {
+            $('#modal').on('hidden.bs.modal', function() {
                 location.reload();
             });
 
@@ -402,117 +416,91 @@
                 backdrop: true
             });
 
-            $('.close').click(function () {
+            $('.close').click(function() {
                 $('#modal').modal('hide');
             });
         });
 
 
-        function checkIfReadyForEditing(id) {
+        function checkButtonVideo(id) {
             $.ajax({
                 url: '/video/check-button/' + id,
-                type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}' // CSRF token
-                },
+                type: 'GET',
                 success: function(response) {
-
                     let video = response.video;
                     let ppt = response.ppt;
                     let editing = response.editing;
 
                     // Update info with the formatted date in d-MMM-yy format (e.g., 12-Nov-24)
-                    var currentDate = new Date(); // Get the current date
+                    var currentDate = new Date();
                     var day = currentDate.getDate();
                     var month = currentDate.toLocaleString('default', {
                         month: 'short'
-                    }); // Get month abbreviation
+                    });
                     var year = currentDate.getFullYear().toString().slice(-
-                        2); // Get last two digits of the year
+                        2);
 
                     // Format the date as d-MMM-yy
                     var formattedDate = day + '-' + month + '-' + year;
 
                     // Update tampilan tombol berdasarkan status video
-                    if (video.started) {
-                        $('.start-video[data-id="' + id + '"]').hide(); // Sembunyikan tombol Start
+                    if (video.status === "Start") {
+                        $('.start-video[data-id="' + id + '"]')
+                            .hide();
                         $('.pause-video[data-id="' + id + '"], .finish-video[data-id="' + id + '"]')
-                            .show(); // Tampilkan tombol Pause dan Finish
-                    } else if (video.paused) {
-                        $('.start-video[data-id="' + id + '"]').show(); // Tampilkan tombol Start
-                        $('.finish-video[data-id="' + id + '"]').show(); // Tampilkan tombol Finish
-                        $('.pause-video[data-id="' + id + '"]').hide(); // Sembunyikan tombol Pause
-                    }
-                    if (video.finished) {
-                        $('.start-video[data-id="' + id + '"]').hide(); // Tampilkan tombol Start
-                        $('.finish-video[data-id="' + id + '"]').hide(); // Tampilkan tombol Finish
-                        $('.pause-video[data-id="' + id + '"]').hide(); // Sembunyikan tombol Pause
-                        // Set the value and show the info
+                            .show();
+                    } else if (video.status === "Pause") {
+                        $('.start-video[data-id="' + id + '"]').show();
+                        $('.pause-video[data-id="' + id + '"], .finish-video[data-id="' + id + '"]').hide();
+                    } else if (video.status === "Finish") {
+                        $('.finish-video[data-id="' + id + '"],.start-video[data-id="' + id +
+                            '"], .pause-video[data-id="' + id + '"]').hide();
+
                         $('.tanggalVideo[data-id="' + id + '"]').text(formattedDate).show();
                     }
 
-
-                    // Update tampilan tombol berdasarkan status video
-                    if (ppt.started) {
-                        $('.start-ppt[data-id="' + id + '"]').hide(); // Sembunyikan tombol Start
-                        $('.pause-ppt[data-id="' + id + '"], .finish-ppt[data-id="' + id + '"]')
-                            .show(); // Tampilkan tombol Pause dan Finish
-                    } else if (ppt.paused) {
-                        $('.start-ppt[data-id="' + id + '"]').show(); // Tampilkan tombol Start
-                        $('.finish-ppt[data-id="' + id + '"]').show(); // Tampilkan tombol Finish
-                        $('.pause-ppt[data-id="' + id + '"]').hide(); // Sembunyikan tombol Pause
-
-                    }
-
-                    if (ppt.finished) {
-                        $('.start-ppt[data-id="' + id + '"]').hide(); // Tampilkan tombol Start
-                        $('.finish-ppt[data-id="' + id + '"]').hide(); // Tampilkan tombol Finish
-                        $('.pause-ppt[data-id="' + id + '"]').hide(); // Sembunyikan tombol Pause
-                        // Set the value and show the info
+                    // Update tampilan tombol berdasarkan status PPT
+                    if (ppt.status === "Start") {
+                        $('.start-ppt[data-id="' + id + '"]')
+                            .hide();
+                        $('.pause-ppt[data-id="' + id + '"], .finish-ppt[data-id="' + id +
+                                '"]')
+                            .show();
+                    } else if (ppt.status === "Pause") {
+                        $('.start-ppt[data-id="' + id + '"]').show();
+                        $('.finish-ppt[data-id="' + id + '"]').hide();
+                        $('.pause-ppt[data-id="' + id + '"]').hide();
+                    } else if (ppt.status === "Finish") {
+                        $('.start-ppt[data-id="' + id + '"]').hide();
+                        $('.finish-ppt[data-id="' + id + '"]').hide();
+                        $('.pause-ppt[data-id="' + id + '"]').hide();
                         $('.tanggalPptVideo[data-id="' + id + '"]').text(formattedDate).show();
                     }
 
-                    if (video.finished && ppt.finished) {
+                    if (video.status === "Finish" && ppt.status === "Finish") {
                         $('.info[data-id="' + id + '"]').hide();
 
-                        // Update tampilan tombol berdasarkan status video
-
-                        if (editing.finished) {
-                            $('.finish-editing[data-id="' + id + '"]').hide(); // Hide Pause button
-                            $('.start-editing[data-id="' + id + '"]').hide(); // Show Start button again
-
-                            // Set the value and show the info
-                            $('.tanggalEditing[data-id="' + id + '"]').text(formattedDate).show();
-                        } else if (editing.started) {
-                            $('.start-editing[data-id="' + id + '"]').hide(); // Sembunyikan tombol Start
+                        if (editing.status === "Start") {
+                            $('.start-editing[data-id="' + id + '"]').hide();
                             $('.finish-editing[data-id="' + id + '"]')
-                                .show(); // Tampilkan tombol Pause dan Finish
-                        } else {
-                            $('.start-editing[data-id="' + id + '"]').show(); // Sembunyikan tombol Start
+                                .show();
+                        } else if (editing.status === "Finish") {
+                            $('.finish-editing[data-id="' + id + '"]').hide();
+                            $('.start-editing[data-id="' + id + '"]').hide();
+
+                            $('.tanggalEditing[data-id="' + id + '"]').text(formattedDate).show();
+                        } else if (!editing || editing.status === null) {
+                            $('.info[data-id="' + id + '"]')
+                                .hide();
+                            $('.start-editing[data-id="' + id + '"]').show();
                         }
-                    } else {
-                        $('.info[data-id="' + id + '"]').show();
-                        $('.start-editing[data-id="' + id + '"]').hide(); // Sembunyikan tombol Start
                     }
+
                 },
                 error: function(xhr, status, error) {
                     console.error('Error:', error);
                 }
             });
-        }
-
-        // Fungsi untuk mengubah tombol Start/Pause saat tombol ditekan
-        function togglePauseStartButton(id, type) {
-            // Cek status video atau ppt berdasarkan tipe
-            var actionButton = (type === 'video') ? '.start-video[data-id="' + id + '"]' : '.start-ppt[data-id="' + id + '"]';
-            var pauseButton = (type === 'video') ? '.pause-video[data-id="' + id + '"]' : '.pause-ppt[data-id="' + id + '"]';
-
-            console.log('Hiding button:', actionButton);
-            console.log('Showing button:', pauseButton);
-
-            // Cek tombol yang aktif dan lakukan toggling
-            $(actionButton).toggle();  // Menyembunyikan tombol Start
-            $(pauseButton).toggle();   // Menyembunyikan tombol Pause
         }
 
         // Function to record actions
@@ -533,10 +521,6 @@
                     progressBar.css('width', response.progress + '%'); // Update width
                     progressBar.attr('aria-valuenow', response.progress); // Update ARIA value
                     progressBar.text(response.progress + '%'); // Update progress text
-
-                    // Menangani perubahan tombol Start/Pause
-                    togglePauseStartButton(id, type);
-
                 },
                 error: function(xhr, status, error) {
                     console.error('Error recording action:', error);
@@ -544,42 +528,11 @@
             });
         }
 
-        // Fungsi untuk menghandle klik tombol Start/Pause untuk Video
-        $('.start-video').on('click', function() {
-            var id = $(this).data('id');
-            recordAction(id, 'start', 'video');
-        });
-
-        // Fungsi untuk menghandle klik tombol Pause untuk Video
-        $('.pause-video').on('click', function() {
-            var id = $(this).data('id');
-            recordAction(id, 'pause', 'video');
-        });
-
-        // Fungsi untuk menghandle klik tombol Start/Pause untuk PPT
-        $('.start-ppt').on('click', function() {
-            var id = $(this).data('id');
-            recordAction(id, 'start', 'ppt');
-        });
-
-        // Fungsi untuk menghandle klik tombol Pause untuk PPT
-        $('.pause-ppt').on('click', function() {
-            var id = $(this).data('id');
-            recordAction(id, 'pause', 'ppt');
-        });
-
         function checkButtonPpt(id) {
             $.ajax({
                 url: '/ppt/check-button/' + id,
-                type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}' // CSRF token
-                },
+                type: 'GET',
                 success: function(response) {
-
-                    console.log(id);
-                    console.log("PPT Finished:", response.ppt);
-
                     let ppt = response.ppt;
 
                     // Update info with the formatted date in d-MMM-yy format (e.g., 12-Nov-24)
@@ -595,16 +548,14 @@
                     var formattedDate = day + '-' + month + '-' + year;
 
                     // Update tampilan tombol berdasarkan status video
-                    if (ppt.started) {
+                    if (ppt.status === "Start") {
                         $('.start-ppt-editing[data-id="' + id + '"]').hide(); // Sembunyikan tombol Start
                         $('.finish-ppt-editing[data-id="' + id + '"]')
                             .show(); // Tampilkan tombol Pause dan Finish
                         // Set the value and show the info
                         $('.tanggalPpt[data-id="' + id + '"]').text(formattedDate).hide();
 
-                    }
-
-                    if (ppt.finished) {
+                    } else if (ppt.status === "Finish") {
                         $('.start-ppt-editing[data-id="' + id + '"]').hide(); // Sembunyikan tombol Start
                         $('.finish-ppt-editing[data-id="' + id + '"]')
                             .hide();
@@ -644,7 +595,6 @@
                 }
             });
         }
-
 
         function getPptEditForm(id) {
             $.ajax({

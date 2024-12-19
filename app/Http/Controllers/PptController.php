@@ -140,25 +140,16 @@ class PptController extends Controller
         ]);
     }
 
-    public function checkFinishStatus($id)
+
+    public function checkButton($id)
     {
-        $ppt = Ppt::find($id);
-
-        if (!$ppt) {
-            return response()->json(['error' => 'PPT not found'], 404);
-        }
-
-        // Proper status checks
-        $isPptStart = !is_null($ppt->start_click_ppt);
-        $isPptFinished = !is_null($ppt->finish_click_ppt);
-
-
+        $logPpt = LogPpt::where('ppt_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->select('status', 'description')
+            ->first();
 
         return response()->json([
-            'ppt' => [
-                'started' => $isPptStart,
-                'finished' => $isPptFinished,
-            ]
+            'ppt' => $logPpt,
         ]);
     }
 }

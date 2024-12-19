@@ -11,7 +11,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Custom fonts for this template-->
     <link href="{{ asset('admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="{{ asset('admin/css/sb-admin-2.min.css') }}" rel="stylesheet">
     <style>
@@ -102,11 +104,13 @@
             <li><a href="{{ route('welcome') }}"><i class="fas fa-fw fa-tachometer-alt"></i> Dashboard</a></li>
             <hr>
             @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
-            <li><a href="{{ route('employee.index') }}"><i class="fa fa-users"></i> Master Employee</a></li>
-            <li><a href="{{ route('dosen.index') }}"><i class="fa fa-users"></i> Master Kontributor</a></li>
-            <li><a href="{{ route('link_external.index') }}"><i class="fa fa-book"></i> Master External Link</a></li>
-            <li><a href="{{ route('periode.index') }}"><i class="fa fa-calendar"></i> Master Periode</a></li>
-            <li><a href="{{ route('course.index') }}"><i class="fa fa-book"></i> Master Courses</a></li>
+                <li><a href="{{ route('employee.index') }}"><i class="fa fa-users"></i> Master Employee</a></li>
+                <li><a href="{{ route('dosen.index') }}"><i class="fa fa-users"></i> Master Kontributor</a></li>
+                <li><a href="{{ route('link_external.index') }}"><i class="fa fa-book"></i> Master External Link</a>
+                </li>
+                <li><a href="{{ route('periode.index') }}"><i class="fa fa-calendar"></i> Master Periode</a></li>
+                <li><a href="{{ route('course.index') }}"><i class="fa fa-book"></i> Master Courses</a></li>
+                <li><a href="{{ route('report.index') }}"><i class="fa fa-book"></i> Report</a></li>
             @endif
         </ul>
     </aside>
@@ -119,13 +123,12 @@
         <ul class="flex items-center space-x-3">
             <span class="text-gray-700">{{ optional(Auth::user())->name ?? 'Not Logged In' }}</span>
             <li class="dropdown">
-                <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
                     <i class="fas fa-user"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                     <a class="dropdown-item" href="{{ route('employee.show', Auth::user()->id) }}">Profile</a>
-                    <a class="dropdown-item" href="#">Settings</a>
-                    <a class="dropdown-item" href="#">Activity Log</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
                 </div>
