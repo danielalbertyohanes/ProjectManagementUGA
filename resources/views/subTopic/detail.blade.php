@@ -166,8 +166,7 @@
                                                 <li><a href="#" class="btn btn-warning m-1 pause-video"
                                                         data-id="{{ $video->id }}" style="display:none;">Pause</a>
                                                 </li>
-                                                <li><a href="#" class="btn btn-primary m-1 resume-video"
-                                                        data-id="{{ $video->id }}">Resume</a></li>
+
                                                 <li><a href="#" class="btn btn-danger m-1 finish-video"
                                                         data-id="{{ $video->id }}" style="display:none;">Finish</a>
                                                 </li>
@@ -554,7 +553,7 @@
                             .show(); // Tampilkan tombol Pause dan Finish
                         // Set the value and show the info
                         $('.tanggalPpt[data-id="' + id + '"]').text(formattedDate).hide();
-
+                       
                     } else if (ppt.status === "Finish") {
                         $('.start-ppt-editing[data-id="' + id + '"]').hide(); // Sembunyikan tombol Start
                         $('.finish-ppt-editing[data-id="' + id + '"]')

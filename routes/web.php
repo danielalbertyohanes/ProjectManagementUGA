@@ -84,11 +84,15 @@ Route::get('/video/check-button/{id}', [VideoController::class, 'checkButton']);
 Route::post('/ppt/{ppt}/editing/{action}', [PptController::class, 'catatRecording'])
     ->name('ppt.editing');
 
-Route::post('/ppt/check-button/{id}', [PptController::class, 'checkButton']);
+Route::get('/ppt/check-button/{id}', [PptController::class, 'checkButton']);
 
 
 Route::post('/course/{course}/{action}', [CourseController::class, 'catatRecording']);
 Route::get('/course/check-button/{id}', [CourseController::class, 'checkButton'])->name('course.checkButton');
+
+Route::put('/course/cancel/{id}', [CourseController::class, 'cancel'])->name('course.cancel');
+
+Route::put('/course/open/{id}', [CourseController::class, 'open'])->name('course.open');
 
 
 

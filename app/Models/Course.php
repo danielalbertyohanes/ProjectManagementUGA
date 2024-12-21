@@ -81,8 +81,12 @@ class Course extends Model
         $query = self::with('dosens', 'periode')
             ->join('course_has_periode', 'courses.id', '=', 'course_has_periode.courses_id')
             ->join('periode', 'course_has_periode.periode_id', '=', 'periode.id')
-            ->where('periode.status', 'active') // Hanya periode aktif
-            ->select('courses.*', 'periode.status as periode_status');
+            ->where('periode.status', 'active')
+            ->select('courses.*', 'periode.status as periode_status')
+            ->orderBy('courses.name', 'asc')
+            ->orderBy('courses.status', 'asc')
+            ->orderBy('courses.progress', 'asc');
+
 
         // Jika position_id = 2, filter berdasarkan PIC
         if ($positionId == 2) {
@@ -94,7 +98,10 @@ class Course extends Model
             $query->where(function ($q) use ($search) {
                 $q->where('courses.name', 'like', '%' . $search . '%')
                     ->orWhere('courses.kode_course', 'like', '%' . $search . '%')
-                    ->orWhere('courses.description', 'like', '%' . $search . '%');
+                    ->orWhere('courses.description', 'like', '%' . $search . '%')
+                    ->orderBy('courses.name', 'asc')
+                    ->orderBy('courses.status', 'asc')
+                    ->orderBy('courses.progress', 'asc');
             });
         }
 

@@ -95,6 +95,7 @@
             /* Pastikan tooltip bisa terlihat */
         }
 
+
         h1 {
             color: royalblue;
             font-weight: bold;
@@ -203,8 +204,6 @@
                                             {{ $periode->name }}<br>
                                         @endforeach
                                     </td>
-
-
                                     <td>
                                         <ul>
                                             @php
@@ -236,7 +235,6 @@
                                         </ul>
                                     </td>
                                     <td>{{ $course->user->name }}</td>
-
                                     <td>
                                         <div class="progress" style="height: 20px;">
                                             <div class="progress-bar progress-bar-striped bg-danger progress-bar-course"
@@ -247,54 +245,135 @@
                                             </div>
                                         </div>
                                     </td>
-
                                     <td class="status-course" data-status="{{ $course->status }}">{{ $course->status }}
                                     </td>
                                     <td>
-                                        <a class="btn btn-info" href="{{ route('course.show', $course->id) }}">
-                                            Detail
-                                        </a>
+                                        @if ($course->status != 'Cancel')
+                                            <a class="btn btn-info" href="{{ route('course.show', $course->id) }}">
+                                                Detail
+                                            </a>
+                                        @else
+                                            <p class="info" style="text-align: center">Course Cancel</p>
+                                        @endif
+
                                     </td>
                                     @if (Auth::user()->position_id == '1')
                                         <td>
-                                            @if ($course->progress >= 50)
-                                                <ul class="d-flex list-unstyled"
-                                                    style="justify-content: center; align-items: center; padding: 0;">
-                                                    <li>
-                                                        <a href="#" class="btn btn-primary m-1 kurasi"
-                                                            data-id="{{ $course->id }}">Kurasi</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" class="btn btn-danger m-1 publish"
-                                                            data-id="{{ $course->id }}" style="display:none;">
-                                                            Publish
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <p class="info" data-id="{{ $course->id }}"
-                                                            style="display:none;">Course Publish</p>
-                                                    </li>
-                                                </ul>
+
+
+                                            @if ($course->status != 'Cancel')
+                                                @if ($course->progress >= 50)
+                                                    <ul class="d-flex list-unstyled"
+                                                        style="justify-content: center; align-items: center; padding: 0;">
+                                                        <li>
+                                                            <a href="#" class="btn btn-primary m-1 kurasi"
+                                                                data-id="{{ $course->id }}">Kurasi</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="btn btn-danger m-1 publish"
+                                                                data-id="{{ $course->id }}" style="display:none;">
+                                                                Publish
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <p class="info" data-id="{{ $course->id }}"
+                                                                style="display:none;">Course Publish</p>
+                                                        </li>
+                                                    </ul>
+                                                @else
+                                                    <p class="info" style="text-align: center">Harap selesaikan semua
+                                                        topik pada course
+                                                        ini terlebih dahulu.</p>
+                                                @endif
                                             @else
-                                                <p>Harap selesaikan semua topik pada course ini terlebih dahulu.</p>
+                                                <p class="info" style="text-align: center">Course Cancel</p>
                                             @endif
+
                                         </td>
 
                                         <td>
-                                            <a href="#" class="btn btn-warning mb-2" data-toggle="modal"
-                                                data-target="#modalEditA" onclick="getEditForm({{ $course->id }})">
-                                                EDIT
-                                            </a>
-                                            <form method="POST" action="{{ route('course.destroy', $course->id) }}"
-                                                style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <input type="submit" value="Delete" class="btn btn-danger"
-                                                    onclick="return confirm('Are you sure to delete {{ $course->id }} - {{ $course->name }}?');">
-                                            </form>
+                                            @if ($course->status != 'Cancel')
+                                                <a href="#" class="btn btn-warning mb-2" data-toggle="modal"
+                                                    data-target="#modalEditA" onclick="getEditForm({{ $course->id }})">
+                                                    EDIT
+                                                </a>
+                                                {{-- <form method="POST" action="{{ route('course.destroy', $course->id) }}"
+                                            style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="submit" value="Delete" class="btn btn-danger"
+                                                onclick="return confirm('Are you sure to delete {{ $course->id }} - {{ $course->name }}?');">
+                                        </form> --}}
+
+                                                <!-- Button to trigger the modal -->
+                                                <button type="button" class="btn btn-danger cancel" data-toggle="modal"
+                                                    data-target="#cancelModal_{{ $course->id }}">
+                                                    Cancel
+                                                </button>
+                                            @else
+                                                <button type="button" class="btn btn-primary cancel" data-toggle="modal"
+                                                    data-target="#cancelModal_{{ $course->id }}">
+                                                    Open
+                                                </button>
+                                            @endif
                                         </td>
                                     @endif
                                 </tr>
+
+                                <!-- Modal Cancel -->
+                                <div class="modal fade" id="cancelModal_{{ $course->id }}" tabindex="-1" role="dialog"
+                                    aria-labelledby="cancelModalLabel_{{ $course->id }}" aria-hidden="true">
+                                    <div class="modal-dialog modal-wide">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <div class="modal-header">
+                                                    @if ($course->status != 'Cancel')
+                                                        <h5 class="modal-title"
+                                                            id="cancelModalLabel_{{ $course->id }}">
+                                                            Confirm Cancel</h5>
+                                                    @else
+                                                        <h5 class="modal-title"
+                                                            id="cancelModalLabel_{{ $course->id }}">
+                                                            Confirm Open </h5>
+                                                    @endif
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    @if ($course->status != 'Cancel')
+                                                        Are you sure you want to Cancel the course:
+                                                        <strong>{{ $course->name }}</strong>?
+                                                    @else
+                                                        Are you sure you want to Open the course:
+                                                        <strong>{{ $course->name }}</strong>?
+                                                    @endif
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Close</button>
+
+                                                    @if ($course->status != 'Cancel')
+                                                        <form method="POST"
+                                                            action="{{ route('course.cancel', $course->id) }}">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <button type="submit" class="btn btn-danger">Cancel</button>
+                                                        </form>
+                                                    @else
+                                                        <form method="POST"
+                                                            action="{{ route('course.open', $course->id) }}">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <button type="submit" class="btn btn-primary">Open</button>
+                                                        </form>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
                         </tbody>
                     </table>
@@ -333,21 +412,39 @@
                 var id = $(this).data('id');
                 checkButton(id);
             });
-        });
 
-        $(document).on('click', '.kurasi', function(e) {
-            e.preventDefault();
-            var id = $(this).data('id');
-            recordAction(id, 'kurasi'); // Record the start action
-            checkButton(id);
-        });
+            $('#dataTable tbody tr').each(function() {
+                // Dapatkan status dari setiap baris
+                var status = $(this).find('.status-course').data('status');
+
+                if (status === 'Cancel') {
+                    $(this).addClass('bg-danger text-white');
+                }
+            });
+
+            $(document).on('click', '.cancel', function(e) {
+                e.preventDefault(); // Mencegah perilaku default link
+                var id = $(this).data('id'); // Mendapatkan ID kursus
+                console.log('Membuka modal untuk kursus ID: ' + id); // Log debugging
+                // Menampilkan modal dengan ID unik untuk setiap kursus
+                $('#cancelModal_' + id).modal('show');
+            });
 
 
-        $(document).on('click', '.publish', function(e) {
-            e.preventDefault();
-            var id = $(this).data('id');
-            recordAction(id, 'publish'); // Record the start action
-            checkButton(id);
+            $(document).on('click', '.kurasi', function(e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                recordAction(id, 'kurasi'); // Record the start action
+                checkButton(id);
+            });
+
+
+            $(document).on('click', '.publish', function(e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                recordAction(id, 'publish'); // Record the start action
+                checkButton(id);
+            });
         });
 
         function checkButton(id) {
@@ -375,7 +472,6 @@
                 }
             });
         }
-
 
         function recordAction(id, action) {
             $.ajax({
@@ -477,10 +573,7 @@
                 });
             });
         });
-    </script>
 
-
-    <script>
         // Client-side search function
         document.getElementById('form1').addEventListener('input', function() {
             var input = this.value.toLowerCase();
