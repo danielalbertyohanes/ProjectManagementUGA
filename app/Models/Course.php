@@ -51,18 +51,6 @@ class Course extends Model
         return DB::table('courses')->insert($data);
     }
 
-    // // function update
-    // public static function updateCourse($id, $data)
-    // {
-    //     return DB::table('courses')->where('id', $id)->update($data);
-    // }
-
-    // // function delete
-    // public static function deleteCourse($id)
-    // {
-    //     return DB::table('courses')->where('id', $id)->delete();
-    // }
-
     // function ambil data 
     public static function getAllCourses()
     {
@@ -72,9 +60,6 @@ class Course extends Model
             ->get();
     }
 
-    // function cari course by id
-
-
     public static function searchCourses($search, $userId, $positionId)
     {
         // Inisiasi query dasar
@@ -83,29 +68,22 @@ class Course extends Model
             ->join('periode', 'course_has_periode.periode_id', '=', 'periode.id')
             ->where('periode.status', 'active')
             ->select('courses.*', 'periode.status as periode_status')
-            ->orderBy('courses.name', 'asc')
             ->orderBy('courses.status', 'asc')
             ->orderBy('courses.progress', 'asc');
-
-
         // Jika position_id = 2, filter berdasarkan PIC
         if ($positionId == 2) {
             $query->where('pic_course', $userId);
         }
-
         // Tambahkan filter pencarian jika ada
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('courses.name', 'like', '%' . $search . '%')
                     ->orWhere('courses.kode_course', 'like', '%' . $search . '%')
                     ->orWhere('courses.description', 'like', '%' . $search . '%')
-                    ->orderBy('courses.name', 'asc')
                     ->orderBy('courses.status', 'asc')
                     ->orderBy('courses.progress', 'asc');
             });
         }
-
-        // Ambil hasil query
         return $query->get();
     }
 
@@ -128,15 +106,10 @@ class Course extends Model
             // Jika action tidak valid, return false (atau bisa lempar exception)
             return false;
         }
-        //dd($updateData);
 
         // Cari dan update course
-        $course = self::findOrFail($courseId); // Akan throw exception jika tidak ditemukan
+        $course = self::findOrFail($courseId);
         $course->update($updateData);
-
-        // // Tambahkan log pengguna yang mengupdate (opsional)
-        // $course->updated_by = $userId;
-        // $course->save();
 
         return true; // Indikasi bahwa update berhasil
     }

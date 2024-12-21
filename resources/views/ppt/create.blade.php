@@ -17,14 +17,28 @@
         </div>
         <div class="form-group">
             <label for="name_video">Name Of Video</label>
-            <input type="text" class="form-control" id="name_video" name="name_video" placeholder="Enter Name" required>
+            <input type="text" class="form-control" id="name_video" name="name_video" placeholder="Enter Name Video"
+                required>
+            <input type="hidden" id="status_video" name="status_video" value="Not Yet">
 
+
+            <label for="location_video">Location</label>
+            <select class="form-control" id="location_video" name="location_video" required>
+                <option value="Not UBAYA">Not UBAYA</option>
+                <option value="UBAYA">UBAYA</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="detail_location">Detail Location</label>
+            <input type="text" class="form-control" id="detail_location" name="detail_location"
+                placeholder="Enter Detail Location" required>
             <input type="hidden" id="status_video" name="status_video" value="Not Yet">
         </div>
 
         <div class="modal-footer">
+            <a href="{{ route('subTopic.show', $subTopic->id) }}" class="btn btn-danger">Cancel</a>
             <button type="submit" class="btn btn-primary">Submit</button>
-            <a href="{{ route('ppt.index') }}" class="btn btn-danger">Cancel</a>
         </div>
     </form>
 @endsection

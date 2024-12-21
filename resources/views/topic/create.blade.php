@@ -23,8 +23,9 @@
     <button type="button" class="btn btn-sm btn-primary" id="addSubTopic">Tambah Sub Topic</button>
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Submit</button>
         <a href="{{ route('course.show', $course->id) }}" class="btn btn-danger">Cancel</a>
+        <button type="submit" class="btn btn-primary">Submit</button>
+       
     </div>
 </form>
 

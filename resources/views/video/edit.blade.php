@@ -21,7 +21,8 @@
     </div>
 
     <div class="modal-footer">
+        <a href="{{ route('subTopic.show', $video->ppt->sub_topic_id) }}" class="btn btn-danger"
+            data-dismiss="modal">Cancel</a>
         <button type="submit" class="btn btn-primary">Submit</button>
-        <a href="#" class="btn btn-danger" data-dismiss="modal">Cancel</a>
     </div>
 </form>

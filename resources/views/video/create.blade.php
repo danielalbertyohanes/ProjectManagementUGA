@@ -33,8 +33,8 @@
         </div>
 
         <div class="modal-footer">
+            <a href="{{ route('subTopic.show', $subTopicId) }}" class="btn btn-danger">Cancel</a>
             <button type="submit" class="btn btn-primary">Submit</button>
-            <a href="{{ route('ppt.index') }}" class="btn btn-danger">Cancel</a>
         </div>
     </form>
 @endsection

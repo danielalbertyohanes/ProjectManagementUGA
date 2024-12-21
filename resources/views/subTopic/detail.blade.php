@@ -616,8 +616,6 @@
             });
         }
 
-        //function to Get Form
-        // Function to Get LogPpt Form
         function getLogPpt(id) {
             $.ajax({
                 type: 'GET', // GET sesuai konvensi
@@ -639,7 +637,6 @@
                 }
             });
         }
-
 
         function getLogVideo(id) {
             $.ajax({

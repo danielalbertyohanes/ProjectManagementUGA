@@ -9,7 +9,7 @@
     </div>
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Submit</button>
         <a href="{{ route('subTopic.show', $ppt->sub_topic_id) }}" class="btn btn-danger">Cancel</a>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>
