@@ -21,10 +21,6 @@
             @endforeach
         </select>
 
-        <label for="videoCount">Jumlah Video</label>
-        <input type="number" class="form-control" id="videoCount" name="jumlah_video" placeholder="Enter Jumlah Video"
-            required min="1" max="20">
-
         <label for="picCourse">PIC Course</label>
         <select class="form-control" id="picCourse" name="pic_course" required>
             <option value="" selected disabled>Pilih PIC</option>
@@ -59,8 +55,8 @@
     </div>
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Submit</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>
 

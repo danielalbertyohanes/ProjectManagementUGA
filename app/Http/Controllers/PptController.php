@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LogPpt;
 use App\Models\Ppt;
+use App\Models\Video;
 use App\Models\Course;
+use App\Models\LogPpt;
 use App\Models\SubTopic;
 use App\Models\LinkExternal;
-use App\Models\Video;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PptController extends Controller
 {
@@ -42,7 +43,6 @@ class PptController extends Controller
             'user_id' => 'required|integer',
             'name_ppt' => 'required|string|max:255',
             'sub_topic_id' => 'required|integer',
-            'status_ppt' => 'required|string|max:255',
         ]);
 
         // Create PPT record
@@ -50,20 +50,17 @@ class PptController extends Controller
             'user_id' => $datappt['user_id'],
             'name' => $datappt['name_ppt'],
             'sub_topic_id' => $datappt['sub_topic_id'],
-            'status' => $datappt['status_ppt'],
         ]);
 
         // Validate data for Video
         $datavideo = $request->validate([
             'name_video' => 'required|string|max:255',
-            'status_video' => 'required|string|max:255',
         ]);
 
         // Create Video record
         Video::create([
             'name' => $datavideo['name_video'],
             'ppt_id' => $ppt->id,
-            'status' => $datavideo['status_video'],
         ]);
 
         return redirect()->route('subTopic.show', $datappt['sub_topic_id'])->with('status', 'Berhasil Tambah');
@@ -94,6 +91,7 @@ class PptController extends Controller
         $data = $request->validate([
             'name' => 'nullable|string',
             'status' => 'nullable|in:Not Yet,Progress,Finished,Cancel',
+
         ]);
 
         // Debugging line: Remove or comment out this line in production
@@ -124,4 +122,34 @@ class PptController extends Controller
         ], 200);
     }
 
+    public function catatRecording(Ppt $ppt, $action)
+    {
+        //dd($video, $action);
+        // Catat aksi ke dalam database melalui model
+
+        Ppt::catatTanggalRecording(Auth::user()->id, $ppt->id, $action);
+
+        $newppt = Ppt::findOrFail($ppt->id);
+
+        // Response JSON untuk AJAX
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Action recorded successfully',
+            'status' => $newppt->status,
+            'progress' => $newppt->progress,
+        ]);
+    }
+
+
+    public function checkButton($id)
+    {
+        $logPpt = LogPpt::where('ppt_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->select('status', 'description')
+            ->first();
+
+        return response()->json([
+            'ppt' => $logPpt,
+        ]);
+    }
 }

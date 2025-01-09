@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\LogVideo;
-
-use App\Models\Video;
 use Illuminate\Http\Request;
+
 
 class LogVideosController extends Controller
 {
@@ -46,13 +45,19 @@ class LogVideosController extends Controller
         // Optionally, return a response or redirect
         return redirect()->route('course.index')->with('status', 'Log entry updated and new log added.');
     }
-    public function getLogVideoForm(Request $request)
+    public function getLogVideo(Request $request)
     {
-        $video = Video::findOrFail($request->id);
+        $id = $request->input('id');
+
+        // Mengambil banyak log_video berdasarkan video_id
+        $log_video = LogVideo::getLogVideo($id); // Mengambil banyak data log_video
+
+        // Debugging untuk memastikan data diterima dengan benar
+        //dd($id, $log_video);
 
         return response()->json([
             'status' => 'ok',
-            'msg' => view('log_Video.formlog', compact('video'))->render()
-        ]);
+            'msg' => view('log_video.formlog', compact('log_video'))->render()
+        ], 200);
     }
 }

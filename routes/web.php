@@ -14,8 +14,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\LogPptController;
 use App\Http\Controllers\LogVideosController;
-
+use App\Http\Controllers\ReportController;
 use App\Models\Ppt;
+use Spatie\FlareClient\Solutions\ReportSolution;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,9 +64,9 @@ Route::post('/subtopic/ppt/getPptEditForm', [PptController::class, 'getPptEditFo
 
 Route::post('/subtopic/video/getVideoEditForm', [VideoController::class, 'getVideoEditForm'])->name('video.getVideoEditForm');
 
-Route::post('/subtopic/ppt/getLogPptForm', [LogPptController::class, 'getLogPptForm'])->name('logPpt.getLogPptForm');
+Route::get('/subtopic/ppt/getLogPpt', [LogPptController::class, 'getLogPpt'])->name('logPpt.getLogPpt');
 
-Route::Post('/subtopic/video/getLogVideoForm', [LogVideosController::class, 'getLogVideoForm'])->name('logVideo.getLogVideoForm');
+Route::get('/subtopic/video/getLogVideo', [LogVideosController::class, 'getLogVideo'])->name('logVideo.getLogVideo');
 
 Route::post('/subtopic/ppt/getPptEditForm', [PptController::class, 'getPptEditForm'])->name('ppt.getPptEditForm');
 
@@ -74,6 +75,29 @@ Route::post('subtopic/video/getVideoEditForm', [VideoController::class, 'getVide
 Route::get('/ppt/create/{sub_topic_id}', [PptController::class, 'create'])->name('ppt.newPpt');
 
 Route::get('/video/create/{sub_topic_id}', [VideoController::class, 'create'])->name('video.newVideo');
+
+Route::post('/video/{video}/recording/{action}', [VideoController::class, 'catatRecording'])
+    ->name('video.recording');
+
+Route::get('/video/check-button/{id}', [VideoController::class, 'checkButton']);
+
+Route::post('/ppt/{ppt}/editing/{action}', [PptController::class, 'catatRecording'])
+    ->name('ppt.editing');
+
+Route::get('/ppt/check-button/{id}', [PptController::class, 'checkButton']);
+
+
+Route::post('/course/{course}/{action}', [CourseController::class, 'catatRecording']);
+Route::get('/course/check-button/{id}', [CourseController::class, 'checkButton'])->name('course.checkButton');
+
+Route::put('/course/cancel/{id}', [CourseController::class, 'cancel'])->name('course.cancel');
+
+Route::put('/course/open/{id}', [CourseController::class, 'open'])->name('course.open');
+
+
+
+
+Route::put('/employee/{id}/change-password', [UserController::class, 'changePassword'])->name('employee.changePassword');
 
 
 
@@ -100,3 +124,5 @@ Route::resource('employee',  UserController::class);
 Route::resource('periode',  PeriodeController::class);
 Route::resource('logPpt', LogPptController::class);
 Route::resource('logVideo', LogVideosController::class);
+Route::resource('user', UserController::class);
+Route::resource('report', ReportController::class);

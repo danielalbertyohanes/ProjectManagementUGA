@@ -9,7 +9,7 @@
     <div class="form-group">
         <label for="status">Status</label>
         <select class="form-control" id="status" name="status" required>
-            @foreach (['Not Yet', 'Progres', 'Finish', 'Cancel'] as $status)
+            @foreach (['Not Yet', 'Cancel'] as $status)
                 <option value="{{ $status }}" @if ($topic->status == $status) selected @endif>
                     {{ $status }}</option>
             @endforeach
@@ -28,8 +28,8 @@
     <button type="button" class="btn btn-sm btn-primary" id="addSubTopic">Tambah Sub Topic</button>
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Submit</button>
         <a href="{{ route('course.show', $topic->course_id) }}" class="btn btn-danger">Cancel</a>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>
 

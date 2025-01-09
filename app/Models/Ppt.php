@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Carbon\Carbon;
 
 class Ppt extends Model
 {
@@ -17,14 +18,31 @@ class Ppt extends Model
 
     protected $fillable = [
         'name',
-        'editing_started_at',
-        'editing_finished_at',
-        'sent_at',
         'progress',
         'status',
+        'started_at',
+        'finished_at',
+        'start_click_ppt',
+        'pause_click_ppt',
+        'finish_click_ppt',
+        'durasi_editing',
+        'nilai_editing',
+        'created_at',
+        'updated_at',
+        'deleted_at',
         'user_id',
-        'sub_topic_id'
+        'sub_topic_id',
     ];
+
+    public function topic()
+    {
+        return $this->belongsTo(Topic::class, 'sub_topic_id');
+    }
+
+    public function videos()
+    {
+        return $this->hasMany(Video::class, 'ppt_id');
+    }
 
     public function subTopic(): BelongsTo
     {
@@ -71,5 +89,66 @@ class Ppt extends Model
         ];
 
         return $statusMap[$status] ?? 0;
+    }
+
+    public static function catatTanggalRecording($userId, $pptId, $action)
+    {
+        $updateData = []; // Array untuk menyimpan data yang akan diupdate
+
+        $Ppt = Ppt::findOrFail($pptId); // or use findOrFail($videoId) to throw an error if not found
+
+        if ($Ppt) {
+
+            // Mencatat log tindakan
+            $catat_log = LogPpt::create([
+                'user_id' => $userId,
+                'ppt_id' => $pptId,
+                'status' => match ($action) {
+                    'start-ppt-editing' => 'Start',
+                    'finish-ppt-editing' => 'Finish',
+                    default => 'Unknown',
+                },
+                'description' => ucfirst(str_replace('_', ' ', $action)), // Deskripsi menggunakan tindakan yang dibaca
+            ]);
+
+
+            // Aksi terkait PPT
+            if ($action === 'start-ppt-editing') {
+                $updateData = [
+                    'started_at' => now(),
+                    'start_click_ppt' => now(),
+                    'nilai_editing' => 50,
+                    'status' => 'Progress',
+                    'progress' => 50
+                ];
+            } elseif ($action === 'finish-ppt-editing') {
+                $newppt = Ppt::find($pptId);
+                if ($newppt && $newppt->start_click_ppt) {
+                    $durasi = Carbon::parse($newppt->start_click_ppt)->diffInDays(now());
+                    $updateData = [
+                        'finished_at' => now()->toDateString(),
+                        'finish_click_ppt' => now(),
+                        'durasi_editing' => $durasi,
+                        'nilai_editing' => 100,
+                        'status' => 'Finished',
+                        'progress' => 100,
+                    ];
+                }
+            }
+
+
+            $updated = $Ppt->update($updateData);
+            //dd($updateData);
+            if ($updated) {
+                // Optionally, return success response
+                return response()->json(['message' => 'PPT updated successfully']);
+            } else {
+                // Handle failure if the update fails
+                return response()->json(['message' => 'Failed to update PPT']);
+            }
+        } else {
+            // Handle case where the video is not found
+            return response()->json(['message' => 'PPT not found'], 404);
+        }
     }
 }

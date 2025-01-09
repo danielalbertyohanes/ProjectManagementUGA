@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Ppt;
 use App\Models\Video;
+use App\Models\LogVideo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VideoController extends Controller
 {
@@ -73,7 +75,7 @@ class VideoController extends Controller
         $data = $request->validate([
             'name' => 'nullable|string',
             'location' => 'nullable|in:UBAYA,Not UBAYA',
-            'description_location' => 'nullable|string',
+            'detail_location' => 'nullable|string',
             'status' => 'nullable|in:Not Yet,Recording,Recorded,PPT Recording,PPT Recorded,Editing,Edited,Pause Recording',
         ]);
 
@@ -99,5 +101,55 @@ class VideoController extends Controller
             'status' => 'ok',
             'msg' => view('video.edit', compact('video'))->render()
         ], 200);
+    }
+
+
+    public function catatRecording(Video $video, $action)
+    {
+        //dd($video, $action);
+        // Catat aksi ke dalam database melalui model
+        Video::catatTanggalRecording(Auth::user()->id, $video->id, $action);
+
+        $newvideo = Video::findOrFail($video->id);
+
+        // Response JSON untuk AJAX
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Action recorded successfully',
+            'status' => $newvideo->status,
+            'progress' => $newvideo->progress,
+        ]);
+    }
+
+
+    public function checkButton($id)
+    {
+        $logPpt = LogVideo::where('description', 'like', '%-ppt')
+            ->where('video_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->select('status', 'description')
+            ->first();
+
+        $logVideo = LogVideo::where('description', 'like', '%-video')
+            ->where('video_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->select('status', 'description')
+            ->first();
+
+        $logEditing = LogVideo::where('description', 'like', '%-editing')
+            ->where('video_id', $id) // Anda bisa menambahkan status lain sesuai kebutuhan
+            ->orderBy('created_at', 'desc')
+            ->select('status', 'description')
+            ->first();
+
+        if (!$logEditing) {
+            $logEditing = (object) ['status' => null, 'description' => ''];  // jika tidak ada, return status null
+        }
+
+        return response()->json([
+            'video' => $logVideo,
+            'ppt' => $logPpt,
+            'editing' => $logEditing,  // Make sure `editing` is never null
+        ]);
     }
 }

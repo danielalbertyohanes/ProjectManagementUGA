@@ -1,10 +1,37 @@
 @extends('layouts.admin')
 
 @section('content')
+    <style>
+        h1 {
+            color: royalblue;
+            font-weight: bold;
+            font-size: 2rem;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        p {
+            font-size: 1rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #232323;
+        }
+        th {
+            font-weight: bold;
+            text-align: center;
+            color: #232323;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        td {
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            color: #232323;
+        }
+    </style>
     <div class="container-fluid">
-        <h1 class="h3 mb-2 text-gray-800">PERIODE</h1>
-        <p>Master Periode adalah modul yang digunakan untuk mendefinisikan dan mengelola periode waktu akademik
-            di mana kursus-kursus atau mata pelajaran diselenggarakan.</p>
+        <h1>MASTER PERIODE</h1>
+        <p>Master Periode adalah modul yang digunakan untuk mendefinisikan dan mengelola periode waktu akademik dimana kursus-kursus atau mata pelajaran diselenggarakan.</p>
 
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
@@ -12,12 +39,12 @@
 
         @if (Auth::user()->position_id == '1')
             <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateDosen"
-                onclick="loadCreateForm()">+ New Periode</button>
+                onclick="loadCreateForm()">Tambah Periode</button>
         @endif
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">DataTables</h6>
+                <h6 class="m-0 font-weight-bold text-primary">DAFTAR PERIODE</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -26,9 +53,9 @@
                             <tr>
                                 <th class="text-center">No</th>
                                 <th class="text-center">Nama</th>
-                                <th class="text-center">Tanggal_Mulai</th>
-                                <th class="text-center">Tanggal_Selesai</th>
-                                <th class="text-center">Tanggal_Kurasi</th>
+                                <th class="text-center">Tanggal Mulai</th>
+                                <th class="text-center">Tanggal Selesai</th>
+                                <th class="text-center">Tanggal Kurasi</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Aksi</th>
                             </tr>

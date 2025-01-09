@@ -12,13 +12,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Course extends Model
 {
     use HasFactory, SoftDeletes;
-
+    protected $table = 'courses';
     protected $fillable = [
         'kode_course',
         'name',
         'description',
         'jumlah_video',
-        'progres',
+        'progress',
         'status',
         'pic_course',
         'drive_url',
@@ -51,18 +51,6 @@ class Course extends Model
         return DB::table('courses')->insert($data);
     }
 
-    // // function update
-    // public static function updateCourse($id, $data)
-    // {
-    //     return DB::table('courses')->where('id', $id)->update($data);
-    // }
-
-    // // function delete
-    // public static function deleteCourse($id)
-    // {
-    //     return DB::table('courses')->where('id', $id)->delete();
-    // }
-
     // function ambil data 
     public static function getAllCourses()
     {
@@ -72,33 +60,57 @@ class Course extends Model
             ->get();
     }
 
-    // function cari course by id
-
-
     public static function searchCourses($search, $userId, $positionId)
     {
         // Inisiasi query dasar
         $query = self::with('dosens', 'periode')
             ->join('course_has_periode', 'courses.id', '=', 'course_has_periode.courses_id')
             ->join('periode', 'course_has_periode.periode_id', '=', 'periode.id')
-            ->where('periode.status', 'active') // Hanya periode aktif
-            ->select('courses.*', 'periode.status as periode_status');
-
+            ->where('periode.status', 'active')
+            ->select('courses.*', 'periode.status as periode_status')
+            ->orderBy('courses.status', 'asc')
+            ->orderBy('courses.progress', 'asc');
         // Jika position_id = 2, filter berdasarkan PIC
         if ($positionId == 2) {
             $query->where('pic_course', $userId);
         }
-
         // Tambahkan filter pencarian jika ada
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('courses.name', 'like', '%' . $search . '%')
                     ->orWhere('courses.kode_course', 'like', '%' . $search . '%')
-                    ->orWhere('courses.description', 'like', '%' . $search . '%');
+                    ->orWhere('courses.description', 'like', '%' . $search . '%')
+                    ->orderBy('courses.status', 'asc')
+                    ->orderBy('courses.progress', 'asc');
             });
         }
-
-        // Ambil hasil query
         return $query->get();
+    }
+
+    public static function catatTanggalRecording($userId, $courseId, $action)
+    {
+        $updateData = [];
+
+        // Logika untuk menentukan update data berdasarkan action
+        if ($action === 'kurasi') {
+            $updateData = [
+                'progress' => 75,
+                'status' => 'On Going CURATION',
+            ];
+        } elseif ($action === 'publish') {
+            $updateData = [
+                'progress' => 100,
+                'status' => 'Publish',
+            ];
+        } else {
+            // Jika action tidak valid, return false (atau bisa lempar exception)
+            return false;
+        }
+
+        // Cari dan update course
+        $course = self::findOrFail($courseId);
+        $course->update($updateData);
+
+        return true; // Indikasi bahwa update berhasil
     }
 }

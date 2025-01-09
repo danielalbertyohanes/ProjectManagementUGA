@@ -10,16 +10,15 @@
     <div class="form-group">
         <label for="status">Status</label>
         <select class="form-control" id="status" name="status">
-            @foreach (['Not Yet', 'Progres', 'Finish', 'Cancel'] as $status)
+            @foreach (['Not Yet', 'Cancel'] as $status)
                 <option value="{{ $status }}" @if ($subTopic->status == $status) selected @endif>
                     {{ $status }}
                 </option>
             @endforeach
         </select>
     </div>
-
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Submit</button>
         <a href="{{ route('course.show', $subTopic->topic->course_id) }}" class="btn btn-danger">Cancel</a>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>

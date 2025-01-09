@@ -15,22 +15,14 @@
             @endforeach
         </select>
 
-        <label for="description_location">Description Location</label>
-        <input type="text" class="form-control" id="description_location" name="description_location" placeholder="Enter Description Location" 
-            value="{{ old('description_location', $video->description_location) }}">
-
-        <label for="status">Status</label>
-        <select class="form-control" id="status" name="status" required>
-            @foreach (['Not Yet', 'Recording', 'Recorded', 'PPT Recording', 'PPT Recorded', 'Editing', 'Edited', 'Pause Recording'] as $status)
-                <option value="{{ $status }}" {{ $video->status == $status ? 'selected' : '' }}>
-                    {{ $status }}
-                </option>
-            @endforeach
-        </select>  
+        <label for="description_location">Detail Location</label>
+        <input type="text" class="form-control" id="detail_location" name="detail_location"
+            placeholder="Enter Detail Location" value="{{ old('detail_location', $video->detail_location) }}">
     </div>
 
     <div class="modal-footer">
+        <a href="{{ route('subTopic.show', $video->ppt->sub_topic_id) }}" class="btn btn-danger"
+            data-dismiss="modal">Cancel</a>
         <button type="submit" class="btn btn-primary">Submit</button>
-        <a href="#" class="btn btn-danger" data-dismiss="modal">Cancel</a>
     </div>
 </form>

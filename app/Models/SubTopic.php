@@ -29,6 +29,12 @@ class SubTopic extends Model
     {
         return $this->hasMany(Ppt::class, 'sub_topic_id', 'id');
     }
+
+    public function videos()
+    {
+        return $this->hasManyThrough(Video::class, PPT::class);
+    }
+
     // Get all topics
     public static function getAllSubTopics()
     {

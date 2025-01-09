@@ -24,12 +24,17 @@ class Topic extends Model
 
     protected $dates = ['deleted_at'];
 
-    public function courses(): BelongsTo
+    public function ppts()
+    {
+        return $this->hasMany(PPT::class, 'sub_topic_id');
+    }
+
+    public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class, 'course_id');
     }
 
-    public function sub_topics(): HasMany
+    public function subTopics(): HasMany
     {
         return $this->hasMany(SubTopic::class, 'topic_id', 'id');
     }
