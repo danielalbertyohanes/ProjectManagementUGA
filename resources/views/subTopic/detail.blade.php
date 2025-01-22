@@ -94,13 +94,13 @@
             </div>
         </div>
 
-
-        {{-- Tabel Video --}}
-        <div class="card shadow mb-4">
-            @if ($videos->isNotEmpty())
+        @if ($videos->isNotEmpty())
                 <a class="btn btn-success mb-3" href="{{ route('video.newVideo', $subTopic->id) }}">+ New Video</a>
             @endif
 
+
+        {{-- Tabel Video --}}
+        <div class="card shadow mb-4"> 
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Video</h6>
             </div>
@@ -256,8 +256,7 @@
     </div>
 
     {{-- Edit Modal --}}
-    <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel"
-        aria-hidden="true">
+    <div class="modal" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -267,9 +266,8 @@
                     </button>
                 </div>
                 <div class="modal-body" id="modalEditContent">
-                    {{-- Content will be loaded here via AJAX --}}
+                    <p>Loading...</p> <!-- Placeholder saat konten sedang dimuat -->
                 </div>
-
             </div>
         </div>
     </div>

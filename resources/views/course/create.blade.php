@@ -10,8 +10,8 @@
             required>
 
         <label for="courseDescription">Deskripsi Course</label>
-        <input type="text" class="form-control" id="courseDescription" name="description"
-            placeholder="Enter Description" required>
+        <textarea type="textArea" class="form-control" id="courseDescription" name="description"
+            placeholder="Enter Descriptionss"></textarea>
 
         <label for="picCourse">Periode Course</label>
         <select class="form-control" id="periodeCourse" name="periode_id" required>
