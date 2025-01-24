@@ -19,7 +19,7 @@
                             <th>Tugas</th>
                             <th>Assignee</th>
                             <th>Status</th>
-                            <th>Durasi (hari)</th>
+                            <th>Durasi (hari kerja)</th>
                             <th>Peak Work Time</th>
                         </tr>
                     </thead>
