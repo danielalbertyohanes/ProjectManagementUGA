@@ -14,8 +14,7 @@ class ReportController extends Controller
     {
         // Ambil semua kursus
         $courses = Course::with([
-            'topics.ppts',
-            'topics.ppts.videos'
+            'topics.subTopics.ppts.videos' => fn($query) => $query->orderBy('name'),
         ])->get();
 
         return view('report.index', compact('courses'));

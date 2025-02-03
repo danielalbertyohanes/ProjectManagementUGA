@@ -7,7 +7,7 @@
             Ipsum has been the industry's.</p>
 
 
-        <a class="btn btn-success mb-3" href="{{ route('ppt.newPpt', $subTopic->id) }}">+ New PPT</a>
+        <a class="btn btn-success mb-3" href="{{ route('ppt.newPpt', $subTopic->id) }}">+ Tambah PPT</a>
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
@@ -95,12 +95,12 @@
         </div>
 
         @if ($videos->isNotEmpty())
-                <a class="btn btn-success mb-3" href="{{ route('video.newVideo', $subTopic->id) }}">+ New Video</a>
-            @endif
+            <a class="btn btn-success mb-3" href="{{ route('video.newVideo', $subTopic->id) }}">+ Tambah Video</a>
+        @endif
 
 
         {{-- Tabel Video --}}
-        <div class="card shadow mb-4"> 
+        <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Video</h6>
             </div>
@@ -256,7 +256,8 @@
     </div>
 
     {{-- Edit Modal --}}
-    <div class="modal" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true">
+    <div class="modal" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -421,7 +422,7 @@
 
         function checkButtonVideo(id) {
             $.ajax({
-                url: '/video/check-button/' + id,
+                url: '/logvideo/check-button/' + id,
                 type: 'GET',
                 success: function(response) {
                     let video = response.video;
@@ -527,7 +528,7 @@
 
         function checkButtonPpt(id) {
             $.ajax({
-                url: '/ppt/check-button/' + id,
+                url: '/logppt/check-button/' + id,
                 type: 'GET',
                 success: function(response) {
                     let ppt = response.ppt;
@@ -551,7 +552,7 @@
                             .show(); // Tampilkan tombol Pause dan Finish
                         // Set the value and show the info
                         $('.tanggalPpt[data-id="' + id + '"]').text(formattedDate).hide();
-                       
+
                     } else if (ppt.status === "Finish") {
                         $('.start-ppt-editing[data-id="' + id + '"]').hide(); // Sembunyikan tombol Start
                         $('.finish-ppt-editing[data-id="' + id + '"]')

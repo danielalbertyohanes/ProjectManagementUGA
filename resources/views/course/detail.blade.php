@@ -57,7 +57,7 @@
         {{-- Tombol  --}}
         <!-- Button to trigger modal -->
         <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreate"
-            onclick="loadCreateForm({{ $course->id }})">+ New Topic Modal</button>
+            onclick="loadCreateForm({{ $course->id }})">+ Tambah Topic</button>
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">

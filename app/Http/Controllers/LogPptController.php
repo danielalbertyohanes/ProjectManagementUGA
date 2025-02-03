@@ -60,4 +60,16 @@ class LogPptController extends Controller
             'msg' => view('log_Ppt.formlog', compact('log_ppt'))->render()
         ], 200);
     }
+
+    public function checkButton($id)
+    {
+        $logPpt = LogPpt::where('ppt_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->select('status', 'description')
+            ->first();
+
+        return response()->json([
+            'ppt' => $logPpt,
+        ]);
+    }
 }

@@ -86,4 +86,26 @@ class UserController extends Controller
             'msg' => view('employee.edit', compact('user', 'positions'))->render()
         ], 200);
     }
+
+    public function create()
+    {
+        $positions = Position::all();
+        return view('employee.create', compact('positions'));
+    }
+    public function store(Request $request)
+    {
+
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'npk' =>  ['required'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'no_telp' =>  ['required'],
+            'password' => ['required'],
+            'position_id' =>  ['required']
+        ]);
+
+        $user = User::create($data);
+
+        return redirect()->route('employee.index')->with('status', 'Berhasil Tambah');
+    }
 }

@@ -26,7 +26,7 @@ class Topic extends Model
 
     public function ppts()
     {
-        return $this->hasMany(PPT::class, 'sub_topic_id');
+        return $this->hasManyThrough(PPT::class, SubTopic::class);
     }
 
     public function course(): BelongsTo

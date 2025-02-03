@@ -30,6 +30,7 @@ class Course extends Model
         return $this->hasMany(Topic::class, 'course_id', 'id');
     }
 
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'pic_course');

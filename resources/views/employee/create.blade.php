@@ -10,7 +10,7 @@
                             {{ __('Register') }}
                         </div>
 
-                        <form method="POST" action="{{ route('register') }}">
+                        <form method="POST" action="{{ route('employee.store') }}">
                             @csrf
 
                             <div class="row mb-3">
@@ -78,9 +78,9 @@
                                 <label for="password"
                                     class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
                                 <div class="col-md-6">
-                                    <input id="password" type="password"
+                                    <input id="password" type="text"
                                         class="form-control @error('password') is-invalid @enderror" name="password"
-                                        required autocomplete="new-password">
+                                        required value="staffuga" readonly style="background-color: #8e8e8e;">
                                     @error('password')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -89,24 +89,18 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-3">
-                                <label for="password-confirm"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
-                                <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control"
-                                        name="password_confirmation" required autocomplete="new-password">
-                                </div>
-                            </div>
 
                             <div class="row mb-3">
-                                <label for="position"
+                                <label for="position_id"
                                     class="col-md-4 col-form-label text-md-end">{{ __('Position') }}</label>
                                 <div class="col-md-6">
-                                    <select id="position" class="form-control @error('position') is-invalid @enderror"
-                                        name="position" required autocomplete="position" autofocus>
+                                    <select id="position_id" class="form-control @error('position_id') is-invalid @enderror"
+                                        name="position_id" required autocomplete="position_id" autofocus>
                                         <option value="" selected disabled>Choose Position</option>
                                         @foreach ($positions as $p)
-                                            <option value="{{ $p->id }}">{{ $p->name }}</option>
+                                            @if ($p->name !== 'Dosen')
+                                                <option value="{{ $p->id }}">{{ $p->name }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                     @error('position')
@@ -122,11 +116,6 @@
                                     <button type="submit" class="btn btn-primary">
                                         {{ __('Register') }}
                                     </button>
-                                </div>
-                                <div class="col-md-6 offset-md-4">
-                                    <a class="btn btn-primary" href="{{ route('login') }}" role="button">
-                                        {{ __('Already have an account?') }}
-                                    </a>
                                 </div>
                             </div>
                         </form>

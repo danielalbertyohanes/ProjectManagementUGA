@@ -10,18 +10,12 @@ use Illuminate\Support\Facades\Auth;
 
 class VideoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $video = Video::all();
         return view('video.index', compact('video'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(string $id)
     {
         $ppts = Ppt::getPptsBySubTopicId($id);
@@ -29,9 +23,6 @@ class VideoController extends Controller
         return view('video.create', compact('ppts', 'subTopicId'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -39,37 +30,12 @@ class VideoController extends Controller
             'location' => 'required|string',
             'detail_location' => 'required|string|max:255',
             'status_video' => 'required|string',
-            'ppt_id' => 'required|integer',  // Ensure that the selected PPT exists
-            'sub_topic_id' => 'required|integer',  // Ensure that the sub_topic_id is valid
+            'ppt_id' => 'required|integer',
+            'sub_topic_id' => 'required|integer',
         ]);
-
-        // Simpan data video
         Video::create($data);
-
         return redirect()->route('subTopic.show', $data['sub_topic_id'])->with('status', 'Successfully added');
     }
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Video $video)
     {
         $data = $request->validate([
@@ -78,22 +44,14 @@ class VideoController extends Controller
             'detail_location' => 'nullable|string',
             'status' => 'nullable|in:Not Yet,Recording,Recorded,PPT Recording,PPT Recorded,Editing,Edited,Pause Recording',
         ]);
-
         $video->update($data);
-
         return redirect()->route('subTopic.show', $video->ppt->sub_topic_id)
             ->with('status', 'Video updated successfully');
     }
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         //
     }
-
     public function getVideoEditForm(Request $request)
     {
         $video = Video::findOrFail($request->id);
@@ -102,8 +60,6 @@ class VideoController extends Controller
             'msg' => view('video.edit', compact('video'))->render()
         ], 200);
     }
-
-
     public function catatRecording(Video $video, $action)
     {
         //dd($video, $action);
@@ -118,38 +74,6 @@ class VideoController extends Controller
             'message' => 'Action recorded successfully',
             'status' => $newvideo->status,
             'progress' => $newvideo->progress,
-        ]);
-    }
-
-
-    public function checkButton($id)
-    {
-        $logPpt = LogVideo::where('description', 'like', '%-ppt')
-            ->where('video_id', $id)
-            ->orderBy('created_at', 'desc')
-            ->select('status', 'description')
-            ->first();
-
-        $logVideo = LogVideo::where('description', 'like', '%-video')
-            ->where('video_id', $id)
-            ->orderBy('created_at', 'desc')
-            ->select('status', 'description')
-            ->first();
-
-        $logEditing = LogVideo::where('description', 'like', '%-editing')
-            ->where('video_id', $id) // Anda bisa menambahkan status lain sesuai kebutuhan
-            ->orderBy('created_at', 'desc')
-            ->select('status', 'description')
-            ->first();
-
-        if (!$logEditing) {
-            $logEditing = (object) ['status' => null, 'description' => ''];  // jika tidak ada, return status null
-        }
-
-        return response()->json([
-            'video' => $logVideo,
-            'ppt' => $logPpt,
-            'editing' => $logEditing,  // Make sure `editing` is never null
         ]);
     }
 }
