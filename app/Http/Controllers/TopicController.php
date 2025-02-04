@@ -10,8 +10,6 @@ use Illuminate\Http\Request;
 
 class TopicController extends Controller
 {
-
-    // Get topics by course_id
     public function getTopicByCourseId($course_id)
     {
         $topics = Topic::where('course_id', $course_id)->get();
@@ -20,28 +18,20 @@ class TopicController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the topic data
-        $dataTopic = $request->validate([
+          $dataTopic = $request->validate([
             'name' => 'required|string|max:255',
             'course_id' => 'required|exists:courses,id',
         ]);
-
-        // Create the topic
         $topic = Topic::create($dataTopic);
-
-        // Validate the subtopics data
         $subTopicsData = $request->validate([
             'name_subTopic.*' => 'required|string|max:255',
         ]);
-
-        // Create the subtopics and associate them with the topic
         foreach ($request->name_subTopic as $index => $name_subTopic) {
             SubTopic::create([
                 'name' => $name_subTopic,
                 'topic_id' => $topic->id,
             ]);
         }
-
         return redirect()->route('course.show', $request->course_id)
             ->with('status', 'Topic and subtopics created successfully');
     }
@@ -67,8 +57,6 @@ class TopicController extends Controller
 
         $topic = Topic::findOrFail($id);
         $topic->update($validatedData);
-
-        // Update subtopics
         foreach ($request->name_subTopic as $index => $name_subTopic) {
             $subTopic = SubTopic::where('topic_id', $topic->id)->skip($index)->first();
             if ($subTopic) {
@@ -85,8 +73,6 @@ class TopicController extends Controller
         return redirect()->back()->with('status', 'Topic updated successfully');
     }
 
-
-    // Soft delete topic
     public function destroy(Topic $topic)
     {
         try {
@@ -101,8 +87,7 @@ class TopicController extends Controller
     public function edit(string $id)
     {
         $topic = Topic::with('subTopics')->findOrFail($id);
-        $course = $topic->course; // Asumsi ada relasi antara Topic dan Course
-
+        $course = $topic->course; 
         return view('topic.edit', compact('topic', 'course'));
     }
 
@@ -115,9 +100,6 @@ class TopicController extends Controller
             'msg' => view('topic.edit', compact('topic'))->render()
         ], 200);
     }
-
-
-    // Force delete topic
     public function forceDelete($id)
     {
         try {

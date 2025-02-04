@@ -7,13 +7,13 @@
 <form method="POST" action="{{ route('dosen.store') }}">
     @csrf
     <div class="form-group">
-        <label for="dosenName">Nama Dosen</label>
-        <input type="text" class="form-control" id="dosenName" name="name" placeholder="Enter Name of dosen" required>
-
         <label for="dosenNpk">NPK</label>
         <input type="text" class="form-control" id="dosenNpk" name="npk" placeholder="Enter NPK" required
-            maxlength="6" pattern="\d{6}" inputmode="numeric"
-            title="NPK harus berisi 6 digit dan hanya berupa angka">
+            maxlength="6" pattern="\d{6}" inputmode="numeric" title="NPK harus berisi 6 digit dan hanya berupa angka">
+
+        <label for="dosenName">Nama Dosen</label>
+        <input type="text" class="form-control" id="dosenName" name="name" placeholder="Enter Name of dosen"
+            required>
 
         <label for="dosenFakultas">Fakultas</label>
         <input type="text" class="form-control" id="dosenFakultas" name="fakultas" placeholder="Masukkan Fakultas"

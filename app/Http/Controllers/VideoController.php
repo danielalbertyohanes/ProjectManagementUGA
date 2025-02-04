@@ -62,13 +62,8 @@ class VideoController extends Controller
     }
     public function catatRecording(Video $video, $action)
     {
-        //dd($video, $action);
-        // Catat aksi ke dalam database melalui model
         Video::catatTanggalRecording(Auth::user()->id, $video->id, $action);
-
         $newvideo = Video::findOrFail($video->id);
-
-        // Response JSON untuk AJAX
         return response()->json([
             'status' => 'success',
             'message' => 'Action recorded successfully',

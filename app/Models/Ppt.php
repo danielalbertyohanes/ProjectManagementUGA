@@ -71,7 +71,7 @@ class Ppt extends Model
             ->join('sub_topics', 'ppts.sub_topic_id', '=', 'sub_topics.id')
             ->where('sub_topics.id', $subTopic)
             ->select('ppts.*')
-            ->orderBy('ppts.id', 'asc')
+            ->orderBy('ppts.progress', 'asc')
             ->get();
     }
     function getPptProgressFromStatus($status)

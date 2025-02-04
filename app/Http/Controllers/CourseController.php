@@ -19,20 +19,11 @@ class CourseController extends Controller
 {
     public function index(Request $request)
     {
-        // Ambil data links eksternal yang diurutkan berdasarkan status aktif
         $links = LinkExternal::getLinkOrderedByStatusActive();
-
-        // Ambil kata kunci pencarian jika ada
         $search = $request->input('search');
-
-        // Panggil method di model untuk pencarian dan filter berdasarkan posisi user
         $courses = Course::searchCourses($search, Auth::user()->id, Auth::user()->position_id);
-
-        // Kembalikan view dengan data courses dan links
         return view('course.index', compact('courses', 'links'));
     }
-
-
 
     public function show(String $course_id)
     {
@@ -41,7 +32,6 @@ class CourseController extends Controller
         $subTopics = SubTopic::getSubTopicsByCourseId($course_id);
         return view('course.detail', compact('course', 'topics', 'subTopics'));
     }
-
 
     public function store(Request $request)
     {
@@ -55,26 +45,15 @@ class CourseController extends Controller
             'drive_url' => 'nullable|string|max:255',
             'video_url' => 'nullable|string|max:255',
         ]);
-
-        // Simpan data kursus
         $course = Course::create($data);
-
         $course->periode()->attach($request->periode_id);
-
-        // Simpan relasi dosen
         $dosens = $request->input('dosens', []);
-
         foreach ($dosens as $key => $dosenId) {
-            $role = $key === 0 ? 'ketua' : 'anggota'; // Dosen pertama menjadi ketua, yang lainnya anggota
+            $role = $key === 0 ? 'ketua' : 'anggota';
             $course->dosens()->attach($dosenId, ['role' => $role]);
         }
-
         return redirect()->route('course.index')->with('status', 'Berhasil Tambah');
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
 
     public function getCreateForm()
     {
@@ -87,9 +66,6 @@ class CourseController extends Controller
         ], 200);
     }
 
-
-    // app/Http/Controllers/CourseController.php
-
     public function update(Request $request, Course $course)
     {
         $data = $request->validate([
@@ -100,21 +76,15 @@ class CourseController extends Controller
             'drive_url' => 'nullable|string|max:255',
             'video_url' => 'nullable|string|max:255',
         ]);
-
-
         $course->update($data);
-
         return redirect()->route('course.index')->with('status', 'Course updated successfully');
     }
-
 
     public function edit($id)
     {
         $course = Course::findOrFail($id);
         return view('course.edit', compact('course'));
     }
-
-    // app/Http/Controllers/CourseController.php
 
     public function getEditForm(Request $request)
     {
@@ -130,7 +100,6 @@ class CourseController extends Controller
     {
         try {
             $deletedData = $course;
-            //dd($deletedData);
             $deletedData->delete();
             return redirect()->route('course.index')->with('status', 'Horray ! Your data is successfully deleted !');
         } catch (\PDOException $ex) {
@@ -142,21 +111,14 @@ class CourseController extends Controller
 
     public function cancel($id)
     {
-        // Cari course berdasarkan ID
         $course = Course::findOrFail($id);
-
-        // Ubah status course menjadi 'cancel'
         $course->status = 'Cancel';
         $course->save();
-
-        // Redirect dengan pesan sukses
         return redirect()->route('course.index')->with('status', 'Course has been canceled.');
     }
 
-
     public function open($id)
     {
-        // Cari course berdasarkan ID
         $course = Course::findOrFail($id);
         $progress =  $course->progress;
 
@@ -171,37 +133,12 @@ class CourseController extends Controller
         } elseif ($progress == 100) {
             $course->status = 'Publish';
         }
-
         $course->save();
-
-        // Redirect dengan pesan sukses
         return redirect()->route('course.index')->with('status', 'Course has been opened.');
     }
 
-
-    public function showAjax(Request $request)
-    {
-        $course_id = $request->get('course_id'); // Pastikan nama parameter sesuai dengan yang dikirim dari AJAX
-
-        // Ambil data berdasarkan ID yang sesuai
-        $ppts = Ppt::getPptsByCourseId($course_id);
-        $videos = Video::getVideosByCourseId($course_id);
-        $topics = Topic::getTopicsByCourseId($course_id);
-        $subtopics = SubTopic::getSubTopicsByTopicId($course_id); // Gunakan $subtopics sesuai nama variabel
-
-        // Render HTML untuk masing-masing bagian
-        $pptHtml = view('ppt.ppt_table', compact('ppts'))->render();
-        $videoHtml = view('video.video_table', compact('videos'))->render();
-        $topicHtml = view('topic.topic_table', compact('topics'))->render();
-        $subTopicHtml = view('subTopic.subTopic_table', compact('subtopics'))->render(); // Pastikan nama variabel konsisten
-
-        return response()->json([
-            'msg' => $topicHtml . $subTopicHtml .  $pptHtml . $videoHtml
-        ], 200);
-    }
     public function catatRecording(Course $course, $action)
     {
-
         $allowedActions = ['kurasi', 'publish'];
         if (!in_array($action, $allowedActions)) {
             return response()->json([
@@ -209,11 +146,8 @@ class CourseController extends Controller
                 'message' => 'Invalid action',
             ], 400);
         }
-
-        // Panggil metode catatTanggalRecording dari model
         $success = Course::catatTanggalRecording(Auth::id(), $course->id, $action);
         $new = Course::find($course->id);
-
         if ($success) {
             return response()->json([
                 'status' => 'success',
@@ -231,12 +165,9 @@ class CourseController extends Controller
     public function checkButton($id)
     {
         $course = Course::find($id);
-
         if (!$course) {
             return response()->json(['error' => 'Course not found'], 404);
         }
-
-        // Logic to determine button states
         $status = $course->status;
         $progress = $course->progress;
 

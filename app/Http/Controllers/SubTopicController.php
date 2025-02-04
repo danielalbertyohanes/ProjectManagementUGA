@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 
 class SubTopicController extends Controller
 {
-
     public function show(String $id)
     {
         $videos = Video::getVideosBySubTopicId($id);
@@ -20,8 +19,6 @@ class SubTopicController extends Controller
         return view('subTopic.detail', compact('videos', 'ppts', 'subTopic'));
     }
 
-
-    // Store a new sub-topic
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -37,7 +34,6 @@ class SubTopicController extends Controller
             ->with('success', 'SubTopic created successfully');
     }
 
-    // Show create form
     public function create()
     {
         $topics = Topic::all();
@@ -61,29 +57,19 @@ class SubTopicController extends Controller
             'msg' => view('subTopic.edit', compact('subTopic'))->render()
         ], 200);
     }
-    // Update sub-topic
+   
     public function update(Request $request, $id)
     {
-        // Validasi data yang diinput
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'status' => 'nullable|string|in:Not Yet,Progres,Finish,Cancel',
         ]);
-
-        // Cari subTopic berdasarkan id
         $subTopic = SubTopic::findOrFail($id);
-
-        // Update subTopic dengan data yang sudah tervalidasi
         $subTopic->update($validatedData);
-
         $course_id = $subTopic->topic->course_id;
-        // Redirect ke halaman course.detail dengan data yang diperlukan dan pesan sukses
         return redirect()->route('course.show', [$course_id])
             ->with('status', 'SubTopic updated successfully');
     }
 
-
-    // Soft delete sub-topic
     public function destroy(SubTopic $subTopic)
     {
         try {

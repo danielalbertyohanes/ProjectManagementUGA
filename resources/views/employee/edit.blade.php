@@ -4,7 +4,7 @@
         padding-top: 10px;
     }
 </style>
-<form method="POST" action="{{ route('employee.update', $user->id) }}">
+<form method="POST" action="{{ route('employee.update', ['user' => $user->id, 'from' => 'employee']) }}">
     @csrf
     @method('PUT')
     <div class="form-group">

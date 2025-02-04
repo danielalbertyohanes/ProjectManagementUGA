@@ -139,12 +139,11 @@
             </div>
         @endif
 
-
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
 
-        @if (Auth::user()->position_id == '1')
+        @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
             <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateCourse"
                 onclick="loadCreateForm()">Tambah Course</button>
         @endif
@@ -181,7 +180,7 @@
                                 <th class="text-center">Proggress</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Detail</th>
-                                @if (Auth::user()->position_id == '1')
+                                @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
                                     <th class="text-center">Kurasi</th>
                                     <th class="text-center">Action</th>
                                 @endif
@@ -257,10 +256,8 @@
                                         @endif
 
                                     </td>
-                                    @if (Auth::user()->position_id == '1')
+                                    @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
                                         <td>
-
-
                                             @if ($course->status != 'Cancel')
                                                 @if ($course->progress >= 50)
                                                     <ul class="d-flex list-unstyled"
@@ -545,7 +542,7 @@
                 tooltip.innerText = fullText;
 
                 const container = description.parentElement;
-                container.classList.add('tooltip-container');
+                container.classList.add('tooltip-container');   
                 container.appendChild(tooltip);
 
                 // Potong teks untuk tampilan di tabel

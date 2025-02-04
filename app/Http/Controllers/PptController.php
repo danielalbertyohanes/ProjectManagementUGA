@@ -27,29 +27,23 @@ class PptController extends Controller
     }
     public function store(Request $request)
     {
-
-        // Validate data for PPT
         $datappt = $request->validate([
             'user_id' => 'required|integer',
             'name_ppt' => 'required|string|max:255',
             'sub_topic_id' => 'required|integer',
         ]);
-
-        // Create PPT record
         $ppt = Ppt::create([
             'user_id' => $datappt['user_id'],
             'name' => $datappt['name_ppt'],
             'sub_topic_id' => $datappt['sub_topic_id'],
         ]);
-
-        // Validate data for Video
         $datavideo = $request->validate([
             'name_video' => 'required|string|max:255',
+            'detail_location' => 'required|string|max:255',
         ]);
-
-        // Create Video record
         Video::create([
             'name' => $datavideo['name_video'],
+            'detail_location' => $datavideo['detail_location'],
             'ppt_id' => $ppt->id,
         ]);
 
@@ -61,11 +55,8 @@ class PptController extends Controller
         $data = $request->validate([
             'name' => 'nullable|string',
             'status' => 'nullable|in:Not Yet,Progress,Finished,Cancel',
-
         ]);
-
         $ppt->update($data);
-
         return redirect()->route('subTopic.show', $ppt->sub_topic_id)
             ->with('status', 'PPT updated successfully');
     }
@@ -96,6 +87,4 @@ class PptController extends Controller
             'progress' => $newppt->progress,
         ]);
     }
-
-
 }

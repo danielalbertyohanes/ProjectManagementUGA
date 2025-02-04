@@ -13,12 +13,6 @@ class DosenController extends Controller
         return view('dosen.index', compact('dosens'));
     }
 
-    // public function show($id)
-    // {
-    //     $dosen = Dosen::getDosenById($id);
-    //     return view('dosen.show', compact('dosen'));
-    // }
-
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -28,15 +22,12 @@ class DosenController extends Controller
             'no_telp' => 'nullable|string|max:45',
             'description' => 'nullable|string|max:45'
         ]);
-
         Dosen::create($data);
-
         return redirect()->route('dosen.index')->with('status', 'dosen create successfully');
     }
 
     public function create()
     {
-
         return view("dosen.create");
     }
 
@@ -54,9 +45,7 @@ class DosenController extends Controller
             'no_telp' => 'nullable|string|max:45',
             'description' => 'nullable|string|max:45'
         ]);
-
         $dosen->update($data);
-
         return redirect()->route('dosen.index')->with('status', 'dosen updated successfully');
     }
 

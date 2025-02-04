@@ -6,8 +6,10 @@
         <p>Halaman details berisi topik. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
             Ipsum has been the industry's.</p>
 
+        @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
+            <a class="btn btn-success mb-3" href="{{ route('ppt.newPpt', $subTopic->id) }}">+ Tambah PPT</a>
+        @endif
 
-        <a class="btn btn-success mb-3" href="{{ route('ppt.newPpt', $subTopic->id) }}">+ Tambah PPT</a>
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
@@ -52,29 +54,37 @@
                                     <td>
                                         <ul class="d-flex list-unstyled"
                                             style="justify-content: center; align-items: center; padding: 0;">
-                                            @if ($ppt->finish_click_ppt)
-                                                <span class="tanggalPpt" data-id="{{ $ppt->id }}"
-                                                    data-ppt-editing-finished-at="{{ $ppt->finish_click_ppt }}"
-                                                    style="justify-content: center; align-items: center; padding: 0;">
-                                                    {{ \Carbon\Carbon::parse($ppt->finish_click_ppt)->format('d-M-y') }}
-                                                </span>
+                                            @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
+                                                @if ($ppt->finish_click_ppt)
+                                                    <span class="tanggalPpt" data-id="{{ $ppt->id }}"
+                                                        data-ppt-editing-finished-at="{{ $ppt->finish_click_ppt }}"
+                                                        style="justify-content: center; align-items: center; padding: 0;">
+                                                        {{ \Carbon\Carbon::parse($ppt->finish_click_ppt)->format('d-M-y') }}
+                                                    </span>
+                                                @else
+                                                    <li> <span class="tanggalPpt" data-id="{{ $ppt->id }}"
+                                                            data-ppt-editing-finished-at="{{ $ppt->finish_click_ppt }}"style="display:none;">
+                                                        </span></li>
+                                                    <li><a href="#" class="btn btn-primary m-1 start-ppt-editing"
+                                                            data-id="{{ $ppt->id }}">Start</a></li>
+                                                    <li><a href="#" class="btn btn-danger m-1 finish-ppt-editing"
+                                                            data-id="{{ $ppt->id }}" style="display:none;">Finish</a>
+                                                    </li>
+                                                @endif
                                             @else
-                                                <li> <span class="tanggalPpt" data-id="{{ $ppt->id }}"
-                                                        data-ppt-editing-finished-at="{{ $ppt->finish_click_ppt }}"style="display:none;">
-                                                    </span></li>
-                                                <li><a href="#" class="btn btn-primary m-1 start-ppt-editing"
-                                                        data-id="{{ $ppt->id }}">Start</a></li>
-                                                <li><a href="#" class="btn btn-danger m-1 finish-ppt-editing"
-                                                        data-id="{{ $ppt->id }}" style="display:none;">Finish</a></li>
+                                                {{ $ppt->finish_click_ppt ? \Carbon\Carbon::parse($ppt->finish_click_ppt)->format('d-M-y') : '---' }}
                                             @endif
+
                                         </ul>
                                     </td>
                                     <td>
                                         <ul class="d-flex list-unstyled ">
-                                            <li><a href="#" class="btn btn-warning m-1" data-toggle="modal"
-                                                    data-target="#modalEdit"
-                                                    onclick="getPptEditForm({{ $ppt->id }})">Edit</a>
-                                            </li>
+                                            @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
+                                                <li><a href="#" class="btn btn-warning m-1" data-toggle="modal"
+                                                        data-target="#modalEdit"
+                                                        onclick="getPptEditForm({{ $ppt->id }})">Edit</a>
+                                                </li>
+                                            @endif
                                             <li>
                                                 <a href="#" class="btn btn-info  m-1" data-toggle="modal"
                                                     data-target="#modalEditContent"
@@ -640,9 +650,8 @@
         function getLogVideo(id) {
             $.ajax({
                 type: 'GET',
-                url: '{{ route('logVideo.getLogVideo') }}', // Menghapus spasi ekstra
+                url: '{{ route('logVideo.getLogVideo') }}',
                 data: {
-
                     'id': id
                 },
                 success: function(data) {

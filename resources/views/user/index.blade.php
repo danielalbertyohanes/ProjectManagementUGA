@@ -124,6 +124,9 @@
 <body>
     <div class="container light-style flex-grow-1 container-p-y">
         <h4 class="font-weight-bold py-3 mb-4">Account settings</h4>
+        @if (session('status'))
+            <div class="alert alert-success">{{ session('status') }}</div>
+        @endif
         <div class="card overflow-hidden">
             <div class="row no-gutters row-bordered row-border-light">
                 <div class="col-md-3 pt-0">
@@ -140,36 +143,39 @@
                         <div class="tab-pane fade active show" id="account-general">
 
                             <hr class="border-light m-0" />
-                            <form method="POST" action="{{route('employee.update',$user->id)}}">
+                            <form method="POST"
+                                action="{{ route('user.update', ['user' => $user->id, 'from' => 'user']) }}">
                                 @csrf
                                 @method('PUT')
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label class="form-label">Username</label>
-                                        <input name="name" type="text" class="form-control mb-1" value="{{$user->name}}" />
+                                        <input name="name" type="text" class="form-control mb-1"
+                                            value="{{ $user->name }}" />
                                     </div>
 
                                     <div class="form-group">
                                         <label class="form-label">E-mail</label>
-                                        <input name="email" type="text" class="form-control mb-1" value="{{$user->email}}" />
+                                        <input name="email" type="text" class="form-control mb-1"
+                                            value="{{ $user->email }}" />
 
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Position</label>
-                                        <input type="text" class="form-control" value="{{$user->position->name}}" readonly />
+                                        <input type="text" class="form-control" value="{{ $user->position->name }}"
+                                            readonly />
                                     </div>
                                 </div>
                                 <div class="text-right mt-3">
                                     <button type="submit" class="btn btn-primary">Save changes</button>
-                                    <a href="{{ route('employee.index') }}" class="btn btn-default">Cancel</a>
+                                    <a href="{{ route('welcome') }}" class="btn btn-default">Cancel</a>
                                 </div>
                             </form>
 
                         </div>
                         <div class="tab-pane fade" id="account-change-password">
-                            <form method="POST" action="{{ route('employee.changePassword', $user->id) }}">
+                            <form action="{{ route('employee.changePassword', ['id' => $user->id]) }}" method="POST">
                                 @csrf
-                                @method('PUT')
 
                                 <div class="card-body pb-2">
                                     <!-- Input Password Saat Ini -->
@@ -177,7 +183,7 @@
                                         <label class="form-label">Current password</label>
                                         <input name="current_password" type="password" class="form-control" required>
                                         @error('current_password')
-                                        <span class="text-danger">{{ $message }}</span>
+                                            <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
 
@@ -186,20 +192,25 @@
                                         <label class="form-label">New password</label>
                                         <input name="new_password" type="password" class="form-control" required>
                                         @error('new_password')
-                                        <span class="text-danger">{{ $message }}</span>
+                                            <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
 
                                     <!-- Konfirmasi Password Baru -->
                                     <div class="form-group">
                                         <label class="form-label">Repeat new password</label>
-                                        <input name="new_password_confirmation" type="password" class="form-control" required>
+                                        <input name="new_password_confirmation" type="password" class="form-control"
+                                            required>
+                                        @error('new_password_confirmation')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="text-right mt-3">
                                     <button type="submit" class="btn btn-primary">Change password</button>
-                                    <a href="{{ route('employee.index') }}" class="btn btn-default">Cancel</a>
+                                    <a href="{{ route('welcome') }}" class="btn btn-default">Cancel</a>
+
                                 </div>
                             </form>
                         </div>

@@ -12,68 +12,52 @@ class UserController extends Controller
 {
     public function index()
     {
-        // Mengambil data karyawan dari model
-        $users = User::getAll(); // Ganti $user dengan $users
-        return view('employee.index', compact('users')); // Menggunakan compact('users')
-
+        $users = User::getAll();
+        return view('employee.index', compact('users'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id, string $from)
     {
-        // Validate incoming request data
         $data = $request->validate([
             'name' => 'nullable|string|max:255',
             'npk' => 'nullable|string|max:45',
             'email' => 'nullable|string|email|max:255',
-            'password' => 'nullable|string|min:6', // Ensure passwords have a minimum length
+            'password' => 'nullable|string|min:6',
             'no_telp' => 'nullable|string|max:45',
-            'position_id' => 'nullable|integer|exists:positions,id', // Ensure position_id exists in the positions table
+            'position_id' => 'nullable|integer|exists:positions,id',
         ]);
-
-        // Find user by ID or fail if not found
         $user = User::findOrFail($id);
-
-        // // Handle password separately if it's present
-        // if (!empty($data['password'])) {
-        //     $data['password'] = bcrypt($data['password']); // Hash the password before saving
-        // }
-
-        // Update user data
         $user->update($data);
-
-        // Redirect with success message
-        return redirect()->route('employee.index')->with('status', 'User updated successfully');
+        if ($from === 'user') {
+            return redirect()->route('user.profile', $id)->with('status', 'User Updated successfully');
+        } else {
+            return redirect()->route('employee.index')->with('status', 'User updated successfully');
+        }
     }
     public function changePassword(Request $request, string $id)
     {
-        // Validasi input
         $data = $request->validate([
-            'current_password' => 'required|string|min:6', // Password saat ini
-            'new_password' => 'required|string|min:6|confirmed', // Password baru (dengan konfirmasi)
+            'current_password' => 'required|string|min:6',
+            'new_password' => 'required|string|min:6|confirmed',
+            'new_password_confirmation' => 'required|string|min:6',
         ]);
-
-        // Temukan user berdasarkan ID
         $user = User::findOrFail($id);
-
-        // Periksa apakah password saat ini cocok
         if (!Hash::check($data['current_password'], $user->password)) {
             return back()->withErrors(['current_password' => 'The current password is incorrect.']);
         }
-
-        // Update password user
+        if ($data['new_password'] === $data['current_password']) {
+            return back()->withErrors(['new_password' => 'The new password must be different from the current password.']);
+        }
         $user->update([
             'password' => bcrypt($data['new_password']),
         ]);
-
-        // Redirect dengan pesan sukses
-        return redirect()->route('employee.show', $id)->with('status', 'Password updated successfully');
+        return redirect()->route('user.profile', $id)->with('status', 'Updated Password successfully');
     }
 
-    public function show(string $id)
+    public function userProfile(string $id)
     {
-
         $user = User::findOrFail($id);
-        return view('employee.show', compact('user'));
+        return view('user.index', compact('user'));
     }
 
     public function getEditForm(Request $request)
@@ -94,7 +78,6 @@ class UserController extends Controller
     }
     public function store(Request $request)
     {
-
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'npk' =>  ['required'],
