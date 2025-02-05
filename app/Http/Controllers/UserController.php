@@ -29,11 +29,12 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->update($data);
         if ($from === 'user') {
-            return redirect()->route('user.profile', $id)->with('status', 'User Updated successfully');
+            return redirect()->route('user.profile', $id)->with('status', 'Data berhasil diperbarui');
         } else {
-            return redirect()->route('employee.index')->with('status', 'User updated successfully');
+            return redirect()->route('employee.index')->with('status', 'Pengguna berhasil diperbarui');
         }
     }
+
     public function changePassword(Request $request, string $id)
     {
         $data = $request->validate([
@@ -43,15 +44,15 @@ class UserController extends Controller
         ]);
         $user = User::findOrFail($id);
         if (!Hash::check($data['current_password'], $user->password)) {
-            return back()->withErrors(['current_password' => 'The current password is incorrect.']);
+            return back()->withErrors(['current_password' => 'Password saat ini salah.']);
         }
         if ($data['new_password'] === $data['current_password']) {
-            return back()->withErrors(['new_password' => 'The new password must be different from the current password.']);
+            return back()->withErrors(['new_password' => 'Password baru harus berbeda dari password saat ini.']);
         }
         $user->update([
             'password' => bcrypt($data['new_password']),
         ]);
-        return redirect()->route('user.profile', $id)->with('status', 'Updated Password successfully');
+        return redirect()->route('user.profile', $id)->with('status', 'Password berhasil diperbarui');
     }
 
     public function userProfile(string $id)
@@ -76,6 +77,7 @@ class UserController extends Controller
         $positions = Position::all();
         return view('employee.create', compact('positions'));
     }
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -89,6 +91,6 @@ class UserController extends Controller
 
         $user = User::create($data);
 
-        return redirect()->route('employee.index')->with('status', 'Berhasil Tambah');
+        return redirect()->route('employee.index')->with('status', 'Berhasil menambahkan pengguna');
     }
 }

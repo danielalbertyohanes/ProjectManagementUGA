@@ -18,21 +18,6 @@ class LogVideosController extends Controller
         return LogVideo::getStatusAndDesc($user_id, $video_id);
     }
 
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'status' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'video_id' => 'required|exists:videos,id',
-        ]);
-        LogVideo::insertLogVideo([
-            'status' => $data['status'],
-            'description' => $data['description'],
-            'user_id' => auth()->id(),
-            'video_id' => $data['video_id'],
-        ]);
-        return redirect()->route('course.index')->with('status', 'Log entry updated and new log added.');
-    }
     public function getLogVideo(Request $request)
     {
         $id = $request->input('id');

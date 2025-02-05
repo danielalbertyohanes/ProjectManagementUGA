@@ -2,11 +2,11 @@
     @csrf
     @method('PUT')
     <div class="form-group">
-        <label for="name">Name Of Video</label>
-        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Video Name"
-            value="{{ old('name', $video->name) }}">
+        <label for="name">Nama Video</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Masukan Nama Video"
+            value="{{ old('name', $video->name) }}" oninput="this.value = this.value.toUpperCase()">
 
-        <label for="location">Location</label>
+        <label for="location">Lokasi</label>
         <select class="form-control" id="location" name="location" required>
             @foreach (['UBAYA', 'Not UBAYA'] as $location)
                 <option value="{{ $location }}" {{ $video->location == $location ? 'selected' : '' }}>
@@ -15,14 +15,14 @@
             @endforeach
         </select>
 
-        <label for="description_location">Detail Location</label>
+        <label for="description_location">Detail Lokasi</label>
         <input type="text" class="form-control" id="detail_location" name="detail_location"
-            placeholder="Enter Detail Location" value="{{ old('detail_location', $video->detail_location) }}">
+            placeholder="Masukan Detail Lokasi" value="{{ old('detail_location', $video->detail_location) }}">
     </div>
 
     <div class="modal-footer">
         <a href="{{ route('subTopic.show', $video->ppt->sub_topic_id) }}" class="btn btn-danger"
-            data-dismiss="modal">Cancel</a>
-        <button type="submit" class="btn btn-primary">Submit</button>
+            data-dismiss="modal">Batal</a>
+        <button type="submit" class="btn btn-primary">Simpan</button>
     </div>
 </form>

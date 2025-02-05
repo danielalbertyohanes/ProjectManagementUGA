@@ -16,6 +16,7 @@
             font-family: Arial, Helvetica, sans-serif;
             color: #232323;
         }
+
         th {
             font-weight: bold;
             text-align: center;
@@ -52,7 +53,7 @@
                                 <th class="text-center">Nama</th>
                                 <th class="text-center">URL</th>
                                 <th class="text-center">Status</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>

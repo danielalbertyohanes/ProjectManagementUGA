@@ -25,6 +25,7 @@ class PptController extends Controller
         $subTopic = SubTopic::findSubTopicById($id);
         return view('ppt.create', compact('subTopic'));
     }
+
     public function store(Request $request)
     {
         $datappt = $request->validate([
@@ -58,7 +59,7 @@ class PptController extends Controller
         ]);
         $ppt->update($data);
         return redirect()->route('subTopic.show', $ppt->sub_topic_id)
-            ->with('status', 'PPT updated successfully');
+            ->with('status', 'PPT berhasil diperbarui');
     }
 
     public function destroy(string $id)
@@ -82,7 +83,7 @@ class PptController extends Controller
         $newppt = Ppt::findOrFail($ppt->id);
         return response()->json([
             'status' => 'success',
-            'message' => 'Action recorded successfully',
+            'message' => 'Aksi berhasil dicatat',
             'status' => $newppt->status,
             'progress' => $newppt->progress,
         ]);

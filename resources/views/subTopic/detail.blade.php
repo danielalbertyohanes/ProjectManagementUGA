@@ -1,13 +1,29 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="container-fluid">
-        <h3 class="h3 mb-2 text-gray-800">Detail Sub Topic</h3>
-        <p>Halaman details berisi topik. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-            Ipsum has been the industry's.</p>
+    <style>
+        p {
+            font-size: 1rem;
+            padding-top: 1rem;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #232323;
+        }
 
+        h3 {
+            font-size: 1.5rem;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #333333;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+    </style>
+    <div class="container-fluid">
+        <h3 class="h3 mb-2 text-gray-800">Detail Sub Topik</h3>
+        <p>Halaman detail subtopik ini menampilkan informasi lengkap mengenai subtopik, termasuk daftar PPT (PowerPoint) dan
+            video yang terkait dengan subtopik tersebut.</p>
+        <br>
         @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
-            <a class="btn btn-success mb-3" href="{{ route('ppt.newPpt', $subTopic->id) }}">+ Tambah PPT</a>
+            <a class="btn btn-success mb-3" href="{{ route('ppt.newPpt', $subTopic->id) }}">Tambah PPT</a>
         @endif
 
         @if (session('status'))
@@ -26,11 +42,11 @@
                         <thead>
                             <tr>
                                 <th class="text-center">No</th>
-                                <th class="text-center">Name</th>
+                                <th class="text-center">Nama</th>
                                 <th class="text-center">Status</th>
-                                <th class="text-center">Progress</th>
+                                <th class="text-center">Progres</th>
                                 <th class="text-center">Editing</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,7 +75,7 @@
                                                     <span class="tanggalPpt" data-id="{{ $ppt->id }}"
                                                         data-ppt-editing-finished-at="{{ $ppt->finish_click_ppt }}"
                                                         style="justify-content: center; align-items: center; padding: 0;">
-                                                        {{ \Carbon\Carbon::parse($ppt->finish_click_ppt)->format('d-M-y') }}
+                                                        {{ \Carbon\Carbon::parse($ppt->finish_click_ppt)->format('d-M-Y') }}
                                                     </span>
                                                 @else
                                                     <li> <span class="tanggalPpt" data-id="{{ $ppt->id }}"
@@ -72,7 +88,7 @@
                                                     </li>
                                                 @endif
                                             @else
-                                                {{ $ppt->finish_click_ppt ? \Carbon\Carbon::parse($ppt->finish_click_ppt)->format('d-M-y') : '---' }}
+                                                {{ $ppt->finish_click_ppt ? \Carbon\Carbon::parse($ppt->finish_click_ppt)->format('d-M-Y') : '---' }}
                                             @endif
 
                                         </ul>
@@ -105,7 +121,7 @@
         </div>
 
         @if ($videos->isNotEmpty())
-            <a class="btn btn-success mb-3" href="{{ route('video.newVideo', $subTopic->id) }}">+ Tambah Video</a>
+            <a class="btn btn-success mb-3" href="{{ route('video.newVideo', $subTopic->id) }}">Tambah Video</a>
         @endif
 
 
@@ -122,15 +138,15 @@
                             <tr>
                                 <th class="text-center">No</th>
                                 <th class="text-center">PPT</th>
-                                <th class="text-center">Name</th>
+                                <th class="text-center">Nama</th>
                                 <th class="text-center">Status</th>
-                                <th class="text-center">Progress</th>
-                                <th class="text-center">Location</th>
-                                <th class="text-center">Detail Location</th>
+                                <th class="text-center">Progres</th>
+                                <th class="text-center">Lokasi</th>
+                                <th class="text-center">Ditail Lokasi</th>
                                 <th class="text-center">Recording Video</th>
                                 <th class="text-center">Recording PPT</th>
                                 <th class="text-center">Editing</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -164,7 +180,7 @@
                                             @if ($video->finish_click_video)
                                                 <span class="tanggalVideo" data-id="{{ $video->id }}"
                                                     data-video-finished-at="{{ $video->finish_click_video }}">
-                                                    {{ \Carbon\Carbon::parse($video->finish_click_video)->format('d-M-y') }}
+                                                    {{ \Carbon\Carbon::parse($video->finish_click_video)->format('d-M-Y') }}
                                                 </span>
                                             @else
                                                 <li> <span class="tanggalVideo" data-id="{{ $video->id }}"
@@ -191,7 +207,7 @@
                                             @if ($video->finish_click_ppt)
                                                 <li> <span class="tanggalPptVideo" data-id="{{ $video->id }}"
                                                         data-ppt-finished-at="{{ $video->finish_click_ppt }}">
-                                                        {{ \Carbon\Carbon::parse($video->finish_click_ppt)->format('d-M-y') }}
+                                                        {{ \Carbon\Carbon::parse($video->finish_click_ppt)->format('d-M-Y') }}
                                                     </span></li>
                                             @else
                                                 <li> <span class="tanggalPptVideo" data-id="{{ $video->id }}"
@@ -215,7 +231,7 @@
                                         <ul class="d-flex list-unstyled"
                                             style="justify-content: center; align-items: center; padding: 0;">
                                             @if ($video->finish_click_editing)
-                                                <span>{{ \Carbon\Carbon::parse($video->finish_click_editing)->format('d-M-y') }}</span>
+                                                <span>{{ \Carbon\Carbon::parse($video->finish_click_editing)->format('d-M-Y') }}</span>
                                             @else
                                                 <li>
                                                     <p class="info" data-id="{{ $video->id }}">Harap selesaikan
@@ -282,8 +298,6 @@
             </div>
         </div>
     </div>
-
-
 
     {{-- Log Modal --}}
     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"

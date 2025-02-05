@@ -26,7 +26,7 @@ class LinkExternalController extends Controller
             'status' => 'nullable|string'
         ]);
         LinkExternal::create($data);
-        return redirect()->route('link_external.index');
+        return redirect()->route('link_external.index')->with('status', 'Link berhasil ditambahkan');
     }
 
     public function update(Request $request, $id)
@@ -38,7 +38,7 @@ class LinkExternalController extends Controller
             'status' => 'nullable|string|in:not active,active',
         ]);
         $link->update($data);
-        return redirect()->route('link_external.index')->with('status', 'Link updated successfully');
+        return redirect()->route('link_external.index')->with('status', 'Link berhasil diperbarui');
     }
 
     public function destroy(string $id)

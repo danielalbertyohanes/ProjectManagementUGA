@@ -12,6 +12,7 @@ class PeriodeController extends Controller
         $periodes = Periode::getAllPeriode();
         return view('periode.index', compact('periodes'));
     }
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -24,8 +25,9 @@ class PeriodeController extends Controller
 
         Periode::create($data);
 
-        return redirect()->route('periode.index')->with('success', 'Periode created successfully.');
+        return redirect()->route('periode.index')->with('status', 'Periode berhasil dibuat.');
     }
+
     public function update(Request $request, Periode $periode)
     {
         $data = $request->validate([
@@ -37,12 +39,14 @@ class PeriodeController extends Controller
         ]);
         $periode->update($data);
 
-        return redirect()->route('periode.index')->with('status', 'Periode updated successfully');
+        return redirect()->route('periode.index')->with('status', 'Periode berhasil diperbarui');
     }
+
     public function destroy(Periode $periode)
     {
         //
     }
+
     public function getCreateForm()
     {
         return response()->json([

@@ -31,7 +31,7 @@ class SubTopicController extends Controller
 
         $course_id = $subTopic->topic->course_id;
         return redirect()->route('course.show', [$course_id])
-            ->with('success', 'SubTopic created successfully');
+            ->with('success', 'SubTopic berhasil dibuat');
     }
 
     public function create()
@@ -57,7 +57,7 @@ class SubTopicController extends Controller
             'msg' => view('subTopic.edit', compact('subTopic'))->render()
         ], 200);
     }
-   
+
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
@@ -67,7 +67,7 @@ class SubTopicController extends Controller
         $subTopic->update($validatedData);
         $course_id = $subTopic->topic->course_id;
         return redirect()->route('course.show', [$course_id])
-            ->with('status', 'SubTopic updated successfully');
+            ->with('status', 'SubTopic berhasil diperbarui');
     }
 
     public function destroy(SubTopic $subTopic)
@@ -76,11 +76,11 @@ class SubTopicController extends Controller
             $course_id = $subTopic->topic->course_id;
             $subTopic->delete();
             return redirect()->route('course.show', [$course_id])
-                ->with('status', 'SubTopic deleted successfully');
+                ->with('status', 'SubTopic berhasil dihapus');
         } catch (\PDOException $ex) {
 
             $course_id = $subTopic->topic->course_id;
-            $msg = "Failed to soft delete sub-topic. Please make sure there are no related records before deleting.";
+            $msg = "Gagal menghapus sub-topik. Pastikan tidak ada data terkait sebelum menghapus.";
             return redirect()->route('course.show', [$course_id])
                 ->with(compact('course', 'topics', 'subTopics'))->with('status', $msg);
         }

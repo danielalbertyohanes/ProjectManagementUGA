@@ -171,18 +171,18 @@
                         <thead>
                             <tr>
                                 <th class="text-center">No</th>
-                                <th class="text-center">Kode Course</th>
-                                <th class="text-center">Name</th>
-                                <th class="text-center">Description</th>
+                                <th class="text-center">Kode</th>
+                                <th class="text-center">Nama</th>
+                                <th class="text-center">Deskripsi</th>
                                 <th class="text-center">Periode</th>
                                 <th class="text-center">Dosen</th>
-                                <th class="text-center">Pic_course</th>
-                                <th class="text-center">Proggress</th>
+                                <th class="text-center">PIC</th>
+                                <th class="text-center">Progres</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Detail</th>
                                 @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
                                     <th class="text-center">Kurasi</th>
-                                    <th class="text-center">Action</th>
+                                    <th class="text-center">Aksi</th>
                                 @endif
                             </tr>
                         </thead>
@@ -215,7 +215,14 @@
                                                     @if ($anggota->isNotEmpty())
                                                         <strong>Ketua:</strong>
                                                     @endif
-                                                    {{ $ketua->name }}
+                                                    <a href="#" class="dosen-link" data-id="{{ $ketua->id }}"
+                                                        data-name="{{ $ketua->name }}" data-npk="{{ $ketua->npk }}"
+                                                        data-fakultas="{{ $ketua->fakultas }}"
+                                                        data-phone="{{ $ketua->no_telp }}"
+                                                        data-description="{{ $ketua->description }}"
+                                                        onclick="showDosenModal(this)">
+                                                        {{ $ketua->name }}
+                                                    </a>
                                                 </li>
                                             @endif
 
@@ -223,7 +230,17 @@
                                                 <li>
                                                     <strong>Anggota:</strong>
                                                     @foreach ($anggota as $dosen)
-                                                        {{ $dosen->name }},
+                                                        <a href="#" class="dosen-link" data-id="{{ $dosen->id }}"
+                                                            data-name="{{ $dosen->name }}" data-npk="{{ $dosen->npk }}"
+                                                            data-fakultas="{{ $dosen->fakultas }}"
+                                                            data-phone="{{ $dosen->no_telp }}"
+                                                            data-description="{{ $dosen->description }}"
+                                                            onclick="showDosenModal(this)">
+                                                            {{ $dosen->name }}
+                                                        </a>
+                                                        @if (!$loop->last)
+                                                            ,
+                                                        @endif
                                                     @endforeach
                                                 </li>
                                             @endif
@@ -233,6 +250,7 @@
                                             @endif
                                         </ul>
                                     </td>
+
                                     <td>{{ $course->user->name }}</td>
                                     <td>
                                         <div class="progress" style="height: 20px;">
@@ -305,68 +323,65 @@
                                                 <!-- Button to trigger the modal -->
                                                 <button type="button" class="btn btn-danger cancel" data-toggle="modal"
                                                     data-target="#cancelModal_{{ $course->id }}">
-                                                    Cancel
+                                                    Batal
                                                 </button>
                                             @else
                                                 <button type="button" class="btn btn-primary cancel" data-toggle="modal"
                                                     data-target="#cancelModal_{{ $course->id }}">
-                                                    Open
+                                                    Buka
                                                 </button>
                                             @endif
                                         </td>
                                     @endif
                                 </tr>
 
-                                <!-- Modal Cancel -->
-                                <div class="modal fade" id="cancelModal_{{ $course->id }}" tabindex="-1" role="dialog"
-                                    aria-labelledby="cancelModalLabel_{{ $course->id }}" aria-hidden="true">
+                                <!-- Modal Batal -->
+                                <div class="modal fade" id="cancelModal_{{ $course->id }}" tabindex="-1"
+                                    role="dialog" aria-labelledby="cancelModalLabel_{{ $course->id }}"
+                                    aria-hidden="true">
                                     <div class="modal-dialog modal-wide">
                                         <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="cancelModalLabel_{{ $course->id }}">
+                                                    @if ($course->status != 'Cancel')
+                                                        Konfirmasi Pembatalan
+                                                    @else
+                                                        Konfirmasi Buka
+                                                    @endif
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
                                             <div class="modal-body">
-                                                <div class="modal-header">
-                                                    @if ($course->status != 'Cancel')
-                                                        <h5 class="modal-title"
-                                                            id="cancelModalLabel_{{ $course->id }}">
-                                                            Confirm Cancel</h5>
-                                                    @else
-                                                        <h5 class="modal-title"
-                                                            id="cancelModalLabel_{{ $course->id }}">
-                                                            Confirm Open </h5>
-                                                    @endif
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    @if ($course->status != 'Cancel')
-                                                        Are you sure you want to Cancel the course:
-                                                        <strong>{{ $course->name }}</strong>?
-                                                    @else
-                                                        Are you sure you want to Open the course:
-                                                        <strong>{{ $course->name }}</strong>?
-                                                    @endif
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">Close</button>
+                                                @if ($course->status != 'Cancel')
+                                                    Apakah Anda yakin ingin membatalkan:
+                                                    <strong>{{ $course->name }}</strong>?
+                                                @else
+                                                    Apakah Anda yakin ingin membuka:
+                                                    <strong>{{ $course->name }}</strong>?
+                                                @endif
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Tutup</button>
 
-                                                    @if ($course->status != 'Cancel')
-                                                        <form method="POST"
-                                                            action="{{ route('course.cancel', $course->id) }}">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <button type="submit" class="btn btn-danger">Cancel</button>
-                                                        </form>
-                                                    @else
-                                                        <form method="POST"
-                                                            action="{{ route('course.open', $course->id) }}">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <button type="submit" class="btn btn-primary">Open</button>
-                                                        </form>
-                                                    @endif
-                                                </div>
+                                                @if ($course->status != 'Cancel')
+                                                    <form method="POST"
+                                                        action="{{ route('course.cancel', $course->id) }}">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" class="btn btn-danger">Batalkan</button>
+                                                    </form>
+                                                @else
+                                                    <form method="POST"
+                                                        action="{{ route('course.open', $course->id) }}">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" class="btn btn-primary">Buka</button>
+                                                    </form>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -398,6 +413,37 @@
                     <!-- Content will be loaded dynamically -->
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal Dosen -->
+    <div class="modal fade" id="dosenModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-wide">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dosenModalLabel">Profil Dosen</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Nama:</strong> <span id="modalDosenName"></span></p>
+                    <p><strong>NPK:</strong> <span id="modalDosenNPK"></span></p>
+                    <p><strong>Fakultas:</strong> <span id="modalDosenFakultas"></span></p>
+                    <p><strong>No. Telepon:</strong>
+                        <a href="#" id="modalDosenPhoneLink" target="_blank">
+                            <span id="modalDosenPhone"></span>
+                        </a>
+                    </p>
+
+                    <p><strong>Deskripsi:</strong></p>
+                    <p id="modalDosenDescription"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
         </div>
     </div>
 @endsection
@@ -510,7 +556,6 @@
             });
         }
 
-
         // Load Edit Form
         function getEditForm(course_id) {
             $.ajax({
@@ -531,18 +576,43 @@
             });
         }
 
+        function showDosenModal(element) {
+            let name = element.getAttribute("data-name");
+            let npk = element.getAttribute("data-npk");
+            let fakultas = element.getAttribute("data-fakultas");
+            let phone = element.getAttribute("data-phone");
+            let description = element.getAttribute("data-description");
+
+            document.getElementById("modalDosenName").textContent = name;
+            document.getElementById("modalDosenNPK").textContent = npk;
+            document.getElementById("modalDosenFakultas").textContent = fakultas;
+            document.getElementById("modalDosenPhone").textContent = phone;
+            document.getElementById("modalDosenDescription").textContent = description || "-";
+
+            let cleanPhone = phone.replace(/[^0-9]/g, ''); // Hapus semua karakter kecuali angka
+            if (!cleanPhone.startsWith("62")) {
+                cleanPhone = "62" + cleanPhone.substring(1); // Ubah 0 di awal menjadi 62
+            }
+            let whatsappLink = `https://wa.me/${cleanPhone}`;
+
+
+            let phoneElement = document.getElementById("modalDosenPhoneLink");
+            phoneElement.href = whatsappLink;
+
+            $("#dosenModal").modal("show");
+        }
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Menangani deskripsi dengan tooltip dan pemangkasan teks
             const descriptions = document.querySelectorAll('.description');
-
             descriptions.forEach(description => {
-                const fullText = description.innerText; // Ambil teks penuh
+                const fullText = description.innerText.trim();
                 const tooltip = document.createElement('span');
                 tooltip.className = 'tooltip';
                 tooltip.innerText = fullText;
 
                 const container = description.parentElement;
-                container.classList.add('tooltip-container');   
+                container.classList.add('tooltip-container');
                 container.appendChild(tooltip);
 
                 // Potong teks untuk tampilan di tabel
@@ -550,11 +620,16 @@
                     description.innerText = fullText.substring(0, 20) + '...';
                 }
             });
-        });
 
-        document.addEventListener('DOMContentLoaded', function() {
+            // Menangani penutupan modal saat tombol close diklik
+            document.querySelectorAll("[data-dismiss='modal']").forEach(button => {
+                button.addEventListener("click", function() {
+                    $("#dosenModal").modal("hide");
+                });
+            });
+
+            // Menangani posisi tooltip agar tidak keluar layar
             const tooltips = document.querySelectorAll('.tooltip-container');
-
             tooltips.forEach(container => {
                 const tooltip = container.querySelector('.tooltip');
                 container.addEventListener('mouseenter', () => {
@@ -569,21 +644,21 @@
                     }
                 });
             });
-        });
 
-        // Client-side search function
-        document.getElementById('form1').addEventListener('input', function() {
-            var input = this.value.toLowerCase();
-            var rows = document.querySelectorAll('#dataTable tbody tr');
+            // Fungsi pencarian client-side pada tabel
+            document.getElementById('form1').addEventListener('input', function() {
+                const input = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#dataTable tbody tr');
 
-            rows.forEach(function(row) {
-                var found = false;
-                row.querySelectorAll('td').forEach(function(td) {
-                    if (td.innerText.toLowerCase().indexOf(input) > -1) {
-                        found = true;
-                    }
+                rows.forEach(row => {
+                    let found = false;
+                    row.querySelectorAll('td').forEach(td => {
+                        if (td.innerText.toLowerCase().includes(input)) {
+                            found = true;
+                        }
+                    });
+                    row.style.display = found ? '' : 'none';
                 });
-                row.style.display = found ? '' : 'none';
             });
         });
     </script>

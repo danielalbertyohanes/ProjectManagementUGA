@@ -4,7 +4,7 @@
     <div class="form-group">
         <label for="name">Nama Topic</label>
         <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name Topic"
-            value="{{ $topic->name }}" required>
+            value="{{ $topic->name }}" required oninput="this.value = this.value.toUpperCase()">
     </div>
     <div class="form-group">
         <label for="status">Status</label>
@@ -21,7 +21,8 @@
             <div class="form-group">
                 <label for="name_subTopic_{{ $index }}">Nama Sub Topic</label>
                 <input type="text" class="form-control" id="name_subTopic_{{ $index }}" name="name_subTopic[]"
-                    placeholder="Enter Name Sub Topic" value="{{ $subTopic->name }}" readonly>
+                    placeholder="Enter Name Sub Topic" value="{{ $subTopic->name }}" readonly
+                    oninput="this.value = this.value.toUpperCase()">
             </div>
         @endforeach
     </div>
@@ -44,7 +45,7 @@
                 `<div class="form-group">
                     <label for="name_subTopic_${subtopicIndex}">Nama Sub Topic</label>
                     <input type="text" class="form-control" id="name_subTopic_${subtopicIndex}" name="name_subTopic[]"
-                        placeholder="Enter Name Sub Topic" required>
+                        placeholder="Enter Name Sub Topic" required oninput="this.value = this.value.toUpperCase()">
 
                     <button type="button" class="btn btn-sm btn-danger remove-input">Remove</button>
                 </div>`

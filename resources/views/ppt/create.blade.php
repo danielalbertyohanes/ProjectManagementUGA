@@ -11,34 +11,32 @@
             <input type="text" class="form-control" id="name_subtopic" name="name_subtopic" value="{{ $subTopic->name }}"
                 required readonly>
 
-            <label for="name_ppt">Name Of PPT</label>
-            <input type="text" class="form-control" id="name_ppt" name="name_ppt" placeholder="Enter Name PPT" required>
+            <label for="name_ppt">Nama PPT</label>
+            <input type="text" class="form-control" id="name_ppt" name="name_ppt" placeholder="Masukan Nama PPT" required
+                oninput="this.value = this.value.toUpperCase()">
 
         </div>
         <div class="form-group">
-            <label for="name_video">Name Of Video</label>
-            <input type="text" class="form-control" id="name_video" name="name_video" placeholder="Enter Name Video"
-                required>
+            <label for="name_video">Nama Video</label>
+            <input type="text" class="form-control" id="name_video" name="name_video" placeholder="Masukan Nama Video"
+                required oninput="this.value = this.value.toUpperCase()">
+
             <input type="hidden" id="status_video" name="status_video" value="Not Yet">
 
-
-            <label for="location_video">Location</label>
+            <label for="location_video">Lokasi</label>
             <select class="form-control" id="location_video" name="location_video" required>
                 <option value="Not UBAYA">Not UBAYA</option>
                 <option value="UBAYA">UBAYA</option>
             </select>
-        </div>
 
-        <div class="form-group">
-            <label for="detail_location">Detail Location</label>
+            <label for="detail_location">Detail Lokasi</label>
             <input type="text" class="form-control" id="detail_location" name="detail_location"
-                placeholder="Enter Detail Location" required>
-            <input type="hidden" id="status_video" name="status_video" value="Not Yet">
+                placeholder="Masukan Detail Lokasi" required>
         </div>
 
         <div class="modal-footer">
-            <a href="{{ route('subTopic.show', $subTopic->id) }}" class="btn btn-danger">Cancel</a>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <a href="{{ route('subTopic.show', $subTopic->id) }}" class="btn btn-danger">Batal</a>
+            <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
     </form>
 @endsection

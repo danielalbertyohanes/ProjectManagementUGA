@@ -52,7 +52,7 @@ class CourseController extends Controller
             $role = $key === 0 ? 'ketua' : 'anggota';
             $course->dosens()->attach($dosenId, ['role' => $role]);
         }
-        return redirect()->route('course.index')->with('status', 'Berhasil Tambah');
+        return redirect()->route('course.index')->with('status', 'Berhasil Tambah mata pelajaran');
     }
 
     public function getCreateForm()
@@ -71,13 +71,11 @@ class CourseController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:255',
-            'jumlah_video' => 'nullable|integer',
-            'status' => 'required|in:Not Yet,Progres,Finish,Cancel',
             'drive_url' => 'nullable|string|max:255',
             'video_url' => 'nullable|string|max:255',
         ]);
         $course->update($data);
-        return redirect()->route('course.index')->with('status', 'Course updated successfully');
+        return redirect()->route('course.index')->with('status', 'Mata pelajaran berhasil diperbarui');
     }
 
     public function edit($id)
@@ -101,10 +99,9 @@ class CourseController extends Controller
         try {
             $deletedData = $course;
             $deletedData->delete();
-            return redirect()->route('course.index')->with('status', 'Horray ! Your data is successfully deleted !');
+            return redirect()->route('course.index')->with('status', 'Horray ! Mata pelajaran Anda berhasil dihapus');
         } catch (\PDOException $ex) {
-
-            $msg = "Failed to delete data ! Make sure there is no related data before deleting it";
+            $msg = "Gagal menghapus mata pelajaran! Pastikan tidak ada data terkait sebelum menghapusnya";
             return redirect()->route('course.index')->with('status', $msg);
         }
     }
@@ -114,13 +111,13 @@ class CourseController extends Controller
         $course = Course::findOrFail($id);
         $course->status = 'Cancel';
         $course->save();
-        return redirect()->route('course.index')->with('status', 'Course has been canceled.');
+        return redirect()->route('course.index')->with('status', 'Mata pelajaran telah dibatalkan');
     }
 
     public function open($id)
     {
         $course = Course::findOrFail($id);
-        $progress =  $course->progress;
+        $progress = $course->progress;
 
         if ($progress == 0) {
             $course->status = 'Not Yet';
@@ -134,7 +131,7 @@ class CourseController extends Controller
             $course->status = 'Publish';
         }
         $course->save();
-        return redirect()->route('course.index')->with('status', 'Course has been opened.');
+        return redirect()->route('course.index')->with('status', 'Mata pelajaran telah dibuka');
     }
 
     public function catatRecording(Course $course, $action)
@@ -143,7 +140,7 @@ class CourseController extends Controller
         if (!in_array($action, $allowedActions)) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Invalid action',
+                'message' => 'Tindakan tidak valid',
             ], 400);
         }
         $success = Course::catatTanggalRecording(Auth::id(), $course->id, $action);
@@ -151,22 +148,23 @@ class CourseController extends Controller
         if ($success) {
             return response()->json([
                 'status' => 'success',
-                'message' => 'Action recorded successfully',
+                'message' => 'Tindakan berhasil tercatat',
                 'progress' => $new->progress,
                 'status_text' => $new->status,
             ]);
         } else {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Invalid action or failed to update',
+                'message' => 'Tindakan tidak valid atau gagal memperbarui',
             ], 400);
         }
     }
+
     public function checkButton($id)
     {
         $course = Course::find($id);
         if (!$course) {
-            return response()->json(['error' => 'Course not found'], 404);
+            return response()->json(['error' => 'Mata pelajaran tidak ditemukan'], 404);
         }
         $status = $course->status;
         $progress = $course->progress;

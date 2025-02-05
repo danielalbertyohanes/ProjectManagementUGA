@@ -34,8 +34,9 @@ class VideoController extends Controller
             'sub_topic_id' => 'required|integer',
         ]);
         Video::create($data);
-        return redirect()->route('subTopic.show', $data['sub_topic_id'])->with('status', 'Successfully added');
+        return redirect()->route('subTopic.show', $data['sub_topic_id'])->with('status', 'Video Berhasil ditambahkan');
     }
+
     public function update(Request $request, Video $video)
     {
         $data = $request->validate([
@@ -46,12 +47,14 @@ class VideoController extends Controller
         ]);
         $video->update($data);
         return redirect()->route('subTopic.show', $video->ppt->sub_topic_id)
-            ->with('status', 'Video updated successfully');
+            ->with('status', 'Video berhasil diperbarui');
     }
+
     public function destroy(string $id)
     {
         //
     }
+
     public function getVideoEditForm(Request $request)
     {
         $video = Video::findOrFail($request->id);
@@ -60,13 +63,14 @@ class VideoController extends Controller
             'msg' => view('video.edit', compact('video'))->render()
         ], 200);
     }
+
     public function catatRecording(Video $video, $action)
     {
         Video::catatTanggalRecording(Auth::user()->id, $video->id, $action);
         $newvideo = Video::findOrFail($video->id);
         return response()->json([
             'status' => 'success',
-            'message' => 'Action recorded successfully',
+            'message' => 'Aksi tercatat dengan sukses',
             'status' => $newvideo->status,
             'progress' => $newvideo->progress,
         ]);

@@ -1,12 +1,28 @@
 @extends('layouts.admin')
 
 @section('content')
+    <style>
+        p {
+            font-size: 1rem;
+            padding-top: 1rem;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #232323;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #333333;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+    </style>
     <div class="container-fluid">
         <h3 class="h3 mb-2 text-gray-800">Detail Course</h3>
         <p>Halaman ini menampilkan detail lengkap dari course yang dipilih. Anda dapat melihat daftar topik yang termasuk
             dalam course ini, lengkap dengan status progresnya. Selain itu, halaman ini juga memungkinkan Anda untuk
             menambahkan topik baru atau mengedit topik yang sudah ada.</p>
-
+        <br>
         <div class="mb-2">
             <h5 class="text-primary">
                 KODE COURSE: <span class="text-gray-800">{{ $course->kode_course }}</span>
@@ -25,7 +41,8 @@
             <h5 class="text-primary">
                 TANGGAL_MULAI: <span class="text-gray-800">
                     @foreach ($course->periode as $periode)
-                        {{ $periode->start_date }}<br>
+                        {{ \Carbon\Carbon::parse($periode->start_date)->format('d-m-yy') }}</>
+                        <br>
                     @endforeach
                 </span>
             </h5>
@@ -33,7 +50,17 @@
             <h5 class="text-primary">
                 TANGGAL_SELESAI: <span class="text-gray-800">
                     @foreach ($course->periode as $periode)
-                        {{ $periode->end_date }}<br>
+                        {{ \Carbon\Carbon::parse($periode->end_date)->format('d-m-Y') }}</>
+                        <br>
+                    @endforeach
+                </span>
+            </h5>
+
+            <h5 class="text-primary">
+                TANGGAL_KURASI: <span class="text-gray-800">
+                    @foreach ($course->periode as $periode)
+                        {{ \Carbon\Carbon::parse($periode->kurasi_date)->format('d-m-Y') }}</>
+                        <br>
                     @endforeach
                 </span>
             </h5>
@@ -56,11 +83,11 @@
         @endif
         @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
             <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreate"
-                onclick="loadCreateForm({{ $course->id }})">+ Tambah Topic</button>
+                onclick="loadCreateForm({{ $course->id }})">Tambah Topic</button>
         @endif
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Details</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Detail Course</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -117,8 +144,8 @@
                                                     style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <input type="submit" value="Delete" class="btn btn-danger"
-                                                        onclick="return confirm('Are you sure to delete {{ $firstSubTopic->id }} - {{ $firstSubTopic->name }}?');">
+                                                    <input type="submit" value="Hapus" class="btn btn-danger"
+                                                        onclick="return confirm('Apa kamu yakin menghapus {{ $firstSubTopic->name }}?');">
                                                 </form>
                                             </td>
                                         @endif
@@ -151,8 +178,8 @@
                                                         style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <input type="submit" value="Delete" class="btn btn-danger"
-                                                            onclick="return confirm('Are you sure to delete {{ $subTopic->id }} - {{ $subTopic->name }}?');">
+                                                        <input type="submit" value="Hapus" class="btn btn-danger"
+                                                            onclick="return confirm('Apa kamu yakin menghapus {{ $subTopic->name }}?');">
                                                     </form>
                                                 </td>
                                             @endif
@@ -162,7 +189,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $topic->name }}</td>
-                                        <td colspan="3" class="text-center">No Subtopics</td>
+                                        <td colspan="3" class="text-center">Tidak ada Sub-Topik</td>
                                     </tr>
                                 @endif
                             @endforeach

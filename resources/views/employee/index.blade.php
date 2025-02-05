@@ -50,7 +50,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>NPK</th>
-                                <th>Nama Employee</ths=>
+                                <th>Nama</ths=>
                                 <th>Nomor Telepon</th>
                                 <th>Email</th=>
                                 <th>Posisi</th=>

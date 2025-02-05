@@ -6,26 +6,23 @@
         <input type="text" class="form-control" id="course" name="course" value="{{ $course->name }}" readonly>
 
         <label for="name">Nama Topic</label>
-        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name Topic"
-            required>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name Topic" required
+            oninput="this.value = this.value.toUpperCase()">
     </div>
-
     <hr>
-
     <label for="subtopic">Sub Topic</label>
     <div id="subtopicInputs">
         <div class="form-group">
             <label for="name_subTopic_0">Nama Sub Topic</label>
             <input type="text" class="form-control" id="name_subTopic_0" name="name_subTopic[]"
-                placeholder="Enter Name Sub Topic" required>
+                placeholder="Enter Name Sub Topic" required oninput="this.value = this.value.toUpperCase()">
         </div>
     </div>
     <button type="button" class="btn btn-sm btn-primary" id="addSubTopic">Tambah Sub Topic</button>
 
     <div class="modal-footer">
-        <a href="{{ route('course.show', $course->id) }}" class="btn btn-danger">Cancel</a>
-        <button type="submit" class="btn btn-primary">Submit</button>
-       
+        <a href="{{ route('course.show', $course->id) }}" class="btn btn-danger">Batal</a>
+        <button type="submit" class="btn btn-primary">Simpan</button>
     </div>
 </form>
 
@@ -38,7 +35,7 @@
                 `<div class="form-group">
                 <label for="name_subTopic_${subtopicIndex}">Nama Sub Topic</label>
                 <input type="text" class="form-control" id="name_subTopic_${subtopicIndex}" name="name_subTopic[]"
-                    placeholder="Enter Name Sub Topic" required>
+                    placeholder="Enter Name Sub Topic" required oninput="this.value = this.value.toUpperCase()">
 
                 <button type="button" class="btn btn-sm btn-danger remove-input">Remove</button>
             </div>`

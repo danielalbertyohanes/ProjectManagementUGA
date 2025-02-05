@@ -1,19 +1,19 @@
 <form method="POST" action="{{ route('course.store') }}">
     @csrf
     <div class="form-group">
-        <label for="courseKode">Kode Course</label>
+        <label for="courseKode">Kode</label>
         <input type="text" class="form-control" id="courseKode" name="kode_course" placeholder="Enter Name of Course"
-            required>
+            required oninput="this.value = this.value.toUpperCase()">
 
-        <label for="courseName">Nama Course</label>
+        <label for="courseName">Nama</label>
         <input type="text" class="form-control" id="courseName" name="name" placeholder="Enter Name of Course"
-            required>
+            required oninput="this.value = this.value.toUpperCase()">
 
-        <label for="courseDescription">Deskripsi Course</label>
+        <label for="courseDescription">Deskripsi</label>
         <textarea type="textArea" class="form-control" id="courseDescription" name="description"
             placeholder="Enter Descriptionss"></textarea>
 
-        <label for="picCourse">Periode Course</label>
+        <label for="picCourse">Periode</label>
         <select class="form-control" id="periodeCourse" name="periode_id" required>
             <option value="" selected disabled>Pilih Periode</option>
             @foreach ($periode as $p)
@@ -21,7 +21,7 @@
             @endforeach
         </select>
 
-        <label for="picCourse">PIC Course</label>
+        <label for="picCourse">PIC</label>
         <select class="form-control" id="picCourse" name="pic_course" required>
             <option value="" selected disabled>Pilih PIC</option>
             @foreach ($pic as $p)
@@ -29,16 +29,14 @@
             @endforeach
         </select>
 
-        <label for="courseDescription">Drive_URL Course</label>
+        <label for="courseDescription">Drive_URL</label>
         <input type="text" class="form-control" id="courseDrive" name="drive_url" placeholder="Enter Drive_URL"
             required>
 
-        <label for="courseDescription">Video_URL Course</label>
+        <label for="courseDescription">Video_URL</label>
         <input type="text" class="form-control" id="courseVide" name="video_url" placeholder="Enter Video_URL"
             required>
-
         <hr>
-
         <label for="dosen">Dosen</label>
         <div id="dosenInputs">
             <div class="form-group">
@@ -55,8 +53,8 @@
     </div>
 
     <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+        <button type="submit" class="btn btn-primary">Simpan</button>
     </div>
 </form>
 

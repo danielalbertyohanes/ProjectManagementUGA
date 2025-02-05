@@ -2,29 +2,29 @@
     @csrf
     @method('PUT')
     <div class="form-group">
-        <label for="courseName">Name Course</label>
+        <label for="courseName">Nama</label>
         <input type="text" class="form-control" id="courseName" name="name" placeholder="Enter Name of Course"
-            value="{{ $course->name }}" required>
+            value="{{ $course->name }}" required oninput="this.value = this.value.toUpperCase()">
 
-        <label for="courseDescription">Description</label>
+        <label for="courseDescription">Deskripsi</label>
         <input type="text" class="form-control" id="courseDescription" name="description"
             placeholder="Enter Description" value="{{ $course->description }}" required>
 
-        <label for="courseDescription">Drive_URL Course</label>
+        <label for="courseDescription">Drive_URL</label>
         <input type="text" class="form-control" id="courseDrive" name="drive_url" placeholder="Enter Drive_URL"
             value="{{ $course->drive_url }}" required>
 
-        <label for="courseDescription">Video_URL Course</label>
+        <label for="courseDescription">Video_URL</label>
         <input type="text" class="form-control" id="courseVide" name="video_url" placeholder="Enter Video_URL"
             value="{{ $course->video_url }}" required>
 
-        <label for="exampleInputPicCourse">PIC Course</label>
+        <label for="exampleInputPicCourse">PIC</label>
         <input type="text" class="form-control" id="exampleInputPicCourse" name=""
             placeholder="Enter Pic Course" value="{{ $course->user->name }}" disabled>
     </div>
 
     <div class="modal-footer">
-        <a href="{{ route('course.index') }}" class="btn btn-danger">Cancel</a>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="{{ route('course.index') }}" class="btn btn-danger">Batal</a>
+        <button type="submit" class="btn btn-primary">Simpan</button>
     </div>
 </form>
