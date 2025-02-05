@@ -101,7 +101,7 @@
     <aside class="sidebar">
         <h2 class="text-center py-3 font-bold">Navigation</h2>
         <ul>
-            <li><a href="{{ route('welcome') }}"><i class="fas fa-fw fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="{{ route('home') }}"><i class="fas fa-fw fa-tachometer-alt"></i> Dashboard</a></li>
             <hr>
             @if (Auth::user()->position_id == '1')
                 <li><a href="{{ route('employee.index') }}"><i class="fa fa-users"></i> Master Employee</a></li>

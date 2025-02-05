@@ -30,9 +30,7 @@ Auth::routes(['register' => false]); // Menonaktifkan registrasi
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', function () {
-        return view('layouts.welcome');
-    })->name('welcome');
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     // Rute untuk Admin (position_id = 1)
     Route::middleware(['position:1'])->group(function () {

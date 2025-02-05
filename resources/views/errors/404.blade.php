@@ -8,7 +8,7 @@
         <p class="lead">Halaman yang Anda cari tidak tersedia.</p>
 
         @if (Auth::check())
-            <a href="{{ route('welcome') }}" class="btn btn-primary">Kembali</a>
+            <a href="{{ route('home') }}" class="btn btn-primary">Kembali</a>
         @else
             <a href="{{ route('login') }}" class="btn btn-primary">Kembali</a>
         @endif

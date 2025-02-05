@@ -165,7 +165,7 @@
                                 </div>
                                 <div class="text-right mt-3">
                                     <button type="submit" class="btn btn-primary">Simpan</button>
-                                    <a href="{{ route('welcome') }}" class="btn btn-default">Batal</a>
+                                    <a href="{{ route('home') }}" class="btn btn-default">Batal</a>
                                 </div>
                             </form>
                         </div>
@@ -205,7 +205,7 @@
 
                                 <div class="text-right mt-3">
                                     <button type="submit" class="btn btn-primary">Ubah Kata Sandi</button>
-                                    <a href="{{ route('welcome') }}" class="btn btn-default">Batal</a>
+                                    <a href="{{ route('home') }}" class="btn btn-default">Batal</a>
                                 </div>
                             </form>
                         </div>
