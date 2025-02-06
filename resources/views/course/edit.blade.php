@@ -8,7 +8,7 @@
 
         <label for="courseDescription">Deskripsi</label>
         <input type="text" class="form-control" id="courseDescription" name="description"
-            placeholder="Enter Description" value="{{ $course->description }}" required>
+            placeholder="Enter Description" value="{{ $course->description }}">
 
         <label for="courseDescription">Drive_URL</label>
         <input type="text" class="form-control" id="courseDrive" name="drive_url" placeholder="Enter Drive_URL"
@@ -28,3 +28,11 @@
         <button type="submit" class="btn btn-primary">Simpan</button>
     </div>
 </form>
+
+<script>
+    $(document).ready(function() {
+        $("form").on("submit", function() {
+            $("button[type='submit']").prop("disabled", true);
+        });
+    });
+</script>

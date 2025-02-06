@@ -129,7 +129,7 @@
         {{-- ini harus di tambah dan di ubah lagi --}}
         <p>Master Course adalah modul yang digunakan untuk mendefinisikan dan mengelola informasi terkait kursus atau mata
             pelajaran.</p>
-        <br>
+
         @if ($links->isNotEmpty())
             <p>Dibawah ini adalah Link yang bisa di akses: </p>
             <div class="panduan-links">
@@ -301,13 +301,13 @@
                                                         ini terlebih dahulu.</p>
                                                 @endif
                                             @else
-                                                <p class="info" style="text-align: center">Course Cancel</p>
+                                                <p class="info" style="text-align: center">Course Dibatalkan</p>
                                             @endif
 
                                         </td>
 
                                         <td>
-                                            @if ($course->status != 'Cancel')
+                                            @if ($course->status != 'Cancel' && $course->status != 'Publish')
                                                 <a href="#" class="btn btn-warning mb-2" data-toggle="modal"
                                                     data-target="#modalEditA" onclick="getEditForm({{ $course->id }})">
                                                     EDIT
@@ -325,11 +325,13 @@
                                                     data-target="#cancelModal_{{ $course->id }}">
                                                     Batal
                                                 </button>
-                                            @else
+                                            @elseif($course->status === 'Cancel')
                                                 <button type="button" class="btn btn-primary cancel" data-toggle="modal"
                                                     data-target="#cancelModal_{{ $course->id }}">
                                                     Buka
                                                 </button>
+                                            @else
+                                                <p></p>
                                             @endif
                                         </td>
                                     @endif

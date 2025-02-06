@@ -60,6 +60,31 @@
 
 <script>
     $(document).ready(function() {
+        $("form").on("submit", function() {
+            $("button[type='submit']").prop("disabled", true);
+        });
+
+        function updateDosenOptions() {
+            let selectedDosens = [];
+            $("select[name='dosens[]']").each(function() {
+                let val = $(this).val();
+                if (val) {
+                    selectedDosens.push(val);
+                }
+            });
+
+            $("select[name='dosens[]']").each(function() {
+                $(this).find("option").each(function() {
+                    if (selectedDosens.includes($(this).val()) && $(this).val() !== $(this)
+                        .parent().val()) {
+                        $(this).hide();
+                    } else {
+                        $(this).show();
+                    }
+                });
+            });
+        }
+
         // Tambah inputan dosen
         $('#addDosen').click(function() {
             $('#dosenInputs').append(
@@ -73,11 +98,21 @@
                 '<button type="button" class="btn btn-sm btn-danger remove-input">Hapus</button>' +
                 '</div>'
             );
+            updateDosenOptions();
+        });
+
+        // Update pilihan saat memilih dosen
+        $(document).on('change', "select[name='dosens[]']", function() {
+            updateDosenOptions();
         });
 
         // Hapus inputan dosen
         $(document).on('click', '.remove-input', function() {
             $(this).closest('.form-group').remove();
+            updateDosenOptions();
         });
+
+        // Inisialisasi pertama kali
+        updateDosenOptions();
     });
 </script>

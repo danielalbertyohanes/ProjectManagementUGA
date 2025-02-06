@@ -47,6 +47,9 @@ class LogVideosController extends Controller
         if (!$logEditing) {
             $logEditing = (object) ['status' => null, 'description' => ''];
         }
+
+
+        //dd($logEditing, $logVideo, $logPpt);
         return response()->json([
             'video' => $logVideo,
             'ppt' => $logPpt,

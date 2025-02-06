@@ -67,10 +67,12 @@
                                     <td>{{ $user->no_telp }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->position->name }}</td>
-                                    <td> <a href="#" class="btn btn-warning" data-toggle="modal"
-                                            data-target="#modalEdit" onclick="getEditForm({{ $user->id }})">EDIT
-                                        </a>
-                                    </td>
+                                    @if ($user->id != '1')
+                                        <td> <a href="#" class="btn btn-warning" data-toggle="modal"
+                                                data-target="#modalEdit" onclick="getEditForm({{ $user->id }})">EDIT
+                                            </a>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>
