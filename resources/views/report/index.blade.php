@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-5">
-    <h1 class=" text-center mb-4 text-black" style="font-size: 3rem;">Workload Analysis</h1>
+    <h1 class=" text-center mb-4 text-black" style="font-size: 3rem;">Laporan</h1>
 
     @foreach ($courses as $course)
         <div class="card shadow-lg mb-4">
