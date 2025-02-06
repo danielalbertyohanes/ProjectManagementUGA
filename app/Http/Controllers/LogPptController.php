@@ -30,7 +30,7 @@ class LogPptController extends Controller
     public function checkButton($id)
     {
         $logPpt = LogPpt::where('ppt_id', $id)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->select('status', 'description')
             ->first();
         return response()->json([
