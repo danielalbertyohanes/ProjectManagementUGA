@@ -126,6 +126,8 @@
         <h4 class="font-weight-bold py-3 mb-4">Pengaturan Akun</h4>
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
+        @elseif (session('erorr'))
+            <div class="alert alert-danger">{{ session('erorr') }}</div>
         @endif
         <div class="card overflow-hidden">
             <div class="row no-gutters row-bordered row-border-light">
@@ -183,7 +185,6 @@
                                         @enderror
                                     </div>
 
-                                    <!-- Input Password Baru -->
                                     <div class="form-group">
                                         <label class="form-label">Kata Sandi Baru</label>
                                         <input name="new_password" type="password" class="form-control" required>
@@ -192,7 +193,6 @@
                                         @enderror
                                     </div>
 
-                                    <!-- Konfirmasi Password Baru -->
                                     <div class="form-group">
                                         <label class="form-label">Ulangi Kata Sandi Baru</label>
                                         <input name="new_password_confirmation" type="password" class="form-control"
@@ -201,6 +201,7 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
+
                                 </div>
 
                                 <div class="text-right mt-3">

@@ -142,7 +142,7 @@
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Progres</th>
                                 <th class="text-center">Lokasi</th>
-                                <th class="text-center">Ditail Lokasi</th>
+                                <th class="text-center">Detail Lokasi</th>
                                 <th class="text-center">Recording Video</th>
                                 <th class="text-center">Recording PPT</th>
                                 <th class="text-center">Editing</th>
@@ -338,8 +338,7 @@
             $(document).on('click', '.start-video', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-
-
+                $(this).hide();
                 recordAction(id, 'start-video'); // Record the start action
                 checkButtonVideo(id);
             });
@@ -348,23 +347,17 @@
             $(document).on('click', '.pause-video', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
+                $(this).hide();
                 recordAction(id, 'pause-video'); // Record the pause action
                 checkButtonVideo(id);
             });
 
-            // Finish Video
-            $(document).on('click', '.resume-video', function(e) {
-                e.preventDefault();
-                var id = $(this).data('id');
-                recordAction(id, 'resume-video'); // Record the finish action
-                checkButtonVideo(id);
-
-            });
 
             // Finish Video
             $(document).on('click', '.finish-video', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
+                $(this).hide();
                 recordAction(id, 'finish-video'); // Record the finish action
                 checkButtonVideo(id);
 
@@ -374,6 +367,7 @@
             $(document).on('click', '.start-ppt', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
+                $(this).hide();
                 recordAction(id, 'start-ppt'); // Record the start action
                 checkButtonVideo(id);
             });
@@ -382,15 +376,16 @@
             $(document).on('click', '.pause-ppt', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
+                $(this).hide();
                 recordAction(id, 'pause-ppt'); // Record the pause action
                 checkButtonVideo(id);
             });
-
 
             // Finish Video PPT
             $(document).on('click', '.finish-ppt', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
+                $(this).hide();
                 recordAction(id, 'finish-ppt'); // Record the finish action
                 checkButtonVideo(id);
             });
@@ -399,6 +394,7 @@
             $(document).on('click', '.start-editing', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
+                $(this).hide();
                 recordAction(id, 'start-editing'); // Record the start action
                 checkButtonVideo(id);
             });
@@ -408,6 +404,7 @@
             $(document).on('click', '.finish-editing', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
+                $(this).hide();
                 recordAction(id, 'finish-editing'); // Record the finish action
                 checkButtonVideo(id);
             });
@@ -417,6 +414,7 @@
             $(document).on('click', '.start-ppt-editing', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
+                $(this).hide();
                 recordActionPpt(id, 'start-ppt-editing'); // Record the start action
                 checkButtonPpt(id);
             });
@@ -425,6 +423,7 @@
             $(document).on('click', '.finish-ppt-editing', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
+                $(this).hide();
                 recordActionPpt(id, 'finish-ppt-editing'); // Record the finish action
                 checkButtonPpt(id);
             });
@@ -449,81 +448,69 @@
                 url: '/logvideo/check-button/' + id,
                 type: 'GET',
                 success: function(response) {
-                    let video = response.video;
-                    let ppt = response.ppt;
-                    let editing = response.editing;
+                    console.log('Response dari server:', response);
 
-                    // Update info with the formatted date in d-MMM-yy format (e.g., 12-Nov-24)
+                    let video = response.video || {};
+                    let ppt = response.ppt || {};
+                    let editing = response.editing || {};
+
                     var currentDate = new Date();
                     var day = currentDate.getDate();
                     var month = currentDate.toLocaleString('default', {
                         month: 'short'
                     });
-                    var year = currentDate.getFullYear().toString().slice(-
-                        2);
-
-                    // Format the date as d-MMM-yy
+                    var year = currentDate.getFullYear().toString().slice(-2);
                     var formattedDate = day + '-' + month + '-' + year;
 
-                    // Update tampilan tombol berdasarkan status video
+                    // Perbarui tampilan tombol video terlebih dahulu
                     if (video.status === "Start") {
-                        $('.start-video[data-id="' + id + '"]')
-                            .hide();
-                        $('.pause-video[data-id="' + id + '"], .finish-video[data-id="' + id + '"]')
-                            .show();
+                        $('.start-video[data-id="' + id + '"]').hide();
+                        $('.pause-video[data-id="' + id + '"], .finish-video[data-id="' + id + '"]').show();
                     } else if (video.status === "Pause") {
                         $('.start-video[data-id="' + id + '"]').show();
                         $('.pause-video[data-id="' + id + '"], .finish-video[data-id="' + id + '"]').hide();
                     } else if (video.status === "Finish") {
-                        $('.finish-video[data-id="' + id + '"],.start-video[data-id="' + id +
-                            '"], .pause-video[data-id="' + id + '"]').hide();
-
+                        $('.start-video[data-id="' + id + '"], .pause-video[data-id="' + id +
+                            '"], .finish-video[data-id="' + id + '"]').hide();
                         $('.tanggalVideo[data-id="' + id + '"]').text(formattedDate).show();
                     }
 
-                    // Update tampilan tombol berdasarkan status PPT
+                    // Perbarui tampilan tombol PPT secara terpisah
                     if (ppt.status === "Start") {
-                        $('.start-ppt[data-id="' + id + '"]')
-                            .hide();
-                        $('.pause-ppt[data-id="' + id + '"], .finish-ppt[data-id="' + id +
-                                '"]')
-                            .show();
+                        $('.start-ppt[data-id="' + id + '"]').hide();
+                        $('.pause-ppt[data-id="' + id + '"], .finish-ppt[data-id="' + id + '"]').show();
                     } else if (ppt.status === "Pause") {
                         $('.start-ppt[data-id="' + id + '"]').show();
-                        $('.finish-ppt[data-id="' + id + '"]').hide();
-                        $('.pause-ppt[data-id="' + id + '"]').hide();
+                        $('.pause-ppt[data-id="' + id + '"], .finish-ppt[data-id="' + id + '"]').hide();
                     } else if (ppt.status === "Finish") {
-                        $('.start-ppt[data-id="' + id + '"]').hide();
-                        $('.finish-ppt[data-id="' + id + '"]').hide();
-                        $('.pause-ppt[data-id="' + id + '"]').hide();
+                        $('.start-ppt[data-id="' + id + '"], .pause-ppt[data-id="' + id +
+                            '"], .finish-ppt[data-id="' + id + '"]').hide();
                         $('.tanggalPptVideo[data-id="' + id + '"]').text(formattedDate).show();
                     }
 
+                    // Jika Video & PPT sudah selesai, baru tampilkan tombol editing
                     if (video.status === "Finish" && ppt.status === "Finish") {
                         $('.info[data-id="' + id + '"]').hide();
 
                         if (editing.status === "Start") {
                             $('.start-editing[data-id="' + id + '"]').hide();
-                            $('.finish-editing[data-id="' + id + '"]')
-                                .show();
+                            $('.finish-editing[data-id="' + id + '"]').show();
                         } else if (editing.status === "Finish") {
-                            $('.finish-editing[data-id="' + id + '"]').hide();
                             $('.start-editing[data-id="' + id + '"]').hide();
-
+                            $('.finish-editing[data-id="' + id + '"]').hide();
                             $('.tanggalEditing[data-id="' + id + '"]').text(formattedDate).show();
-                        } else if (!editing || editing.status === null) {
-                            $('.info[data-id="' + id + '"]')
-                                .hide();
+                        } else {
+                            $('.info[data-id="' + id + '"]').hide();
                             $('.start-editing[data-id="' + id + '"]').show();
                         }
                     }
-
                 },
                 error: function(xhr, status, error) {
                     console.error('Error:', error);
                 }
             });
         }
+
 
         // Function to record actions
         function recordAction(id, action) {

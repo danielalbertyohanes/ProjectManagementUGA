@@ -38,22 +38,36 @@ class UserController extends Controller
     public function changePassword(Request $request, string $id)
     {
         $data = $request->validate([
-            'current_password' => 'required|string|min:6',
-            'new_password' => 'required|string|min:6|confirmed',
-            'new_password_confirmation' => 'required|string|min:6',
+            'current_password' => 'required',
+            'new_password' => 'required',
+            'new_password_confirmation' => 'required',
         ]);
+
         $user = User::findOrFail($id);
+
+        // Memeriksa apakah kata sandi saat ini salah
         if (!Hash::check($data['current_password'], $user->password)) {
-            return back()->withErrors(['current_password' => 'Password saat ini salah.']);
+            return back()->withErrors([
+                'current_password' => 'Kata sandi saat ini yang Anda masukkan salah, harap coba lagi.'
+            ])->with('erorr', 'Kata sandi gagal diperbarui!');
         }
+
+        // Memeriksa apakah kata sandi baru sama dengan kata sandi saat ini
         if ($data['new_password'] === $data['current_password']) {
-            return back()->withErrors(['new_password' => 'Password baru harus berbeda dari password saat ini.']);
+            return back()->withErrors([
+                'new_password' => 'Kata sandi baru harus berbeda dari kata sandi saat ini.'
+            ])->with('erorr', 'Kata sandi gagal diperbarui!');
         }
+
+        // Memperbarui kata sandi pengguna
         $user->update([
             'password' => bcrypt($data['new_password']),
         ]);
-        return redirect()->route('user.profile', $id)->with('status', 'Password berhasil diperbarui');
+
+        // Redirect ke halaman profil dengan status success
+        return redirect()->route('user.profile', $id)->with('status', 'Kata sandi Anda berhasil diperbarui!');
     }
+
 
     public function userProfile(string $id)
     {
