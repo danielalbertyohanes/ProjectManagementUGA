@@ -328,6 +328,7 @@
                 var id = $(this).data('id');
                 checkButtonVideo(id);
             });
+
             $('.start-ppt-editing').each(function() {
                 var id = $(this).data('id');
                 checkButtonPpt(id);
@@ -336,20 +337,22 @@
             // Button Recording Video, Recording PPT, Editing Started
             // Start Video
             $(document).on('click', '.start-video', function(e) {
+                $(this).hide();
                 e.preventDefault();
                 var id = $(this).data('id');
-                $(this).hide();
                 recordAction(id, 'start-video'); // Record the start action
                 checkButtonVideo(id);
+                $(this).hide();
             });
 
             // Pause Video
             $(document).on('click', '.pause-video', function(e) {
+                $(this).hide();
                 e.preventDefault();
                 var id = $(this).data('id');
-                $(this).hide();
                 recordAction(id, 'pause-video'); // Record the pause action
                 checkButtonVideo(id);
+                $(this).hide();
             });
 
 
@@ -357,56 +360,53 @@
             $(document).on('click', '.finish-video', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                $(this).hide();
                 recordAction(id, 'finish-video'); // Record the finish action
                 checkButtonVideo(id);
-
+                $(this).hide();
             });
 
             // Start Video PPT
             $(document).on('click', '.start-ppt', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                $(this).hide();
                 recordAction(id, 'start-ppt'); // Record the start action
                 checkButtonVideo(id);
+                $(this).hide();
             });
 
             // Pause Video PPT
             $(document).on('click', '.pause-ppt', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                $(this).hide();
                 recordAction(id, 'pause-ppt'); // Record the pause action
                 checkButtonVideo(id);
+                $(this).hide();
             });
 
             // Finish Video PPT
             $(document).on('click', '.finish-ppt', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                $(this).hide();
                 recordAction(id, 'finish-ppt'); // Record the finish action
                 checkButtonVideo(id);
+                $(this).hide();
             });
 
             // Start Video Editing
             $(document).on('click', '.start-editing', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                $(this).hide();
                 recordAction(id, 'start-editing'); // Record the start action
                 checkButtonVideo(id);
+                $(this).hide();
             });
-
 
             // Finish Video Editing
             $(document).on('click', '.finish-editing', function(e) {
-                e.preventDefault();
                 var id = $(this).data('id');
-                $(this).hide();
                 recordAction(id, 'finish-editing'); // Record the finish action
                 checkButtonVideo(id);
+                $(this).hide();
             });
 
 
@@ -414,19 +414,20 @@
             $(document).on('click', '.start-ppt-editing', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                $(this).hide();
                 recordActionPpt(id, 'start-ppt-editing'); // Record the start action
                 checkButtonPpt(id);
+                $(this).hide();
             });
 
             // Finish PPT Editing
             $(document).on('click', '.finish-ppt-editing', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                $(this).hide();
                 recordActionPpt(id, 'finish-ppt-editing'); // Record the finish action
                 checkButtonPpt(id);
+                $(this).hide();
             });
+
 
             $('#modal').on('hidden.bs.modal', function() {
                 location.reload();
@@ -467,8 +468,8 @@
                         $('.start-video[data-id="' + id + '"]').hide();
                         $('.pause-video[data-id="' + id + '"], .finish-video[data-id="' + id + '"]').show();
                     } else if (video.status === "Pause") {
-                        $('.start-video[data-id="' + id + '"]').show();
                         $('.pause-video[data-id="' + id + '"], .finish-video[data-id="' + id + '"]').hide();
+                        $('.start-video[data-id="' + id + '"]').show();
                     } else if (video.status === "Finish") {
                         $('.start-video[data-id="' + id + '"], .pause-video[data-id="' + id +
                             '"], .finish-video[data-id="' + id + '"]').hide();
@@ -480,8 +481,8 @@
                         $('.start-ppt[data-id="' + id + '"]').hide();
                         $('.pause-ppt[data-id="' + id + '"], .finish-ppt[data-id="' + id + '"]').show();
                     } else if (ppt.status === "Pause") {
-                        $('.start-ppt[data-id="' + id + '"]').show();
                         $('.pause-ppt[data-id="' + id + '"], .finish-ppt[data-id="' + id + '"]').hide();
+                        $('.start-ppt[data-id="' + id + '"]').show();
                     } else if (ppt.status === "Finish") {
                         $('.start-ppt[data-id="' + id + '"], .pause-ppt[data-id="' + id +
                             '"], .finish-ppt[data-id="' + id + '"]').hide();
@@ -496,11 +497,11 @@
                             $('.start-editing[data-id="' + id + '"]').hide();
                             $('.finish-editing[data-id="' + id + '"]').show();
                         } else if (editing.status === "Finish") {
-                            $('.start-editing[data-id="' + id + '"]').hide();
-                            $('.finish-editing[data-id="' + id + '"]').hide();
+                            $('.finish-editing[data-id="' + id + '"], .start-editing[data-id="' + id + '"] ')
+                                .hide();
                             $('.tanggalEditing[data-id="' + id + '"]').text(formattedDate).show();
                         } else {
-                            $('.info[data-id="' + id + '"]').hide();
+                            $('.info[data-id="' + id + '"], .finish-editing[data-id="' + id + '"]').hide();
                             $('.start-editing[data-id="' + id + '"]').show();
                         }
                     }

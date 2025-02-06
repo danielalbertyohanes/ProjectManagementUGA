@@ -31,25 +31,20 @@ class LogVideosController extends Controller
     {
         $logPpt = LogVideo::where('description', 'like', '%-ppt')
             ->where('video_id', $id)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->select('status', 'description')
             ->first();
         $logVideo = LogVideo::where('description', 'like', '%-video')
             ->where('video_id', $id)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->select('status', 'description')
             ->first();
         $logEditing = LogVideo::where('description', 'like', '%-editing')
             ->where('video_id', $id)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->select('status', 'description')
             ->first();
-        if (!$logEditing) {
-            $logEditing = (object) ['status' => null, 'description' => ''];
-        }
 
-
-        //dd($logEditing, $logVideo, $logPpt);
         return response()->json([
             'video' => $logVideo,
             'ppt' => $logPpt,
