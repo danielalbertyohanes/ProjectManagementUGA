@@ -65,7 +65,7 @@
                                     <td>{{ $link->status }}</td>
                                     <td>
                                         <a href="#" class="btn btn-warning" data-toggle="modal"
-                                            data-target="#modalEditA" onclick="getEditForm({{ $link->id }})">EDIT
+                                            data-target="#modalEditA" onclick="getEditForm({{ $link->id }})">Edit
                                         </a>
                                     </td>
                                 </tr>

@@ -69,7 +69,7 @@
                                     <td>
                                         {{-- @if (Auth::user()->position_id == '3') --}}
                                         <a href="#" class="btn btn-warning" data-toggle="modal"
-                                            data-target="#modalEditA" onclick="getEditForm({{ $d->id }})">EDIT
+                                            data-target="#modalEditA" onclick="getEditForm({{ $d->id }})">Edit
                                         </a>
                                         <form method="POST" action="{{ route('dosen.destroy', $d->id) }}"
                                             style="display:inline;">
