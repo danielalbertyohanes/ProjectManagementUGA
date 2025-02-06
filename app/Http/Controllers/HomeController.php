@@ -34,8 +34,6 @@ class HomeController extends Controller
             $courseBelumSelesai = Course::whereNotIn('status', ['Publish', 'Cancel'])->count();
         };
 
-        //dd($periodeAktif, $totalPengguna,  $totalDosen,    $hariIni,   $courseBelumSelesai);
-
         return view('layouts.home', compact('periodeAktif', 'totalPengguna', 'totalDosen', 'hariIni', 'courseBelumSelesai'));
     }
 }
