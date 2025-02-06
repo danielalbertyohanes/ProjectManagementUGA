@@ -24,7 +24,6 @@ class SubTopic extends Model
     {
         return $this->belongsTo(Topic::class, 'topic_id');
     }
-
     public function ppts(): HasMany
     {
         return $this->hasMany(Ppt::class, 'sub_topic_id', 'id');

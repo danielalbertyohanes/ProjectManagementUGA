@@ -3,8 +3,9 @@
     <form method="POST" action="{{ route('link_external.store') }}">
         @csrf
         <div class="form-group">
-            <label for="linkName">Link Name</label>
-            <input type="text" class="form-control" id="linkName" name="name" placeholder="Enter Link Name" required>
+            <label for="linkName">Nama Link</label>
+            <input type="text" class="form-control" id="linkName" name="name" placeholder="Enter Link Name" required
+                 oninput="this.value = this.value.toUpperCase()">
 
             <label for="linkValue">URL</label>
             <input type="url" class="form-control" id="linkValue" name="url" placeholder="Enter URL" required>
@@ -17,8 +18,8 @@
         </div>
 
         <div class="modal-footer">
-            <a href="{{ route('link_external.index') }}" class="btn btn-danger">Cancel</a>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <a href="{{ route('link_external.index') }}" class="btn btn-danger">Batal</a>
+            <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
     </form>
 @endsection

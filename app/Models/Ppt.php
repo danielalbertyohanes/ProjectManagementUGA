@@ -39,11 +39,6 @@ class Ppt extends Model
         return $this->belongsTo(Topic::class, 'sub_topic_id');
     }
 
-    public function videos()
-    {
-        return $this->hasMany(Video::class, 'ppt_id');
-    }
-
     public function subTopic(): BelongsTo
     {
         return $this->belongsTo(SubTopic::class, 'sub_topic_id');
@@ -54,7 +49,7 @@ class Ppt extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function vidoes(): HasMany
+    public function videos(): HasMany
     {
         return $this->hasMany(Video::class, 'ppt_id', 'id');
     }
@@ -76,7 +71,7 @@ class Ppt extends Model
             ->join('sub_topics', 'ppts.sub_topic_id', '=', 'sub_topics.id')
             ->where('sub_topics.id', $subTopic)
             ->select('ppts.*')
-            ->orderBy('ppts.id', 'asc')
+            ->orderBy('ppts.progress', 'asc')
             ->get();
     }
     function getPptProgressFromStatus($status)
@@ -93,13 +88,11 @@ class Ppt extends Model
 
     public static function catatTanggalRecording($userId, $pptId, $action)
     {
-        $updateData = []; // Array untuk menyimpan data yang akan diupdate
+        $updateData = [];
 
-        $Ppt = Ppt::findOrFail($pptId); // or use findOrFail($videoId) to throw an error if not found
+        $Ppt = Ppt::findOrFail($pptId);
 
         if ($Ppt) {
-
-            // Mencatat log tindakan
             $catat_log = LogPpt::create([
                 'user_id' => $userId,
                 'ppt_id' => $pptId,
@@ -108,11 +101,9 @@ class Ppt extends Model
                     'finish-ppt-editing' => 'Finish',
                     default => 'Unknown',
                 },
-                'description' => ucfirst(str_replace('_', ' ', $action)), // Deskripsi menggunakan tindakan yang dibaca
+                'description' => ucfirst(str_replace('_', ' ', $action)),
             ]);
 
-
-            // Aksi terkait PPT
             if ($action === 'start-ppt-editing') {
                 $updateData = [
                     'started_at' => now(),
@@ -135,19 +126,13 @@ class Ppt extends Model
                     ];
                 }
             }
-
-
             $updated = $Ppt->update($updateData);
-            //dd($updateData);
             if ($updated) {
-                // Optionally, return success response
                 return response()->json(['message' => 'PPT updated successfully']);
             } else {
-                // Handle failure if the update fails
                 return response()->json(['message' => 'Failed to update PPT']);
             }
         } else {
-            // Handle case where the video is not found
             return response()->json(['message' => 'PPT not found'], 404);
         }
     }

@@ -101,9 +101,9 @@
     <aside class="sidebar">
         <h2 class="text-center py-3 font-bold">Navigation</h2>
         <ul>
-            <li><a href="{{ route('welcome') }}"><i class="fas fa-fw fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="{{ route('home') }}"><i class="fas fa-fw fa-tachometer-alt"></i> Dashboard</a></li>
             <hr>
-            @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
+            @if (Auth::user()->position_id == '1')
                 <li><a href="{{ route('employee.index') }}"><i class="fa fa-users"></i> Master Employee</a></li>
                 <li><a href="{{ route('dosen.index') }}"><i class="fa fa-users"></i> Master Kontributor</a></li>
                 <li><a href="{{ route('link_external.index') }}"><i class="fa fa-book"></i> Master External Link</a>
@@ -111,6 +111,8 @@
                 <li><a href="{{ route('periode.index') }}"><i class="fa fa-calendar"></i> Master Periode</a></li>
                 <li><a href="{{ route('course.index') }}"><i class="fa fa-book"></i> Master Courses</a></li>
                 <li><a href="{{ route('report.index') }}"><i class="fa fa-book"></i> Report</a></li>
+            @elseif (Auth::user()->position_id == '2' || Auth::user()->position_id == '3')
+                <li><a href="{{ route('course.index') }}"><i class="fa fa-book"></i> Master Courses</a></li>
             @endif
         </ul>
     </aside>
@@ -128,7 +130,7 @@
                     <i class="fas fa-user"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                    <a class="dropdown-item" href="{{ route('employee.show', Auth::user()->id) }}">Profile</a>
+                    <a class="dropdown-item" href="{{ route('user.profile', Auth::user()->id) }}">Profile</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
                 </div>

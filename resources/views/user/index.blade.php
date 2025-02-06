@@ -123,83 +123,89 @@
 
 <body>
     <div class="container light-style flex-grow-1 container-p-y">
-        <h4 class="font-weight-bold py-3 mb-4">Account settings</h4>
+        <h4 class="font-weight-bold py-3 mb-4">Pengaturan Akun</h4>
+        @if (session('status'))
+            <div class="alert alert-success">{{ session('status') }}</div>
+        @endif
         <div class="card overflow-hidden">
             <div class="row no-gutters row-bordered row-border-light">
                 <div class="col-md-3 pt-0">
                     <div class="list-group list-group-flush account-settings-links">
                         <a class="list-group-item list-group-item-action active" data-toggle="list"
-                            href="#account-general">General</a>
+                            href="#account-general">Umum</a>
                         <a class="list-group-item list-group-item-action" data-toggle="list"
-                            href="#account-change-password">Change password</a>
-
+                            href="#account-change-password">Ubah Kata Sandi</a>
                     </div>
                 </div>
                 <div class="col-md-9">
                     <div class="tab-content">
                         <div class="tab-pane fade active show" id="account-general">
-
                             <hr class="border-light m-0" />
-                            <form method="POST" action="{{route('employee.update',$user->id)}}">
+                            <form method="POST"
+                                action="{{ route('user.update', ['user' => $user->id, 'from' => 'user']) }}">
                                 @csrf
                                 @method('PUT')
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label class="form-label">Username</label>
-                                        <input name="name" type="text" class="form-control mb-1" value="{{$user->name}}" />
+                                        <label class="form-label">Nama</label>
+                                        <input name="name" type="text" class="form-control mb-1"
+                                            value="{{ $user->name }}" />
                                     </div>
 
                                     <div class="form-group">
                                         <label class="form-label">E-mail</label>
-                                        <input name="email" type="text" class="form-control mb-1" value="{{$user->email}}" />
-
+                                        <input name="email" type="text" class="form-control mb-1"
+                                            value="{{ $user->email }}" />
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label">Position</label>
-                                        <input type="text" class="form-control" value="{{$user->position->name}}" readonly />
+                                        <label class="form-label">Posisi</label>
+                                        <input type="text" class="form-control" value="{{ $user->position->name }}"
+                                            readonly />
                                     </div>
                                 </div>
                                 <div class="text-right mt-3">
-                                    <button type="submit" class="btn btn-primary">Save changes</button>
-                                    <a href="{{ route('employee.index') }}" class="btn btn-default">Cancel</a>
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                    <a href="{{ route('home') }}" class="btn btn-default">Batal</a>
                                 </div>
                             </form>
-
                         </div>
-                        <div class="tab-pane fade" id="account-change-password">
-                            <form method="POST" action="{{ route('employee.changePassword', $user->id) }}">
-                                @csrf
-                                @method('PUT')
 
+                        <div class="tab-pane fade" id="account-change-password">
+                            <form action="{{ route('employee.changePassword', ['id' => $user->id]) }}" method="POST">
+                                @csrf
                                 <div class="card-body pb-2">
                                     <!-- Input Password Saat Ini -->
                                     <div class="form-group">
-                                        <label class="form-label">Current password</label>
+                                        <label class="form-label">Kata Sandi Saat Ini</label>
                                         <input name="current_password" type="password" class="form-control" required>
                                         @error('current_password')
-                                        <span class="text-danger">{{ $message }}</span>
+                                            <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
 
                                     <!-- Input Password Baru -->
                                     <div class="form-group">
-                                        <label class="form-label">New password</label>
+                                        <label class="form-label">Kata Sandi Baru</label>
                                         <input name="new_password" type="password" class="form-control" required>
                                         @error('new_password')
-                                        <span class="text-danger">{{ $message }}</span>
+                                            <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
 
                                     <!-- Konfirmasi Password Baru -->
                                     <div class="form-group">
-                                        <label class="form-label">Repeat new password</label>
-                                        <input name="new_password_confirmation" type="password" class="form-control" required>
+                                        <label class="form-label">Ulangi Kata Sandi Baru</label>
+                                        <input name="new_password_confirmation" type="password" class="form-control"
+                                            required>
+                                        @error('new_password_confirmation')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="text-right mt-3">
-                                    <button type="submit" class="btn btn-primary">Change password</button>
-                                    <a href="{{ route('employee.index') }}" class="btn btn-default">Cancel</a>
+                                    <button type="submit" class="btn btn-primary">Ubah Kata Sandi</button>
+                                    <a href="{{ route('home') }}" class="btn btn-default">Batal</a>
                                 </div>
                             </form>
                         </div>
@@ -210,11 +216,11 @@
         </div>
     </div>
 
-
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript"></script>
 </body>
+
 
 </html>

@@ -2,10 +2,10 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Action</th>
-            <th>Performed By</th>
-            <th>Details</th>
-            <th>Date</th>
+            <th>Aksi</th>
+            <th>Diproses Oleh</th>
+            <th>Rincian</th>
+            <th>Tanggal</th>
         </tr>
     </thead>
     <tbody>

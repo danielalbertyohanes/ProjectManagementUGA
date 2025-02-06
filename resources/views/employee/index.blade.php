@@ -16,6 +16,7 @@
             font-family: Arial, Helvetica, sans-serif;
             color: #232323;
         }
+
         th {
             font-weight: bold;
             text-align: center;
@@ -35,6 +36,9 @@
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
+
+        <a class="btn btn-success mb-3" href="{{ route('employee.create') }}">Tambah Employee</a>
+
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">DAFTAR EMPLOYEE</h6>
@@ -46,7 +50,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>NPK</th>
-                                <th>Nama Employee</ths=>
+                                <th>Nama</ths=>
                                 <th>Nomor Telepon</th>
                                 <th>Email</th=>
                                 <th>Posisi</th=>

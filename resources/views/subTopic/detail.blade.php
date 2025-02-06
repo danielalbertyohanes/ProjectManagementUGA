@@ -1,13 +1,31 @@
 @extends('layouts.admin')
 
 @section('content')
+    <style>
+        p {
+            font-size: 1rem;
+            padding-top: 1rem;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #232323;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #333333;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+    </style>
     <div class="container-fluid">
-        <h3 class="h3 mb-2 text-gray-800">Detail Sub Topic</h3>
-        <p>Halaman details berisi topik. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-            Ipsum has been the industry's.</p>
+        <h3 class="h3 mb-2 text-gray-800">Detail Sub Topik</h3>
+        <p>Halaman detail subtopik ini menampilkan informasi lengkap mengenai subtopik, termasuk daftar PPT (PowerPoint) dan
+            video yang terkait dengan subtopik tersebut.</p>
+        <br>
+        @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
+            <a class="btn btn-success mb-3" href="{{ route('ppt.newPpt', $subTopic->id) }}">Tambah PPT</a>
+        @endif
 
-
-        <a class="btn btn-success mb-3" href="{{ route('ppt.newPpt', $subTopic->id) }}">+ New PPT</a>
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
@@ -24,11 +42,11 @@
                         <thead>
                             <tr>
                                 <th class="text-center">No</th>
-                                <th class="text-center">Name</th>
+                                <th class="text-center">Nama</th>
                                 <th class="text-center">Status</th>
-                                <th class="text-center">Progress</th>
+                                <th class="text-center">Progres</th>
                                 <th class="text-center">Editing</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,29 +70,37 @@
                                     <td>
                                         <ul class="d-flex list-unstyled"
                                             style="justify-content: center; align-items: center; padding: 0;">
-                                            @if ($ppt->finish_click_ppt)
-                                                <span class="tanggalPpt" data-id="{{ $ppt->id }}"
-                                                    data-ppt-editing-finished-at="{{ $ppt->finish_click_ppt }}"
-                                                    style="justify-content: center; align-items: center; padding: 0;">
-                                                    {{ \Carbon\Carbon::parse($ppt->finish_click_ppt)->format('d-M-y') }}
-                                                </span>
+                                            @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
+                                                @if ($ppt->finish_click_ppt)
+                                                    <span class="tanggalPpt" data-id="{{ $ppt->id }}"
+                                                        data-ppt-editing-finished-at="{{ $ppt->finish_click_ppt }}"
+                                                        style="justify-content: center; align-items: center; padding: 0;">
+                                                        {{ \Carbon\Carbon::parse($ppt->finish_click_ppt)->format('d-M-Y') }}
+                                                    </span>
+                                                @else
+                                                    <li> <span class="tanggalPpt" data-id="{{ $ppt->id }}"
+                                                            data-ppt-editing-finished-at="{{ $ppt->finish_click_ppt }}"style="display:none;">
+                                                        </span></li>
+                                                    <li><a href="#" class="btn btn-primary m-1 start-ppt-editing"
+                                                            data-id="{{ $ppt->id }}">Start</a></li>
+                                                    <li><a href="#" class="btn btn-danger m-1 finish-ppt-editing"
+                                                            data-id="{{ $ppt->id }}" style="display:none;">Finish</a>
+                                                    </li>
+                                                @endif
                                             @else
-                                                <li> <span class="tanggalPpt" data-id="{{ $ppt->id }}"
-                                                        data-ppt-editing-finished-at="{{ $ppt->finish_click_ppt }}"style="display:none;">
-                                                    </span></li>
-                                                <li><a href="#" class="btn btn-primary m-1 start-ppt-editing"
-                                                        data-id="{{ $ppt->id }}">Start</a></li>
-                                                <li><a href="#" class="btn btn-danger m-1 finish-ppt-editing"
-                                                        data-id="{{ $ppt->id }}" style="display:none;">Finish</a></li>
+                                                {{ $ppt->finish_click_ppt ? \Carbon\Carbon::parse($ppt->finish_click_ppt)->format('d-M-Y') : '---' }}
                                             @endif
+
                                         </ul>
                                     </td>
                                     <td>
                                         <ul class="d-flex list-unstyled ">
-                                            <li><a href="#" class="btn btn-warning m-1" data-toggle="modal"
-                                                    data-target="#modalEdit"
-                                                    onclick="getPptEditForm({{ $ppt->id }})">Edit</a>
-                                            </li>
+                                            @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
+                                                <li><a href="#" class="btn btn-warning m-1" data-toggle="modal"
+                                                        data-target="#modalEdit"
+                                                        onclick="getPptEditForm({{ $ppt->id }})">Edit</a>
+                                                </li>
+                                            @endif
                                             <li>
                                                 <a href="#" class="btn btn-info  m-1" data-toggle="modal"
                                                     data-target="#modalEditContent"
@@ -95,12 +121,12 @@
         </div>
 
         @if ($videos->isNotEmpty())
-                <a class="btn btn-success mb-3" href="{{ route('video.newVideo', $subTopic->id) }}">+ New Video</a>
-            @endif
+            <a class="btn btn-success mb-3" href="{{ route('video.newVideo', $subTopic->id) }}">Tambah Video</a>
+        @endif
 
 
         {{-- Tabel Video --}}
-        <div class="card shadow mb-4"> 
+        <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Video</h6>
             </div>
@@ -112,15 +138,15 @@
                             <tr>
                                 <th class="text-center">No</th>
                                 <th class="text-center">PPT</th>
-                                <th class="text-center">Name</th>
+                                <th class="text-center">Nama</th>
                                 <th class="text-center">Status</th>
-                                <th class="text-center">Progress</th>
-                                <th class="text-center">Location</th>
-                                <th class="text-center">Detail Location</th>
+                                <th class="text-center">Progres</th>
+                                <th class="text-center">Lokasi</th>
+                                <th class="text-center">Ditail Lokasi</th>
                                 <th class="text-center">Recording Video</th>
                                 <th class="text-center">Recording PPT</th>
                                 <th class="text-center">Editing</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -154,7 +180,7 @@
                                             @if ($video->finish_click_video)
                                                 <span class="tanggalVideo" data-id="{{ $video->id }}"
                                                     data-video-finished-at="{{ $video->finish_click_video }}">
-                                                    {{ \Carbon\Carbon::parse($video->finish_click_video)->format('d-M-y') }}
+                                                    {{ \Carbon\Carbon::parse($video->finish_click_video)->format('d-M-Y') }}
                                                 </span>
                                             @else
                                                 <li> <span class="tanggalVideo" data-id="{{ $video->id }}"
@@ -181,7 +207,7 @@
                                             @if ($video->finish_click_ppt)
                                                 <li> <span class="tanggalPptVideo" data-id="{{ $video->id }}"
                                                         data-ppt-finished-at="{{ $video->finish_click_ppt }}">
-                                                        {{ \Carbon\Carbon::parse($video->finish_click_ppt)->format('d-M-y') }}
+                                                        {{ \Carbon\Carbon::parse($video->finish_click_ppt)->format('d-M-Y') }}
                                                     </span></li>
                                             @else
                                                 <li> <span class="tanggalPptVideo" data-id="{{ $video->id }}"
@@ -205,7 +231,7 @@
                                         <ul class="d-flex list-unstyled"
                                             style="justify-content: center; align-items: center; padding: 0;">
                                             @if ($video->finish_click_editing)
-                                                <span>{{ \Carbon\Carbon::parse($video->finish_click_editing)->format('d-M-y') }}</span>
+                                                <span>{{ \Carbon\Carbon::parse($video->finish_click_editing)->format('d-M-Y') }}</span>
                                             @else
                                                 <li>
                                                     <p class="info" data-id="{{ $video->id }}">Harap selesaikan
@@ -256,7 +282,8 @@
     </div>
 
     {{-- Edit Modal --}}
-    <div class="modal" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true">
+    <div class="modal" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -271,8 +298,6 @@
             </div>
         </div>
     </div>
-
-
 
     {{-- Log Modal --}}
     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
@@ -421,7 +446,7 @@
 
         function checkButtonVideo(id) {
             $.ajax({
-                url: '/video/check-button/' + id,
+                url: '/logvideo/check-button/' + id,
                 type: 'GET',
                 success: function(response) {
                     let video = response.video;
@@ -527,7 +552,7 @@
 
         function checkButtonPpt(id) {
             $.ajax({
-                url: '/ppt/check-button/' + id,
+                url: '/logppt/check-button/' + id,
                 type: 'GET',
                 success: function(response) {
                     let ppt = response.ppt;
@@ -551,7 +576,7 @@
                             .show(); // Tampilkan tombol Pause dan Finish
                         // Set the value and show the info
                         $('.tanggalPpt[data-id="' + id + '"]').text(formattedDate).hide();
-                       
+
                     } else if (ppt.status === "Finish") {
                         $('.start-ppt-editing[data-id="' + id + '"]').hide(); // Sembunyikan tombol Start
                         $('.finish-ppt-editing[data-id="' + id + '"]')
@@ -639,9 +664,8 @@
         function getLogVideo(id) {
             $.ajax({
                 type: 'GET',
-                url: '{{ route('logVideo.getLogVideo') }}', // Menghapus spasi ekstra
+                url: '{{ route('logVideo.getLogVideo') }}',
                 data: {
-
                     'id': id
                 },
                 success: function(data) {

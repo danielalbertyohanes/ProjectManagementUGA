@@ -13,12 +13,6 @@ class DosenController extends Controller
         return view('dosen.index', compact('dosens'));
     }
 
-    // public function show($id)
-    // {
-    //     $dosen = Dosen::getDosenById($id);
-    //     return view('dosen.show', compact('dosen'));
-    // }
-
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -28,15 +22,12 @@ class DosenController extends Controller
             'no_telp' => 'nullable|string|max:45',
             'description' => 'nullable|string|max:45'
         ]);
-
         Dosen::create($data);
-
-        return redirect()->route('dosen.index')->with('status', 'dosen create successfully');
+        return redirect()->route('dosen.index')->with('status', 'Dosen berhasil ditambahkan');
     }
 
     public function create()
     {
-
         return view("dosen.create");
     }
 
@@ -54,10 +45,8 @@ class DosenController extends Controller
             'no_telp' => 'nullable|string|max:45',
             'description' => 'nullable|string|max:45'
         ]);
-
         $dosen->update($data);
-
-        return redirect()->route('dosen.index')->with('status', 'dosen updated successfully');
+        return redirect()->route('dosen.index')->with('status', 'Dosen berhasil diperbarui');
     }
 
     public function destroy(Dosen $dosen)
@@ -65,10 +54,10 @@ class DosenController extends Controller
         try {
             $deletedData = $dosen;
             $deletedData->delete();
-            return redirect()->route('dosen.index')->with('status', 'Horray ! Your data is successfully deleted !');
+            return redirect()->route('dosen.index')->with('status', 'Hore! Data berhasil dihapus');
         } catch (\PDOException $ex) {
 
-            $msg = "Failed to delete data ! Make sure there is no related data before deleting it";
+            $msg = "Gagal menghapus data! Pastikan tidak ada data terkait sebelum menghapusnya";
             return redirect()->route('dosen.index')->with('status', $msg);
         }
     }

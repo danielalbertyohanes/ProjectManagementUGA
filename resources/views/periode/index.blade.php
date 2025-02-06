@@ -16,6 +16,7 @@
             font-family: Arial, Helvetica, sans-serif;
             color: #232323;
         }
+
         th {
             font-weight: bold;
             text-align: center;
@@ -31,7 +32,8 @@
     </style>
     <div class="container-fluid">
         <h1>MASTER PERIODE</h1>
-        <p>Master Periode adalah modul yang digunakan untuk mendefinisikan dan mengelola periode waktu akademik dimana kursus-kursus atau mata pelajaran diselenggarakan.</p>
+        <p>Master Periode adalah modul yang digunakan untuk mendefinisikan dan mengelola periode waktu akademik dimana
+            kursus-kursus atau mata pelajaran diselenggarakan.</p>
 
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
@@ -65,9 +67,10 @@
                                 <tr id="tr_{{ $periode->id }}">
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $periode->name }}</td>
-                                    <td>{{ $periode->start_date }}</td>
-                                    <td>{{ $periode->end_date }}</td>
-                                    <td>{{ $periode->kurasi_date }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($periode->start_date)->format('d-m-Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($periode->end_date)->format('d-m-Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($periode->kurasi_date)->format('d-m-Y') }}</td>
+
                                     <td>{{ $periode->status }}</td>
                                     <td>
                                         <a href="#" class="btn btn-warning" data-toggle="modal"

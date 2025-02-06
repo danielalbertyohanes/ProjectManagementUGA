@@ -87,4 +87,17 @@ class RegisterController extends Controller
             'position_id' => $data['position']
         ]);
     }
+
+    /**
+     * Override the default registered method to prevent automatic login.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     */
+    protected function registered(Request $request, $user)
+    {
+        // Do nothing here to prevent auto-login
+        // Leave this method empty
+    }
 }

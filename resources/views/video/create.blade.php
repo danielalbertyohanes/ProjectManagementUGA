@@ -4,19 +4,20 @@
     <form method="POST" action="{{ route('video.store') }}">
         @csrf
         <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" required>
+            <label for="name">Nama Video</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Masukan Nama video" required
+                oninput="this.value = this.value.toUpperCase()">
 
-            <label for="location">Location</label>
+            <label for="location">Lokasi</label>
             <select class="form-control" id="location" name="location" required>
-                <option value="" selected disabled>Select Location</option>
+                <option value="" selected disabled>Pilih Lokasi</option>
                 <option value="UBAYA">UBAYA</option>
                 <option value="Not UBAYA">Not UBAYA</option>
             </select>
 
-            <label for="detail_location">Detail Location</label>
+            <label for="detail_location">Detail Lokasi</label>
             <input type="text" class="form-control" id="detail_location" name="detail_location"
-                placeholder="Enter Detail Location" required>
+                placeholder="Masukan Detail Lokasi" required>
 
             <input type="hidden" id="status_video" name="status_video" value="Not Yet">
 
@@ -29,12 +30,11 @@
             </select>
 
             <input type="hidden" name="sub_topic_id" value="{{ $subTopicId }}">
-
         </div>
 
         <div class="modal-footer">
-            <a href="{{ route('subTopic.show', $subTopicId) }}" class="btn btn-danger">Cancel</a>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <a href="{{ route('subTopic.show', $subTopicId) }}" class="btn btn-danger">Batal</a>
+            <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
     </form>
 @endsection
