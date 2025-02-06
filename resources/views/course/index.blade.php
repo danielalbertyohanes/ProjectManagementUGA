@@ -310,7 +310,7 @@
                                             @if ($course->status != 'Cancel')
                                                 <a href="#" class="btn btn-warning mb-2" data-toggle="modal"
                                                     data-target="#modalEditA" onclick="getEditForm({{ $course->id }})">
-                                                    EDIT
+                                                    Edit
                                                 </a>
                                                 {{-- <form method="POST" action="{{ route('course.destroy', $course->id) }}"
                                             style="display:inline;">
