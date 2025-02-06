@@ -26,16 +26,7 @@ class HomeController extends Controller
 
         $hariIni = \Carbon\Carbon::today()->format('d-m-Y');
 
-        if (Auth::user()->position_id == '2') {
-            $courseBelumSelesai = Course::whereNotIn('status', ['Publish', 'Cancel'])->count();
-            $courseBelumSelesai = Course::whereNotIn('status', ['Publish', 'Cancel'])
-                ->where('pic_course', Auth::user()->id)
-                ->count();
-        } else {
-            $courseBelumSelesai = Course::whereNotIn('status', ['Publish', 'Cancel'])->count();
-        };
-
-        //dd($periodeAktif, $totalPengguna,  $totalDosen,    $hariIni,   $courseBelumSelesai);
+        $courseBelumSelesai = Course::whereNotIn('status', ['Publish', 'Cancel'])->count();
 
         return view('layouts.home', compact('periodeAktif', 'totalPengguna', 'totalDosen', 'hariIni', 'courseBelumSelesai'));
     }

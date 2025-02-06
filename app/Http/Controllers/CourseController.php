@@ -21,7 +21,7 @@ class CourseController extends Controller
     {
         $links = LinkExternal::getLinkOrderedByStatusActive();
         $search = $request->input('search');
-        $courses = Course::searchCourses($search, Auth::user()->id, Auth::user()->position_id);
+        $courses = Course::searchCourses($search);
         return view('course.index', compact('courses', 'links'));
     }
 

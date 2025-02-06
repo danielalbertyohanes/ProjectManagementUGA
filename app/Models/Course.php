@@ -22,14 +22,12 @@ class Course extends Model
         'status',
         'pic_course',
         'drive_url',
-        'video_url'
-
+        'video_url',
     ];
     public function topics(): HasMany
     {
         return $this->hasMany(Topic::class, 'course_id', 'id');
     }
-
 
     public function user(): BelongsTo
     {
@@ -61,7 +59,7 @@ class Course extends Model
             ->get();
     }
 
-    public static function searchCourses($search, $userId, $positionId)
+    public static function searchCourses($search)
     {
         // Inisiasi query dasar
         $query = self::with('dosens', 'periode')
@@ -72,9 +70,7 @@ class Course extends Model
             ->orderBy('courses.status', 'asc')
             ->orderBy('courses.progress', 'asc');
         // Jika position_id = 2, filter berdasarkan PIC
-        if ($positionId == 2) {
-            $query->where('pic_course', $userId);
-        }
+
         // Tambahkan filter pencarian jika ada
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
