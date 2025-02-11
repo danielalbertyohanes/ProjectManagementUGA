@@ -73,26 +73,30 @@
                                             @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
                                                 @if ($ppt->finish_click_ppt)
                                                     <span class="tanggalPpt" data-id="{{ $ppt->id }}"
-                                                        data-ppt-editing-finished-at="{{ $ppt->finish_click_ppt }}"
-                                                        style="justify-content: center; align-items: center; padding: 0;">
+                                                        data-ppt-editing-finished-at="{{ $ppt->finish_click_ppt }}">
                                                         {{ \Carbon\Carbon::parse($ppt->finish_click_ppt)->format('d-M-Y') }}
                                                     </span>
                                                 @else
-                                                    <li> <span class="tanggalPpt" data-id="{{ $ppt->id }}"
-                                                            data-ppt-editing-finished-at="{{ $ppt->finish_click_ppt }}"style="display:none;">
-                                                        </span></li>
-                                                    <li><a href="#" class="btn btn-primary m-1 start-ppt-editing"
-                                                            data-id="{{ $ppt->id }}">Start</a></li>
-                                                    <li><a href="#" class="btn btn-danger m-1 finish-ppt-editing"
+                                                    <li>
+                                                        <span class="tanggalPpt" data-id="{{ $ppt->id }}"
+                                                            data-ppt-editing-finished-at="{{ $ppt->finish_click_ppt }}"
+                                                            style="display:none;"></span>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" class="btn btn-primary m-1 start-editing-ppt"
+                                                            data-id="{{ $ppt->id }}">Start</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" class="btn btn-danger m-1 finish-editing-ppt"
                                                             data-id="{{ $ppt->id }}" style="display:none;">Finish</a>
                                                     </li>
                                                 @endif
                                             @else
                                                 {{ $ppt->finish_click_ppt ? \Carbon\Carbon::parse($ppt->finish_click_ppt)->format('d-M-Y') : '---' }}
                                             @endif
-
                                         </ul>
                                     </td>
+
                                     <td>
                                         <ul class="d-flex list-unstyled ">
                                             @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
@@ -187,13 +191,13 @@
                                                         data-video-finished-at="{{ $video->finish_click_video }}"
                                                         style="display:none;">
                                                     </span></li>
-                                                <li><a href="#" class="btn btn-primary m-1 start-video"
+                                                <li><a href="#" class="btn btn-primary m-1 start-recording-video"
                                                         data-id="{{ $video->id }}">Start</a></li>
-                                                <li><a href="#" class="btn btn-warning m-1 pause-video"
+                                                <li><a href="#" class="btn btn-warning m-1 pause-recording-video"
                                                         data-id="{{ $video->id }}" style="display:none;">Pause</a>
                                                 </li>
 
-                                                <li><a href="#" class="btn btn-danger m-1 finish-video"
+                                                <li><a href="#" class="btn btn-danger m-1 finish-recording-video"
                                                         data-id="{{ $video->id }}" style="display:none;">Finish</a>
                                                 </li>
                                             @endif
@@ -214,12 +218,12 @@
                                                         data-ppt-finished-at="{{ $video->finish_click_ppt }}"
                                                         style="display:none;">
                                                     </span></li>
-                                                <li><a href="#" class="btn btn-primary m-1 start-ppt"
+                                                <li><a href="#" class="btn btn-primary m-1 start-recording-ppt"
                                                         data-id="{{ $video->id }}">Start</a></li>
-                                                <li><a href="#" class="btn btn-warning m-1 pause-ppt"
+                                                <li><a href="#" class="btn btn-warning m-1 pause-recording-ppt"
                                                         data-id="{{ $video->id }}" style="display:none;">Pause</a>
                                                 </li>
-                                                <li><a href="#" class="btn btn-danger m-1 finish-ppt"
+                                                <li><a href="#" class="btn btn-danger m-1 finish-recording-ppt"
                                                         data-id="{{ $video->id }}" style="display:none;">Finish</a>
                                                 </li>
                                             @endif
@@ -324,70 +328,71 @@
         $(document).ready(function() {
             // Loop through all rows and check if they are ready for editing
 
+            $('.start-editing-ppt').each(function() {
+                var id = $(this).data('id');
+                checkButtonPpt(id);
+            });
+
+
             $('.start-editing').each(function() {
                 var id = $(this).data('id');
                 checkButtonVideo(id);
             });
 
-            $('.start-ppt-editing').each(function() {
-                var id = $(this).data('id');
-                checkButtonPpt(id);
-            });
-
             // Button Recording Video, Recording PPT, Editing Started
             // Start Video
-            $(document).on('click', '.start-video', function(e) {
+            $(document).on('click', '.start-recording-video', function(e) {
                 $(this).hide();
                 e.preventDefault();
                 var id = $(this).data('id');
-                recordAction(id, 'start-video'); // Record the start action
+                recordAction(id, 'start-recording-video'); // Record the start action
                 checkButtonVideo(id);
                 $(this).hide();
             });
 
             // Pause Video
-            $(document).on('click', '.pause-video', function(e) {
+            $(document).on('click', '.pause-recording-video', function(e) {
                 $(this).hide();
                 e.preventDefault();
                 var id = $(this).data('id');
-                recordAction(id, 'pause-video'); // Record the pause action
+                recordAction(id, 'pause-recording-video'); // Record the pause action
                 checkButtonVideo(id);
                 $(this).hide();
             });
 
 
             // Finish Video
-            $(document).on('click', '.finish-video', function(e) {
+            $(document).on('click', '.finish-recording-video', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                recordAction(id, 'finish-video'); // Record the finish action
+                recordAction(id, 'finish-recording-video'); // Record the finish action
                 checkButtonVideo(id);
                 $(this).hide();
             });
 
             // Start Video PPT
-            $(document).on('click', '.start-ppt', function(e) {
+            $(document).on('click', '.start-recording-ppt', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                recordAction(id, 'start-ppt'); // Record the start action
+                recordAction(id, 'start-recording-ppt'); // Record the start action
                 checkButtonVideo(id);
                 $(this).hide();
             });
 
             // Pause Video PPT
-            $(document).on('click', '.pause-ppt', function(e) {
+            $(document).on('click', '.pause-recording-ppt', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                recordAction(id, 'pause-ppt'); // Record the pause action
+                recordAction(id, 'pause-recording-ppt'); // Record the pause action
                 checkButtonVideo(id);
                 $(this).hide();
             });
 
             // Finish Video PPT
-            $(document).on('click', '.finish-ppt', function(e) {
+            $(document).on('click', '.finish-recording-ppt', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                recordAction(id, 'finish-ppt'); // Record the finish action
+                recordAction(id, 'finish-recording-ppt'); // Record the finish action
                 checkButtonVideo(id);
                 $(this).hide();
             });
@@ -411,19 +416,19 @@
 
 
             // Start PPT Editing
-            $(document).on('click', '.start-ppt-editing', function(e) {
+            $(document).on('click', '.start-editing-ppt', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                recordActionPpt(id, 'start-ppt-editing'); // Record the start action
+                recordActionPpt(id, 'start-editing-ppt'); // Record the start action
                 checkButtonPpt(id);
                 $(this).hide();
             });
 
             // Finish PPT Editing
-            $(document).on('click', '.finish-ppt-editing', function(e) {
+            $(document).on('click', '.finish-editing-ppt', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                recordActionPpt(id, 'finish-ppt-editing'); // Record the finish action
+                recordActionPpt(id, 'finish-editing-ppt'); // Record the finish action
                 checkButtonPpt(id);
                 $(this).hide();
             });
@@ -465,27 +470,34 @@
 
                     // Perbarui tampilan tombol video terlebih dahulu
                     if (video.status === "Start") {
-                        $('.start-video[data-id="' + id + '"]').hide();
-                        $('.pause-video[data-id="' + id + '"], .finish-video[data-id="' + id + '"]').show();
+                        $('.start-recording-video[data-id="' + id + '"]').hide();
+                        $('.pause-recording-video[data-id="' + id + '"], .finish-recording-video[data-id="' +
+                            id + '"]').show();
                     } else if (video.status === "Pause") {
-                        $('.pause-video[data-id="' + id + '"], .finish-video[data-id="' + id + '"]').hide();
-                        $('.start-video[data-id="' + id + '"]').show();
+                        $('.pause-recording-video[data-id="' + id + '"], .finish-recording-video[data-id="' +
+                            id + '"]').hide();
+                        $('.start-recording-video[data-id="' + id + '"]').show();
                     } else if (video.status === "Finish") {
-                        $('.start-video[data-id="' + id + '"], .pause-video[data-id="' + id +
-                            '"], .finish-video[data-id="' + id + '"]').hide();
+                        $('.start-recording-video[data-id="' + id + '"], .pause-recording-video[data-id="' +
+                            id +
+                            '"], .finish-recording-video[data-id="' + id + '"]').hide();
                         $('.tanggalVideo[data-id="' + id + '"]').text(formattedDate).show();
                     }
 
                     // Perbarui tampilan tombol PPT secara terpisah
                     if (ppt.status === "Start") {
-                        $('.start-ppt[data-id="' + id + '"]').hide();
-                        $('.pause-ppt[data-id="' + id + '"], .finish-ppt[data-id="' + id + '"]').show();
+                        $('.start-recording-ppt[data-id="' + id + '"]').hide();
+                        $('.pause-recording-ppt[data-id="' + id + '"], .finish-recording-ppt[data-id="' + id +
+                                '"]')
+                            .show();
                     } else if (ppt.status === "Pause") {
-                        $('.pause-ppt[data-id="' + id + '"], .finish-ppt[data-id="' + id + '"]').hide();
-                        $('.start-ppt[data-id="' + id + '"]').show();
+                        $('.pause-recording-ppt[data-id="' + id + '"], .finish-recording-ppt[data-id="' + id +
+                                '"]')
+                            .hide();
+                        $('.start-recording-ppt[data-id="' + id + '"]').show();
                     } else if (ppt.status === "Finish") {
-                        $('.start-ppt[data-id="' + id + '"], .pause-ppt[data-id="' + id +
-                            '"], .finish-ppt[data-id="' + id + '"]').hide();
+                        $('.start-recording-ppt[data-id="' + id + '"], .pause-recording-ppt[data-id="' + id +
+                            '"], .finish-recording-ppt[data-id="' + id + '"]').hide();
                         $('.tanggalPptVideo[data-id="' + id + '"]').text(formattedDate).show();
                     }
 
@@ -559,15 +571,15 @@
 
                     // Update tampilan tombol berdasarkan status video
                     if (ppt.status === "Start") {
-                        $('.start-ppt-editing[data-id="' + id + '"]').hide(); // Sembunyikan tombol Start
-                        $('.finish-ppt-editing[data-id="' + id + '"]')
+                        $('.start-editing-ppt[data-id="' + id + '"]').hide(); // Sembunyikan tombol Start
+                        $('.finish-editing-ppt[data-id="' + id + '"]')
                             .show(); // Tampilkan tombol Pause dan Finish
                         // Set the value and show the info
                         $('.tanggalPpt[data-id="' + id + '"]').text(formattedDate).hide();
 
                     } else if (ppt.status === "Finish") {
-                        $('.start-ppt-editing[data-id="' + id + '"]').hide(); // Sembunyikan tombol Start
-                        $('.finish-ppt-editing[data-id="' + id + '"]')
+                        $('.start-editing-ppt[data-id="' + id + '"]').hide(); // Sembunyikan tombol Start
+                        $('.finish-editing-ppt[data-id="' + id + '"]')
                             .hide();
                         // Set the value and show the info
                         $('.tanggalPpt[data-id="' + id + '"]').text(formattedDate).show();

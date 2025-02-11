@@ -110,7 +110,9 @@
                 </li>
                 <li><a href="{{ route('periode.index') }}"><i class="fa fa-calendar"></i> Master Periode</a></li>
                 <li><a href="{{ route('course.index') }}"><i class="fa fa-book"></i> Master Courses</a></li>
-                <li><a href="{{ route('report.index') }}"><i class="fa fa-book"></i> Report</a></li>
+                <li><a href="{{ route('report.rptCourse') }}"><i class="fa fa-book"></i> Report Course</a></li>
+                <li><a href="{{ route('report.rptEmployee') }}"><i class="fa fa-book"></i> Report Employee</a></li>
+                <li><a href="{{ route('report.rptPeriode') }}"><i class="fa fa-book"></i> Report Periode</a></li>
             @elseif (Auth::user()->position_id == '2' || Auth::user()->position_id == '3')
                 <li><a href="{{ route('course.index') }}"><i class="fa fa-book"></i> Master Courses</a></li>
             @endif

@@ -97,14 +97,14 @@ class Ppt extends Model
                 'user_id' => $userId,
                 'ppt_id' => $pptId,
                 'status' => match ($action) {
-                    'start-ppt-editing' => 'Start',
-                    'finish-ppt-editing' => 'Finish',
+                    'start-editing-ppt' => 'Start',
+                    'finish-editing-ppt' => 'Finish',
                     default => 'Unknown',
                 },
                 'description' => ucfirst(str_replace('_', ' ', $action)),
             ]);
 
-            if ($action === 'start-ppt-editing') {
+            if ($action === 'start-editing-ppt') {
                 $updateData = [
                     'started_at' => now(),
                     'start_click_ppt' => now(),
@@ -112,7 +112,7 @@ class Ppt extends Model
                     'status' => 'Progress',
                     'progress' => 50
                 ];
-            } elseif ($action === 'finish-ppt-editing') {
+            } elseif ($action === 'finish-editing-ppt') {
                 $newppt = Ppt::find($pptId);
                 if ($newppt && $newppt->start_click_ppt) {
                     $durasi = Carbon::parse($newppt->start_click_ppt)->diffInDays(now());

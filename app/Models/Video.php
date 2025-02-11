@@ -90,148 +90,133 @@ class Video extends Model
         return self::select('status')->get();
     }
 
-
     public static function catatTanggalRecording($userId, $videoId, $action)
     {
-        $updateData = []; // Array untuk menyimpan data yang akan diupdate
+        $video = Video::findOrFail($videoId);
+        if (!$video) {
+            return response()->json(['message' => 'Video not found'], 404);
+        }
+        $updateData = [];
 
-        $video = Video::findOrFail($videoId); // or use findOrFail($videoId) to throw an error if not found
+        // Mencatat log tindakan
+        LogVideo::create([
+            'user_id' => $userId,
+            'video_id' => $videoId,
+            'status' => match ($action) {
+                'start-recording-video', 'start-recording-ppt', 'start-editing' => 'Start',
+                'pause-recording-video', 'pause-recording-ppt' => 'Pause',
+                'resume-recording-video', 'resume-recording-ppt' => 'Resume',
+                'finish-recording-video', 'finish-recording-ppt', 'finish-editing' => 'Finish',
+                default => 'Unknown',
+            },
+            'description' => ucfirst(str_replace('_', ' ', $action)),
+        ]);
 
-        if ($video) {
-
-            // Mencatat log tindakan
-            $catat_log = LogVideo::create([
-                'user_id' => $userId,
-                'video_id' => $videoId,
-                'status' => match ($action) {
-                    'start-video', 'start-ppt', 'start-editing' => 'Start',
-                    'pause-video', 'pause-ppt' => 'Pause',
-                    'resume-video', 'resume-ppt' => 'Resume',
-                    'finish-video', 'finish-ppt', 'finish-editing' => 'Finish',
-                    default => 'Unknown',
-                },
-                'description' => ucfirst(str_replace('_', ' ', $action)), // Deskripsi menggunakan tindakan yang dibaca
-            ]);
-
-
-            // Aksi terkait Video
-            if ($action === 'start-video') {
+        // Mapping tindakan ke update data
+        switch ($action) {
+            case 'start-recording-video':
                 $updateData = [
-                    'started_at_video' => now()->toDateString(),
+                    'started_at_video' => now(),
                     'nilai_recording' => 10,
-                    'status' => 'Recording'
+                    'status' => 'Recording',
                 ];
-
-                $videoRecord = Video::find($videoId);
-                if (!$videoRecord->started_at) {
-                    $updateData['started_at'] = now()->toDateTimeString();
+                if (!$video->started_at) {
+                    $updateData['started_at'] = now();
                     $updateData['progress'] = 20;
                 }
-            } elseif ($action === 'pause-video') {
-                $updateData = [
-                    'pause_click_video' => now()->toDateString(),
-                    'nilai_recording' => 20,
-                    'status' => 'Pause Recording'
-                ];
-            } elseif ($action === 'resume-video') {
-                $updateData = [
-                    'started_at_video' => now()->toDateString(),
-                    'nilai_recording' => 20,
-                    'status' => 'Recording'
-                ];
-            } elseif ($action === 'finish-video') {
-                $videoRecord = Video::find($videoId);
-                if ($videoRecord && $videoRecord->started_at_video) {
-                    $durasi = Carbon::parse($videoRecord->started_at_video)->diffInDays(now());
+                break;
+
+            case 'pause-recording-video':
+                if ($video->started_at_video) {
+                    $durasiKerja = Carbon::parse($video->started_at_video)->diffInDays(now());
+                    $updateData = [
+                        'pause_click_video' => now(),
+                        'durasi_recording' => $video->durasi_recording + $durasiKerja,
+                        'status' => 'Pause Recording',
+                        'nilai_recording' => 20,
+                        'started_at_video' => null,
+                    ];
+                }
+                break;
+
+            case 'finish-recording-video':
+                if ($video->started_at_video) {
+                    $durasiKerja = Carbon::parse($video->started_at_video)->diffInDays(now());
                     $updateData = [
                         'finish_click_video' => now(),
-                        'durasi_recording' => $durasi,
+                        'durasi_recording' => $video->durasi_recording + $durasiKerja,
                         'nilai_recording' => 30,
                         'status' => 'Recorded',
+                        'progress' => $video->started_at_ppt ? max(60, $video->progress) : max(40, $video->progress),
                     ];
-                    // Check if video is also finished
-                    if ($videoRecord->started_at_ppt) {
-                        $updateData['progress'] = max(60, $videoRecord->progress); // Ensure progress is not downgraded
-                    } else {
-                        $updateData['progress'] = max(40, $videoRecord->progress);
-                    }
                 }
-            }
+                break;
 
-            // Aksi terkait PPT
-            if ($action === 'start-ppt') {
+            case 'start-recording-ppt':
                 $updateData = [
-                    'started_at_ppt' => now()->toDateString(),
+                    'started_at_ppt' => now(),
                     'nilai_recordingppt' => 10,
-                    'status' => 'PPT Recording'
+                    'status' => 'PPT Recording',
                 ];
-
-                $videoRecord = Video::find($videoId);
-                if (!$videoRecord->started_at) {
-                    $updateData['started_at'] = now()->toDateTimeString();
+                if (!$video->started_at) {
+                    $updateData['started_at'] = now();
                     $updateData['progress'] = 20;
                 }
-            } elseif ($action === 'pause-ppt') {
-                $updateData = [
-                    'pause_click_ppt' => now()->toDateString(),
-                    'nilai_recordingppt' => 20,
-                    'status' => 'Pause Recording'
-                ];
-            } elseif ($action === 'finish-ppt') {
-                $videoRecord = Video::find($videoId);
-                if ($videoRecord && $videoRecord->started_at_ppt) {
-                    $durasi = Carbon::parse($videoRecord->started_at_ppt)->diffInDays(now());
+                break;
+
+            case 'pause-recording-ppt':
+                if ($video->started_at_ppt) {
+                    $durasiKerja = Carbon::parse($video->started_at_ppt)->diffInDays(now());
+                    $updateData = [
+                        'pause_click_ppt' => now(),
+                        'durasi_recordingppt' => $video->durasi_recordingppt + $durasiKerja,
+                        'status' => 'Pause Recording',
+                        'nilai_recordingppt' => 20,
+                        'started_at_ppt' => null,
+                    ];
+                }
+                break;
+
+            case 'finish-recording-ppt':
+                if ($video->started_at_ppt) {
+                    $durasiKerja = Carbon::parse($video->started_at_ppt)->diffInDays(now());
                     $updateData = [
                         'finish_click_ppt' => now(),
-                        'durasi_recordingppt' => $durasi,
+                        'durasi_recordingppt' => $video->durasi_recordingppt + $durasiKerja,
                         'nilai_recordingppt' => 30,
                         'status' => 'PPT Recorded',
-                        'progress' => 60,
+                        'progress' => $video->started_at_video ? max(60, $video->progress) : max(40, $video->progress),
                     ];
-                    // Check if video is also finished
-                    if ($videoRecord->started_at_video) {
-                        $updateData['progress'] = max(60, $videoRecord->progress); // Ensure progress is not downgraded
-                    } else {
-                        $updateData['progress'] = max(40, $videoRecord->progress);
-                    }
                 }
-            }
+                break;
 
-            // Aksi terkait Editing
-            if ($action === 'start-editing') {
+            case 'start-editing':
                 $updateData = [
-                    'started_at_editing' => now()->toDateString(),
+                    'started_at_editing' => now(),
                     'nilai_editing' => 10,
                     'status' => 'Editing',
                     'progress' => 80,
                 ];
-            } elseif ($action === 'finish-editing') {
-                $videoRecord = Video::find($videoId);
-                if ($videoRecord && $videoRecord->started_at_editing) {
-                    $durasi = Carbon::parse($videoRecord->started_at_editing)->diffInDays(now());
+                break;
+
+            case 'finish-editing':
+                if ($video->started_at_editing) {
                     $updateData = [
                         'finished_at' => now(),
                         'finish_click_editing' => now(),
-                        'durasi_editing' => $durasi,
+                        'durasi_editing' => Carbon::parse($video->started_at_editing)->diffInDays(now()),
                         'nilai_editing' => 30,
                         'status' => 'Edited',
                         'progress' => 100,
                     ];
                 }
-            }
-
-            $updated = $video->update($updateData);
-            //dd($updateData);
-            if ($updated) {
-                // Optionally, return success response
-                return response()->json(['message' => 'Video updated successfully']);
-            } else {
-                // Handle failure if the update fails
-                return response()->json(['message' => 'Failed to update video']);
-            }
-        } else {
-            // Handle case where the video is not found
-            return response()->json(['message' => 'Video not found'], 404);
+                break;
         }
+
+        if (!empty($updateData)) {
+            $video->update($updateData);
+            return response()->json(['message' => 'Video updated successfully']);
+        }
+        return response()->json(['message' => 'No update was made']);
     }
 }

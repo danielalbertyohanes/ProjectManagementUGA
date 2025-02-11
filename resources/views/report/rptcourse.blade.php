@@ -2,15 +2,13 @@
 
 @section('content')
     <div class="container mt-5">
-
         <h1 class="text-center mb-4 text-black" style="font-size: 3rem;">Workload Analysis</h1>
 
-        <!-- Row to display dropdowns side by side -->
+        <!-- Filters Row -->
         <div class="row mb-4">
-            <!-- Periode Dropdown -->
             <div class="col-md-6">
                 <select id="periodeDropdown" class="form-control">
-                    <option value="">Pilih Periode</option>
+                    <option value="">Semua Periode</option>
                     @foreach ($periodes as $periode)
                         <option value="{{ $periode->id }}" {{ $periode->id == $activePeriodeId ? 'selected' : '' }}>
                             {{ $periode->name }}
@@ -19,10 +17,9 @@
                 </select>
             </div>
 
-            <!-- PIC Dropdown -->
             <div class="col-md-6">
                 <select id="picDropdown" class="form-control">
-                    <option value="">Pilih PIC</option>
+                    <option value="">Semua PIC</option>
                     @foreach ($groupedByPic as $picName => $groupedCourses)
                         <option value="{{ $picName }}">{{ $picName }}</option>
                     @endforeach
@@ -33,7 +30,7 @@
         <div id="coursesContainer">
             @foreach ($groupedByPic as $picName => $groupedCourses)
                 <div class="picCourses" id="picCourses-{{ Str::slug($picName) }}" data-pic="{{ $picName }}"
-                    data-periode="{{ $activePeriodeId }}" style="display: {{ $loop->first ? 'block' : 'none' }};">
+                    data-periode="{{ $groupedCourses->pluck('periode')->flatten()->pluck('id')->unique()->implode(',') }}">
                     <h3 class="my-4">{{ $picName }}</h3>
 
                     @foreach ($groupedCourses as $course)
@@ -133,42 +130,34 @@
             @endforeach
         </div>
     </div>
-
-
+@endsection
+@section('javascript')
     <script>
-        document.getElementById('picDropdown').addEventListener('change', function() {
+        document.addEventListener('DOMContentLoaded', function() {
+            const picDropdown = document.getElementById('picDropdown');
+            const periodeDropdown = document.getElementById('periodeDropdown');
+
+            function filterCourses() {
+                const selectedPIC = picDropdown.value;
+                const selectedPeriode = periodeDropdown.value;
+
+                document.querySelectorAll('.picCourses').forEach(container => {
+                    const coursePIC = container.dataset.pic;
+                    const coursePeriodes = container.dataset.periode.split(',');
+
+                    const picMatch = !selectedPIC || selectedPIC === coursePIC;
+                    const periodeMatch = !selectedPeriode || coursePeriodes.includes(selectedPeriode);
+
+                    container.style.display = (picMatch && periodeMatch) ? 'block' : 'none';
+                });
+            }
+
+            // Initial filter based on active period
             filterCourses();
+
+            // Event listeners
+            picDropdown.addEventListener('change', filterCourses);
+            periodeDropdown.addEventListener('change', filterCourses);
         });
-
-        document.getElementById('periodeDropdown').addEventListener('change', function() {
-            filterCourses();
-        });
-
-        // Memanggil fungsi filterCourses saat halaman pertama kali dimuat
-        window.addEventListener('DOMContentLoaded', function() {
-            filterCourses();
-        });
-
-        function filterCourses() {
-            var selectedPic = document.getElementById('picDropdown').value;
-            var selectedPeriode = document.getElementById('periodeDropdown').value;
-
-            console.log("Selected PIC:", selectedPic);
-            console.log("Selected Periode:", selectedPeriode);
-
-            var allPicCourses = document.querySelectorAll('.picCourses');
-            allPicCourses.forEach(function(course) {
-                var coursePic = course.dataset.pic;
-                var coursePeriode = course.dataset.periode;
-
-                // Tampilkan semua course jika dropdown PIC kosong atau tidak dipilih
-                if ((selectedPic === "" || selectedPic === coursePic) &&
-                    (selectedPeriode === "" || selectedPeriode === coursePeriode)) {
-                    course.style.display = 'block';
-                } else {
-                    course.style.display = 'none';
-                }
-            });
-        }
     </script>
 @endsection

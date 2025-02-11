@@ -44,7 +44,7 @@ class LogVideosController extends Controller
             ->orderBy('id', 'desc')
             ->select('status', 'description')
             ->first();
-
+        //dd($logPpt, $logVideo, $logEditing);
         return response()->json([
             'video' => $logVideo,
             'ppt' => $logPpt,
