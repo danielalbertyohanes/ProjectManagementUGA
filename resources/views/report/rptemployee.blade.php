@@ -123,12 +123,64 @@
         @endforeach
     </div>
 @endsection
+
 @section('javascript')
+    <!-- Tambahkan library jsPDF dan html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
         $(document).ready(function() {
+            // Toggle card body
             $(".toggle-header").click(function() {
                 var target = $(this).data("target");
-                $(target).slideToggle(); 
+                $(target).slideToggle();
+            });
+
+            // Fungsi untuk generate PDF
+            function generatePDF(cardElement, fileName) {
+                html2canvas(cardElement, {
+                    scale: 2, // Tingkatkan skala untuk kualitas yang lebih baik
+                    logging: true,
+                    useCORS: true
+                }).then(function(canvas) {
+                    var imgData = canvas.toDataURL('image/png');
+                    var pdf = new jspdf.jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
+                    var imgWidth = 210; // A4 width in mm
+                    var pageHeight = 295; // A4 height in mm
+                    var imgHeight = canvas.height * imgWidth / canvas.width;
+                    var heightLeft = imgHeight;
+                    var position = 0;
+
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+
+                    while (heightLeft >= 0) {
+                        position = heightLeft - imgHeight;
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                        heightLeft -= pageHeight;
+                    }
+
+                    pdf.save(fileName + '.pdf'); // Save PDF
+                });
+            }
+
+            // Tambahkan tombol download PDF untuk setiap card
+            $('.card').each(function(index) {
+                var card = $(this);
+                var userName = card.find('.card-header h3').text().trim();
+                var fileName = 'Laporan_Kerja_' + userName.replace(/\s+/g, '_');
+
+                // Tambahkan tombol download
+                var downloadButton = $('<button>', {
+                    text: 'Download PDF',
+                    class: 'btn btn-primary btn-download-pdf',
+                    click: function() {
+                        generatePDF(card[0], fileName);
+                    }
+                });
+
+                card.find('.card-header').append(downloadButton);
             });
         });
     </script>
