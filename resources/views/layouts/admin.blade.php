@@ -85,13 +85,28 @@
         .content {
             margin-top: 60px;
             /* Ruang di bawah topbar */
-            margin-left: 250px;
+            margin-left: 220px;
             /* Ruang di samping navbar */
             padding: 20px;
-            background-color: #f8f9fa;
+            background-color: #d1e7f3;
             /* Warna latar konten */
             min-height: calc(100vh - 60px);
             /* Tinggi minimal */
+        }
+        .bg-CardPeriode{
+        background-color: #3A8A9C;
+        }
+        .bg-CardTotalDosen{
+        background-color: #E5B846;
+        }
+        .bg-CardTotalPenggunaan{
+            background-color: #47A774;
+        }
+        .bg-CardMataPelajaranYangBelumSelesai{
+            background-color: #BD4332;
+        }
+        .textColor{
+            color:rgb(92, 91, 98);
         }
     </style>
 </head>

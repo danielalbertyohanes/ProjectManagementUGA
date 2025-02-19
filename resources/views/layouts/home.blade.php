@@ -10,29 +10,29 @@
                         <i class="fas fa-user"></i> Selamat Datang, {{ Auth::user()->name }}
                     </div>
                     <div class="card-body">
-                        <p class="card-text">Selamat datang di halaman ini. Anda dapat mengelola Course, Topics, dan
+                        <p class="card-text textColor">Selamat datang di halaman ini. Anda dapat mengelola Course, Topics, dan
                             informasi lainnya di sini.</p>
                     </div>
                 </div>
                 @if (Auth::user()->position_id == '1')
                     <!-- Active Period Card -->
                     <div class="card mb-4">
-                        <div class="card-header bg-info text-white">
+                        <div class="card-header bg-CardPeriode text-white">
                             <i class="fas fa-calendar-alt"></i> Periode Aktif
                         </div>
                         <div class="card-body">
                             @if ($periodeAktif)
-                                <p class="card-text">Periode aktif saat ini adalah
-                                    <strong>{{ $periodeAktif->name }}</strong>.
+                                <p class="card-text textColor">Periode aktif saat ini adalah
+                                    <strong class="textColor">{{ $periodeAktif->name }}</strong>.
                                 </p>
-                                <p class="card-text">Dimulai pada
-                                    <strong>{{ \Carbon\Carbon::parse($periodeAktif->start_date)->format('d-m-Y') }}</strong>.
+                                <p class="card-text textColor">Dimulai pada
+                                    <strong class="textColor">{{ \Carbon\Carbon::parse($periodeAktif->start_date)->format('d-m-Y') }}</strong>.
                                 </p>
-                                <p class="card-text">Berakhir pada
-                                    <strong>{{ \Carbon\Carbon::parse($periodeAktif->end_date)->format('d-m-Y') }}</strong>.
+                                <p class="card-text textColor">Berakhir pada
+                                    <strong class="textColor">{{ \Carbon\Carbon::parse($periodeAktif->end_date)->format('d-m-Y') }}</strong>.
                                 </p>
-                                <p class="card-text">Kurasi pada
-                                    <strong>{{ \Carbon\Carbon::parse($periodeAktif->kurasi_date)->format('d-m-Y') }}</strong>.
+                                <p class="card-text textColor">Kurasi pada
+                                    <strong class="textColor">{{ \Carbon\Carbon::parse($periodeAktif->kurasi_date)->format('d-m-Y') }}</strong>.
                                 </p>
                             @else
                                 <p class="card-text">Tidak ada Periode yang aktif saat ini.</p>
@@ -44,21 +44,21 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="card h-100">
-                                <div class="card-header bg-success text-white">
-                                    <i class="fas fa-users"></i> Total Pengguna
+                                <div class="card-header bg-CardTotalPenggunaan text-white">
+                                    <i class="fas fa-users "></i> Total Pengguna
                                 </div>
                                 <div class="card-body">
-                                    <p class="card-text display-4">{{ $totalPengguna }}</p>
+                                    <p class="card-text display-4 textColor ">{{ $totalPengguna }}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="card h-100">
-                                <div class="card-header bg-warning text-white">
+                                <div class="card-header bg-CardTotalDosen text-white">
                                     <i class="fas fa-chalkboard-teacher"></i> Total Dosen
                                 </div>
                                 <div class="card-body">
-                                    <p class="card-text display-4">{{ $totalDosen }}</p>
+                                    <p class="card-text display-4 textColor">{{ $totalDosen }}</p>
                                 </div>
                             </div>
                         </div>
@@ -72,18 +72,18 @@
                                 <i class="fas fa-calendar-day"></i> Hari Ini
                             </div>
                             <div class="card-body">
-                                <p class="card-text display-4">{{ $hariIni }}</p>
+                                <p class="card-text display-4 textColor">{{ $hariIni }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="card h-100">
-                            <div class="card-header bg-danger text-white">
+                            <div class="card-header bg-CardMataPelajaranYangBelumSelesai text-white">
                                 <i class="fas fa-book"></i> Mata Pelajaran Yang Belum Selesai
                             </div>
                             <div class="card-body">
                                 @if ($courseBelumSelesai > 0)
-                                    <p class="card-text display-4">{{ $courseBelumSelesai }}</p>
+                                    <p class="card-text textColor display-4">{{ $courseBelumSelesai }}</p>
                                 @else
                                     <p class="card-text">Saat ini tidak ada mata pelajaran yang belum selesai.</p>
                                 @endif
