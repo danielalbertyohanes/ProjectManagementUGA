@@ -1,0 +1,108 @@
+/* Warna dasar */
+body {
+    background: #f8f9fa;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Container utama */
+.container {
+    max-width: 900px;
+    margin-top: 30px;
+}
+
+/* Kartu utama */
+.card {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Sidebar */
+.sidebar {
+    background: #ffffff;
+    border-right: 1px solid #e3e6f0;
+    padding-top: 20px;
+}
+
+/* Sidebar List */
+.sidebar .list-group {
+    border-radius: 0;
+}
+
+.sidebar .list-group-item {
+    border: none;
+    padding: 12px 20px;
+    font-weight: bold;
+    color: #495057;
+    transition: 0.3s;
+}
+
+.sidebar .list-group-item:hover {
+    background: #f8f9fa;
+}
+
+.sidebar .list-group-item.active {
+    background: #0F4C81;
+    color: #ffffff;
+}
+
+/* Form styling */
+.form-control {
+    border-radius: 6px;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    transition: 0.3s;
+}
+
+.form-control:focus {
+    border-color: #658DC6;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Tombol */
+.btn {
+    border-radius: 6px;
+    padding: 10px 20px;
+}
+
+.btn-primary {
+    background: #0F4C81;
+    border-color: #0F4C81;
+}
+
+.btn-primary:hover {
+    background: #658DC6;
+}
+
+.btn-light {
+    background: #f8f9fa;
+    border: 1px solid #ced4da;
+}
+
+.btn-light:hover {
+    background: #e2e6ea;
+}
+
+/* Tab Content */
+.tab-content {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* Notifikasi */
+.alert {
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    .sidebar {
+        border-right: none;
+    }
+
+    .sidebar .list-group-item {
+        text-align: center;
+    }
+}

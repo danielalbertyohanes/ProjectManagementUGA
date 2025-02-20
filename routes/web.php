@@ -64,8 +64,19 @@ Route::post('subtopic/video/getVideoEditForm', [VideoController::class, 'getVide
 
 
 
+<<<<<<< Updated upstream
 // Route::put('/topic/update/{id}', [TopicController::class, 'update'])->name('topic.update');
 
+=======
+        Route::resource('link_external', LinkExternalController::class);
+        Route::post('/link_external/getCreateForm', [LinkExternalController::class, 'getCreateForm'])->name('link_external.getCreateForm');
+        Route::post('/link_external/getEditForm', [LinkExternalController::class, 'getEditForm'])->name('link.getEditForm');
+
+        Route::resource('employee', UserController::class);
+        Route::post('/employee/getCreateForm', [UserController::class, 'getCreateForm'])->name('employee.getCreateForm');
+        Route::post('/employee/getEditForm', [UserController::class, 'getEditForm'])->name('employee.getEditForm');
+        Route::put('/employee/{user}/{from}', [UserController::class, 'update'])->name('employee.update');
+>>>>>>> Stashed changes
 
 
 

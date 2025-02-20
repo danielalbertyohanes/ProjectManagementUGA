@@ -1,11 +1,20 @@
 @extends('layouts.admin')
 
 @section('content')
+<<<<<<< Updated upstream
     <div class="container-fluid">
         <h3 class="h3 mb-2 text-gray-800">Detail Course</h3>
         <p>Halaman details berisi topik. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
             Ipsum has been the industry's.</p>
 
+=======
+    <link rel="stylesheet" href="{{ asset('admin/css/content.css') }}">
+
+    <div class="container-fluid">
+        <button onclick="window.history.back()" class="btn buttonBatal">Kembali</button>
+        <h1>Detail Course</h1>
+        <p>Halaman Detail Course digunakan untuk mengelola detail course dalam sistem. Dengan fitur ini, admin dapat melihat detail lengkap dari course yang dipilih, daftar topik yang termasuk dalam course, lengkap dengan status progressnya. Selain itu, halaman ini juga memungkinkan untuk menambahkan topik baru atau mengedit topik yang sudah ada.</p>
+>>>>>>> Stashed changes
         <div class="mb-2">
             <h5 class="text-primary">
                 KODE COURSE:
@@ -33,10 +42,22 @@
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
+<<<<<<< Updated upstream
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Details</h6>
+=======
+        @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
+            {{-- Button Tambah Topic --}}
+            <button class="btn buttonCreate mb-3" data-toggle="modal" data-target="#modalCreateTopic" onclick="loadCreateForm({{ $course->id }})">Tambah Topic</button>
+        @endif
+
+        {{-- Tabel Detail Course --}}
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">DETAIL COURSE</h6>
+>>>>>>> Stashed changes
             </div>
 
             <div class="card-body">
@@ -47,8 +68,16 @@
                                 <th>No</th>
                                 <th>Topik</th>
                                 <th>Sub-Topik</th>
+<<<<<<< Updated upstream
                                 <th>Progres</th>
                                 <th>Aksi</th>
+=======
+                                <th>Progress</th>
+                                <th>Detail</th>
+                                @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
+                                    <th>Aksi Sub Topic</th>
+                                @endif
+>>>>>>> Stashed changes
                             </tr>
                         </thead>
                         <tbody>
@@ -82,6 +111,7 @@
 
                                         <!-- Progress Bar for the first sub-topic -->
                                         <td>
+<<<<<<< Updated upstream
                                             <a href="{{ route('subTopic.show', $firstSubTopic->id) }}" class="progress-link">
                                                 <div class="progress">
                                                     <div class="progress-bar" role="progressbar" style="width: {{ $progressPercentage }}%;"
@@ -96,6 +126,38 @@
                                                 data-target="#modalEditSubTopics"
                                                 onclick="getEditSubTopicForm({{ $firstSubTopic->id }})">Edit</a>
                                         </td>
+=======
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                                                    style="width:{{ $firstSubTopic->progress }}%;"
+                                                    aria-valuenow="{{ $firstSubTopic->progress }}" aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                    {{ $firstSubTopic->progress }}%
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a class="btn buttonDetail"
+                                                href="{{ route('subTopic.show', $firstSubTopic->id) }}">
+                                                Detail
+                                            </a>
+                                        </td>
+                                        @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
+                                            <td>
+                                                <a href="#" class="btn buttonEdit mb-3" data-toggle="modal"
+                                                    data-target="#modalEditSubTopics"
+                                                    onclick="getEditSubTopicForm({{ $firstSubTopic->id }})">Edit</a>
+                                                <form method="POST"
+                                                    action="{{ route('subTopic.destroy', $firstSubTopic->id) }}"
+                                                    style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <input type="submit" value="Hapus" class="btn buttonDelete mb-3"
+                                                        onclick="return confirm('Apa kamu yakin menghapus {{ $firstSubTopic->name }}?');">
+                                                </form>
+                                            </td>
+                                        @endif
+>>>>>>> Stashed changes
                                     </tr>
 
                                     <!-- Loop for the remaining sub-topics under the same topic -->
@@ -108,6 +170,7 @@
                                         <tr>
                                             <td>{{ $subTopic->name }}</td>
                                             <td>
+<<<<<<< Updated upstream
                                                 <a href="{{ route('subTopic.show', $subTopic->id) }}" class="progress-link">
                                                     <div class="progress">
                                                         <div class="progress-bar" role="progressbar" style="width: {{ $progressPercentage }}%;"
@@ -122,6 +185,37 @@
                                                     data-target="#modalEditSubTopics"
                                                     onclick="getEditSubTopicForm({{ $subTopic->id }})">Edit</a>
                                             </td>
+=======
+                                                <div class="progress">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                                                        style="width:{{ $subTopic->progress }}%;"
+                                                        aria-valuenow="{{ $subTopic->progress }}" aria-valuemin="0"
+                                                        aria-valuemax="100">
+                                                        {{ $subTopic->progress }}%
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td> <a class="btn buttonDetail"
+                                                    href="{{ route('subTopic.show', $subTopic->id) }}">
+                                                    Detail
+                                                </a>
+                                            </td>
+                                            @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
+                                                <td>
+                                                    <a href="#" class="btn buttonEdit mb-3" data-toggle="modal"
+                                                        data-target="#modalEditSubTopics"
+                                                        onclick="getEditSubTopicForm({{ $subTopic->id }})">Edit</a>
+                                                    <form method="POST"
+                                                        action="{{ route('subTopic.destroy', $subTopic->id) }}"
+                                                        style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <input type="submit" value="Hapus" class="btn buttonDelete mb-3"
+                                                            onclick="return confirm('Apa kamu yakin menghapus {{ $subTopic->name }}?');">
+                                                    </form>
+                                                </td>
+                                            @endif
+>>>>>>> Stashed changes
                                         </tr>
                                     @endforeach
                                 @else
@@ -137,18 +231,39 @@
 
                     </table>
                 </div>
+<<<<<<< Updated upstream
                 <div class="d-flex justify-content-right">
                     {{-- {{ $topics->links() }} untuk pindah halaman yang < 1 2 3 4 ... 10> --}}
+=======
+            </div>
+        </div>
+
+        <!-- Modal ADD -->
+        <div class="modal fade" id="modalCreateTopic" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-wide">
+                <div class="modal-content">
+                    <div class="modal-body" id="modalCreateContent">
+                        {{-- Content will be loaded dynamically --}}
+                    </div>
+>>>>>>> Stashed changes
                 </div>
             </div>
         </div>
 
         <!-- Modal Edit -->
+<<<<<<< Updated upstream
         <div class="modal fade" id="modalEditTopics" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-wide">
                 <div class="modal-content">
                     <div class="modal-body" id="modalContent">
                         <!-- Content will be loaded dynamically -->
+=======
+        <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-wide">
+                <div class="modal-content">
+                    <div class="modal-body" id="modalContent">
+                        {{-- Content will be loaded dynamically --}}
+>>>>>>> Stashed changes
                     </div>
                 </div>
             </div>

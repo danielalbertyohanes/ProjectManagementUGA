@@ -1,6 +1,9 @@
 @extends('layouts.admin')
 
 @section('content')
+    <link rel="stylesheet" href="{{ asset('admin/css/modal.css') }}">
+
+    <h2>Tambah PPT</h2>
     <form method="POST" action="{{ route('ppt.store') }}">
         @csrf
         <div class="form-group">
@@ -30,8 +33,13 @@
         </div>
 
         <div class="modal-footer">
+<<<<<<< Updated upstream
             <button type="submit" class="btn btn-primary">Submit</button>
             <a href="{{ route('ppt.index') }}" class="btn btn-danger">Cancel</a>
+=======
+            <a href="{{ route('subTopic.show', $subTopic->id) }}" class="btn buttonBatal">Batal</a>
+            <button type="submit" class="btn buttonSimpan">Simpan</button>
+>>>>>>> Stashed changes
         </div>
     </form>
 @endsection

@@ -80,6 +80,11 @@ class LinkExternalController extends Controller
         //
     }
 
+    public function getCreateForm(Request $request)
+    {
+        return response()->json(['status' => 'ok', 'msg' => view('link_external.create')->render()]);
+    }
+
     public function getEditForm(Request $request)
     {
         $id = $request->id;

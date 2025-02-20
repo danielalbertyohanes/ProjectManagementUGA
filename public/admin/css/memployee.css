@@ -1,0 +1,99 @@
+/* Warna utama berdasarkan palet */
+:root {
+    --primary: #0F4C81;
+    --secondary: #658DC6;
+    --background: #ffffff;
+    --gray-dark: #84898C;
+    --gray-darker:#3f4244;
+    --accent1: #A58D7F;
+    --accent2: #F5B895;
+    --accent3: #F3D5AD;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--background);
+    color: #232323;
+}
+
+/* Header */
+h1 {
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1.1rem;
+    text-align: justify;
+    margin: 0 auto 20px;
+    color: var(--gray-darker);
+}
+
+/* Button */
+.buttonCreate {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+
+}
+
+.buttonCreate:hover {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+    color: white;
+}
+
+/* Card Styling */
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background-color: white;
+}
+
+.card-header {
+    background-color: var(--gray-darker);
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+h6.text-primary {
+    color: white !important;
+}
+
+/* Table */
+.table {
+    background-color: white;
+}
+
+th {
+    color: var(--gray-darker);
+    text-align: center;
+}
+
+td {
+    text-align: center;
+    color: var(--gray-darker);
+}
+
+/* Edit Button */
+.buttonEdit {
+    background-color: var(--gray-darker);
+    border-color: var(--gray-darker);
+    color: white
+}
+
+.buttonEdit:hover {
+    background-color: var(--gray-dark);
+    border-color: var(--gray-dark);
+    color: white;
+}
+
+/* Modal */
+.modal-content {
+    border-radius: 10px;
+}

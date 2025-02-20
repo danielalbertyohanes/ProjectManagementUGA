@@ -65,7 +65,11 @@ class DosenController extends Controller
         try {
             $deletedData = $dosen;
             $deletedData->delete();
+<<<<<<< Updated upstream
             return redirect()->route('dosen.index')->with('status', 'Horray ! Your data is successfully deleted !');
+=======
+            return redirect()->route('dosen.index')->with('status', 'Dosen berhasil dihapus');
+>>>>>>> Stashed changes
         } catch (\PDOException $ex) {
 
             $msg = "Failed to delete data ! Make sure there is no related data before deleting it";

@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="{{ asset('admin/css/modal.css') }}">
+
 <form method="POST" action="{{ route('topic.update', $topic->id) }}">
     @csrf
     @method('PUT')

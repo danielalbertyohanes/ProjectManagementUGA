@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="{{ asset('admin/css/modal.css') }}">
+
+<h2>Edit Course</h2>
 <form method="POST" action="{{ route('course.update', $course->id) }}">
     @csrf
     @method('PUT')
@@ -29,7 +32,12 @@
     </div>
 
     <div class="modal-footer">
+<<<<<<< Updated upstream
         <button type="submit" class="btn btn-primary">Submit</button>
         <a href="{{ route('course.index') }}" class="btn btn-danger">Cancel</a>
+=======
+        <a href="{{ route('course.index') }}" class="btn buttonBatal">Batal</a>
+        <button type="submit" class="btn buttonSimpan">Simpan</button>
+>>>>>>> Stashed changes
     </div>
 </form>
