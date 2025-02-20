@@ -1,0 +1,66 @@
+:root {
+    --primary: #0F4C81;
+    --secondary: #658DC6;
+    --background: #ffffff;
+    --gray-dark: #84898C;
+    --gray-darker:#3f4244;
+    --accent1: #A58D7F;
+    --accent2: #F5B895;
+    --accent3: #F3D5AD;
+    --red: #aa3333;
+    --red-light: #bb5f5f;
+}
+
+label {
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+}
+
+input, textarea {
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+}
+
+input:focus, textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+}
+
+button {
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-weight: bold;
+}
+
+h2 {
+    text-align: center;
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.buttonSimpan {
+    background-color: var(--primary);
+    border: none;
+    color: white;
+}
+
+.buttonBatal {
+    background-color: var(--gray-darker);
+    border: none;
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.8;
+    color: white;
+}
+
+.modal-footer {
+    display: flex;
+}

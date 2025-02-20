@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="{{ asset('admin/css/modal.css') }}">
+<h2>Activity Logs</h2>
+<br>
 <div class="table-responsive">
     <table class="table table-bordered table-striped">
         <thead>

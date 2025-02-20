@@ -1,10 +1,9 @@
-<style>
-    label {
-        color: #232323;
-        padding-top: 10px;
-    }
-</style>
+<<<<<<< Updated upstream
+=======
+<link rel="stylesheet" href="{{ asset('admin/css/modal.css') }}">
 
+<h2>Tambah Kontributor</h2>
+>>>>>>> Stashed changes
 <form method="POST" action="{{ route('dosen.store') }}">
     @csrf
     <div class="form-group">

@@ -1,0 +1,26 @@
+:root { --primary: #0F4C81; --secondary: #658DC6; --background: #ffffff; --gray-dark: #84898C; --accent1: #A58D7F; --accent2: #F5B895; --accent3: #F3D5AD; }
+
+body { font-family: 'Nunito', sans-serif; background-color: var(--background); }
+
+/* Card Styling */ .card { border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); overflow: hidden; }
+
+.card-header { font-weight: bold; padding: 15px; color: white; }
+
+.bg-primary { background-color: var(--primary) !important; }
+
+.bg-info { background-color: var(--secondary) !important; }
+
+.bg-success { background-color: var(--accent1) !important; }
+
+.bg-warning { background-color: var(--accent2) !important; }
+
+.bg-danger { background-color: var(--accent3) !important; }
+
+.bg-secondary { background-color: var(--gray-dark) !important; }
+
+/* Text Styling */ .card-text { font-size: 16px; color: #333; }
+
+.display-4 { font-size: 28px; font-weight: bold; }
+
+/* Responsive */ @media (max-width: 768px) { .display-4 { font-size: 22px; } }
+

@@ -1,0 +1,267 @@
+:root {
+    --primary: #0F4C81;
+    --secondary: #658DC6;
+    --background: #ffffff;
+    --gray-dark: #84898C;
+    --gray-darker:#3f4244;
+    --accent1: #A58D7F;
+    --accent2: #F5B895;
+    --accent3: #F3D5AD;
+    --red: #aa3333;
+    --red-light: #bb5f5f;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--background);
+    color: #232323;
+}
+
+/* Header */
+h1 {
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+h5 {
+    font-size: 1.1rem;
+    text-align: justify;
+    margin: 0 auto 20px;
+    color: var(--gray-darker);
+}
+
+p {
+    font-size: 1.1rem;
+    text-align: justify;
+    margin: 0 auto 20px;
+    color: var(--gray-darker);
+}
+
+/* Button */
+.buttonCreate {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+
+}
+
+.buttonCreate:hover {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+    color: white;
+}
+
+/* Card Styling */
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background-color: white;
+}
+
+.card-header {
+    background-color: var(--gray-darker);
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+h6.text-primary {
+    color: white !important;
+}
+
+/* Table */
+.table {
+    background-color: white;
+}
+
+th {
+    color: var(--gray-darker);
+    text-align: center;
+}
+
+td {
+    text-align: center;
+    color: var(--gray-darker);
+}
+
+/* Edit Button */
+.buttonEdit {
+    background-color: var(--gray-darker);
+    border-color: var(--gray-darker);
+    color: white
+}
+
+.buttonEdit:hover {
+    background-color: var(--gray-dark);
+    border-color: var(--gray-dark);
+    color: white;
+}
+
+.buttonDelete {
+    background-color: var(--red);
+    border-color: var(--red);
+    color: white;
+    transform: none;
+    min-width: 80px;
+    max-width: 90px;
+}
+
+.buttonDelete:hover {
+    background-color: var(--red-light);
+    border-color: var(--red-light);
+    color: white;
+}
+
+.buttonBatal {
+    background-color: var(--gray-darker);
+    border-color: var(--gray-darker);
+    color: white
+}
+
+.buttonBatal:hover {
+    background-color: var(--gray-dark);
+    border-color: var(--gray-dark);
+    color: white;
+}
+
+.buttonDetail {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+    color: white
+}
+
+.buttonDetail:hover {
+    background-color: var(--gray-dark);
+    border-color: var(--gray-dark);
+    color: white;
+}
+
+.buttonKurasi {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+    color: white
+}
+
+.buttonKurasi:hover {
+    background-color: var(--gray-dark);
+    border-color: var(--gray-dark);
+    color: white;
+}
+
+.buttonPublish {
+    background-color: var(--accent2);
+    border-color: var(--accent2);
+    color: white
+}
+
+.buttonPublish:hover {
+    background-color: var(--accent3);
+    border-color: var(--accent3);
+    color: white;
+}
+/* Modal */
+.modal-content {
+    border-radius: 10px;
+}
+
+select option:hover {
+    background-color: var(--primary); /* Warna saat hover */
+    color: white;
+}
+
+.panduan-links a {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+}
+
+.input-group input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.input-group button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.description {
+    max-width: 150px;
+    /* Batas lebar kolom */
+    white-space: nowrap;
+    /* Tampilkan hanya satu baris */
+    overflow: hidden;
+    /* Potong teks jika terlalu panjang */
+    text-overflow: ellipsis;
+    /* Tambahkan "..." di akhir teks */
+    cursor: pointer;
+    /* Tampilkan kursor pointer saat dihover */
+}
+
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-container:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.tooltip {
+    visibility: hidden;
+    opacity: 0;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 9999;
+    bottom: 120%;
+    /* Posisi tooltip di atas teks */
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: normal;
+    max-width: 200px;
+    word-wrap: break-word;
+}
+
+.tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    /* Panah di bagian bawah tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+}
+
+/* Tooltip otomatis berpindah ke bawah jika tidak cukup ruang */
+.tooltip-container[data-position="top"] .tooltip {
+    bottom: auto;
+    top: 120%;
+    transform: translateX(-50%);
+}
+
+.tooltip-container[data-position="top"] .tooltip::after {
+    top: auto;
+    bottom: 100%;
+    border-color: transparent transparent #333 transparent;
+}
+
+.table-container {
+    position: relative;
+    overflow: visible;
+    /* Pastikan tooltip bisa terlihat */
+}

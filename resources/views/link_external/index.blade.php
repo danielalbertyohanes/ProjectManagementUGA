@@ -1,59 +1,31 @@
 @extends('layouts.admin')
 
 @section('content')
-    <style>
-        h1 {
-            color: royalblue;
-            font-weight: bold;
-            font-size: 2rem;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        p {
-            font-size: 1rem;
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-            font-family: Arial, Helvetica, sans-serif;
-            color: #232323;
-        }
-
-        th {
-            font-weight: bold;
-            text-align: center;
-            color: #232323;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        td {
-            font-family: Arial, Helvetica, sans-serif;
-            text-align: center;
-            color: #232323;
-        }
-    </style>
     <div class="container-fluid">
-        <h1>MASTER EXTERNAL LINK</h1>
-        <p>Modul External Link adalah modul yang digunakan untuk mengelola tautan (link) yang akan tampil pada modul course.
-        </p>
+        <h1 class="h3 mb-2 text-gray-800">Link External</h1>
+        <p>Info terkait link agar informative</p>
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
 
-        <a class="btn btn-success mb-3" href="{{ route('link_external.create') }}">Tambah Eksternal Link</a>
+        <a class="btn btn-success mb-3" href="{{ route('link_external.create') }}">+ New Link</a>
 
+        {{-- Tabel Link External --}}
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">DAFTAR EKSTERNAL LINK</h6>
+                <h6 class="m-0 font-weight-bold text-primary">DataTables</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+<<<<<<< Updated upstream
                                 <th class="text-center">No</th>
                                 <th class="text-center">Nama</th>
                                 <th class="text-center">URL</th>
                                 <th class="text-center">Status</th>
-                                <th class="text-center">Aksi</th>
+                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,8 +36,8 @@
                                     <td>{{ $link->url }}</td>
                                     <td>{{ $link->status }}</td>
                                     <td>
-                                        <a href="#" class="btn btn-warning" data-toggle="modal"
-                                            data-target="#modalEditA" onclick="getEditForm({{ $link->id }})">EDIT
+                                        <a href="#" class="btn buttonEdit" data-toggle="modal"
+                                            data-target="#modalEdit" onclick="getEditForm({{ $link->id }})">Edit
                                         </a>
                                     </td>
                                 </tr>
@@ -77,9 +49,20 @@
         </div>
     </div>
 
+    {{-- Modal ADD --}}
+    <div class="modal fade" id="modalCreateLink" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-wide">
+            <div class="modal-content">
+                <div class="modal-body" id="modalCreateContent">
+                    {{-- Content will be loaded dynamically --}}
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal EDIT -->
-    <div class="modal fade" id="modalEditA" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-wide">
+    <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-wide">
             <div class="modal-content">
                 <div class="modal-body" id="modalContent">
                     <!-- Content will be loaded dynamically -->
@@ -91,6 +74,22 @@
 
 @section('javascript')
     <script>
+        // ADD
+        function loadCreateForm() {
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('link_external.getCreateForm') }}',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                },
+                success: function(data) {
+                    if (data.status === 'ok') {
+                        $('#modalCreateContent').html(data.msg);
+                    }
+                }
+            });
+        }
+
         // EDIT
         function getEditForm(link_id) {
             $.ajax({

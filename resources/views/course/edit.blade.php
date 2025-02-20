@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="{{ asset('admin/css/modal.css') }}">
+
+<h2>Edit Course</h2>
 <form method="POST" action="{{ route('course.update', $course->id) }}">
     @csrf
     @method('PUT')

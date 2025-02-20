@@ -1,44 +1,33 @@
 @extends('layouts.admin')
 
 @section('content')
-<style>
-    h1 {
-        color: royalblue;
-        font-weight: bold;
-        font-size: 2rem;
-        font-family: Arial, Helvetica, sans-serif;
-    }
+<<<<<<< Updated upstream
+    <div class="container-fluid">
+        <h1 class="h3 mb-2 text-gray-800">DOSEN</h1>
+        <p>Info terkait dosen agar informative</p>
+=======
+    <link rel="stylesheet" href="{{ asset('admin/css/content.css') }}">
 
-    p {
-        font-size: 1rem;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-        font-family: Arial, Helvetica, sans-serif;
-        color: #232323;
-    }
-    th {
-        font-weight: bold;
-        text-align: center;
-        color: #232323;
-        font-family: Arial, Helvetica, sans-serif;
-    }
-
-    td {
-        font-family: Arial, Helvetica, sans-serif;
-        text-align: center;
-        color: #232323;
-    }
-</style>
     <div class="container-fluid">
         <h1>MASTER KONTRIBUTOR</h1>
-        <p>Master Kontributor adalah modul yang digunakan untuk mendefinisikan dan mengelola data dosen atau
-            kontributor.</p>
+        <p>Modul Master Kontributor digunakan untuk mengelola informasi kontributor dalam sistem. Dengan fitur ini admin dapat menambahkan, mengedit, menghapus dan melihat daftar kontributor atau dosen. Data yang dikelola mencakup Nomor Pokok Karyawan (NPK), nama, fakultas, nomor telepon, serta deskripsi kontributor.</p>
+
+>>>>>>> Stashed changes
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
 
-        <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateDosen" onclick="loadCreateForm()">Tambah Kontributor</button>
+<<<<<<< Updated upstream
+        @if (Auth::user()->position_id == '3')
+            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateDosen"
+                onclick="loadCreateForm()">+ New Course</button>
+        @endif
+=======
+        {{-- Button Tambah Kontributor --}}
+        <button class="btn buttonCreate mb-3" data-toggle="modal" data-target="#modalCreateDosen" onclick="loadCreateForm()">Tambah Kontributor</button>
+>>>>>>> Stashed changes
 
+        {{-- Tabel Kontributor --}}
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">DAFTAR KONTRIBUTOR</h6>
@@ -67,18 +56,28 @@
                                     <td>{{ $d->no_telp }}</td>
                                     <td>{{ $d->description }}</td>
                                     <td>
+<<<<<<< Updated upstream
+                                        @if (Auth::user()->position_id == '3')
+                                            <a href="#" class="btn btn-warning" data-toggle="modal"
+                                                data-target="#modalEditA" onclick="getEditForm({{ $d->id }})">EDIT
+                                            </a>
+                                            <form method="POST" action="{{ route('dosen.destroy', $d->id) }}"
+                                                style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <input type="submit" value="Delete" class="btn btn-danger"
+                                                    onclick="return confirm('Are you sure to delete {{ $d->id }} - {{ $d->name }}?');">
+                                            </form>
+                                        @endif
+=======
                                         {{-- @if (Auth::user()->position_id == '3') --}}
-                                        <a href="#" class="btn btn-warning" data-toggle="modal"
-                                            data-target="#modalEditA" onclick="getEditForm({{ $d->id }})">EDIT
+                                        <a href="#" class="btn buttonEdit" data-toggle="modal"
+                                            data-target="#modalEditA" onclick="getEditForm({{ $d->id }})">Edit
                                         </a>
-                                        <form method="POST" action="{{ route('dosen.destroy', $d->id) }}"
-                                            style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <input type="submit" value="Delete" class="btn btn-danger"
-                                                onclick="return confirm('Are you sure to delete {{ $d->id }} - {{ $d->name }}?');">
-                                        </form>
-                                        {{-- @endif --}}
+                                        <a href="#" class="btn buttonDelete" onclick="confirmDelete('{{ route('dosen.destroy', $d->id) }}', '{{ $d->name }}')">
+                                            Delete
+                                        </a>
+>>>>>>> Stashed changes
                                     </td>
                                 </tr>
                             @endforeach
@@ -110,11 +109,36 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Konfirmasi Hapus -->
+    <div class="modal fade" id="modalDeleteConfirm" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Konfirmasi Hapus</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Apakah Anda yakin ingin menghapus <strong id="deleteDosenName"></strong>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn buttonBatal" data-dismiss="modal">Batal</button>
+                    <form id="deleteForm" method="POST" action="">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn buttonDelete">Hapus</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('javascript')
     <script>
-        // Create
+        // ADD
         function loadCreateForm() {
             $.ajax({
                 type: 'POST',
@@ -146,5 +170,27 @@
                 }
             });
         }
+
+        // DELETE
+        function confirmDelete(actionUrl, dosenName) {
+            $('#deleteDosenName').text(dosenName);
+            $('#deleteForm').attr('action', actionUrl);
+            $('#modalDeleteConfirm').modal('show');
+        }
+
+        $(document).ready(function () {
+            $('#modalDeleteConfirm').on('hidden.bs.modal', function () {
+                $('#deleteDosenName').text('');
+                $('#deleteForm').attr('action', '');
+            });
+
+            $('.buttonBatal').on('click', function () {
+                $('#modalDeleteConfirm').modal('hide');
+            });
+
+            $('.close').on('click', function () {
+                $('#modalDeleteConfirm').modal('hide');
+            });
+        });
     </script>
 @endsection

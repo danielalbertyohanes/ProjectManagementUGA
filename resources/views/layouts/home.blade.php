@@ -1,96 +1,64 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <!-- Welcome Card -->
-                <div class="card mb-4">
-                    <div class="card-header bg-primary text-white">
-                        <i class="fas fa-user"></i> Selamat Datang, {{ Auth::user()->name }}
+    <link rel="stylesheet" href="{{ asset('admin/css/home.css') }}">
+    <div class="container mx-auto p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Welcome Card -->
+            <div class="bg-primary text-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold mb-2 flex items-center"><i class="fas fa-user mr-2"></i>Selamat Datang,
+                    {{ Auth::user()->name }}</h2>
+                <p>Anda dapat mengelola Course, Topics, dan informasi lainnya di sini.</p>
+            </div>
+
+            @if (Auth::user()->position_id == '1')
+                <!-- Active Period Card -->
+                <div class="bg-[#658DC6] text-white p-6 rounded-lg shadow-lg">
+                    <h2 class="text-xl font-semibold mb-2 flex items-center"><i class="fas fa-calendar-alt mr-2"></i>Periode
+                        Aktif</h2>
+                    @if ($periodeAktif)
+                        <p><strong>{{ $periodeAktif->name }}</strong></p>
+                        <p>Dimulai: <strong>{{ \Carbon\Carbon::parse($periodeAktif->start_date)->format('d-m-Y') }}</strong>
+                        </p>
+                        <p>Berakhir: <strong>{{ \Carbon\Carbon::parse($periodeAktif->end_date)->format('d-m-Y') }}</strong>
+                        </p>
+                        <p>Kurasi: <strong>{{ \Carbon\Carbon::parse($periodeAktif->kurasi_date)->format('d-m-Y') }}</strong>
+                        </p>
+                    @else
+                        <p>Tidak ada periode aktif saat ini.</p>
+                    @endif
+                </div>
+
+                <!-- Total Users and Lecturers -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-[#B5C7D3] text-gray-800 p-6 rounded-lg shadow-lg">
+                        <h2 class="text-xl font-semibold mb-2 flex items-center"><i class="fas fa-users mr-2"></i>Total
+                            Pengguna</h2>
+                        <p class="text-4xl font-bold">{{ $totalPengguna }}</p>
                     </div>
-                    <div class="card-body">
-                        <p class="card-text textColor">Selamat datang di halaman ini. Anda dapat mengelola Course, Topics, dan
-                            informasi lainnya di sini.</p>
+                    <div class="bg-[#A58D7F] text-white p-6 rounded-lg shadow-lg">
+                        <h2 class="text-xl font-semibold mb-2 flex items-center"><i
+                                class="fas fa-chalkboard-teacher mr-2"></i>Total Dosen</h2>
+                        <p class="text-4xl font-bold">{{ $totalDosen }}</p>
                     </div>
                 </div>
-                @if (Auth::user()->position_id == '1')
-                    <!-- Active Period Card -->
-                    <div class="card mb-4">
-                        <div class="card-header bg-CardPeriode text-white">
-                            <i class="fas fa-calendar-alt"></i> Periode Aktif
-                        </div>
-                        <div class="card-body">
-                            @if ($periodeAktif)
-                                <p class="card-text textColor">Periode aktif saat ini adalah
-                                    <strong class="textColor">{{ $periodeAktif->name }}</strong>.
-                                </p>
-                                <p class="card-text textColor">Dimulai pada
-                                    <strong class="textColor">{{ \Carbon\Carbon::parse($periodeAktif->start_date)->format('d-m-Y') }}</strong>.
-                                </p>
-                                <p class="card-text textColor">Berakhir pada
-                                    <strong class="textColor">{{ \Carbon\Carbon::parse($periodeAktif->end_date)->format('d-m-Y') }}</strong>.
-                                </p>
-                                <p class="card-text textColor">Kurasi pada
-                                    <strong class="textColor">{{ \Carbon\Carbon::parse($periodeAktif->kurasi_date)->format('d-m-Y') }}</strong>.
-                                </p>
-                            @else
-                                <p class="card-text">Tidak ada Periode yang aktif saat ini.</p>
-                            @endif
-                        </div>
-                    </div>
+            @endif
 
-                    <!-- Total Users and Lecturers Cards -->
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="card h-100">
-                                <div class="card-header bg-CardTotalPenggunaan text-white">
-                                    <i class="fas fa-users "></i> Total Pengguna
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-text display-4 textColor ">{{ $totalPengguna }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card h-100">
-                                <div class="card-header bg-CardTotalDosen text-white">
-                                    <i class="fas fa-chalkboard-teacher"></i> Total Dosen
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-text display-4 textColor">{{ $totalDosen }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-                <!-- Today's Date and Unfinished Courses Cards -->
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card h-100">
-                            <div class="card-header bg-secondary text-white">
-                                <i class="fas fa-calendar-day"></i> Hari Ini
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text display-4 textColor">{{ $hariIni }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card h-100">
-                            <div class="card-header bg-CardMataPelajaranYangBelumSelesai text-white">
-                                <i class="fas fa-book"></i> Mata Pelajaran Yang Belum Selesai
-                            </div>
-                            <div class="card-body">
-                                @if ($courseBelumSelesai > 0)
-                                    <p class="card-text textColor display-4">{{ $courseBelumSelesai }}</p>
-                                @else
-                                    <p class="card-text">Saat ini tidak ada mata pelajaran yang belum selesai.</p>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
+            <!-- Today's Date and Unfinished Courses -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-[#F3D5AD] text-gray-800 p-6 rounded-lg shadow-lg">
+                    <h2 class="text-xl font-semibold mb-2 flex items-center"><i class="fas fa-calendar-day mr-2"></i>Hari
+                        Ini</h2>
+                    <p class="text-4xl font-bold">{{ $hariIni }}</p>
+                </div>
+                <div class="bg-[#F5B895] text-white p-6 rounded-lg shadow-lg">
+                    <h2 class="text-xl font-semibold mb-2 flex items-center"><i class="fas fa-book mr-2"></i> Mata Pelajaran
+                        Belum Selesai</h2>
+                    @if ($courseBelumSelesai > 0)
+                        <p class="text-4xl font-bold">{{ $courseBelumSelesai }}</p>
+                    @else
+                        <p class="text-lg">Tidak ada mata pelajaran yang belum selesai.</p>
+                    @endif
                 </div>
             </div>
         </div>
@@ -98,11 +66,5 @@
 @endsection
 
 @section('javascript')
-    <!-- Bootstrap CSS -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-        integrity="sha512-yhF+o52vps0bIyQ/YNjyz8DbERanw11OvGQHp/JUsV2cv9VjaFCYJTPGa3Mva6ZR07gA/8N2UhuB1I1AGFyDVQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="{{ asset('js/app.js') }}"></script>
 @endsection

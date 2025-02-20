@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 
 @section('content')
+    <link rel="stylesheet" href="{{ asset('admin/css/modal.css') }}">
+    <h2>Tambah Video</h2>
     <form method="POST" action="{{ route('video.store') }}">
         @csrf
         <div class="form-group">
@@ -33,8 +35,8 @@
         </div>
 
         <div class="modal-footer">
-            <a href="{{ route('subTopic.show', $subTopicId) }}" class="btn btn-danger">Batal</a>
-            <button type="submit" class="btn btn-primary">Simpan</button>
+            <a href="{{ route('subTopic.show', $subTopicId) }}" class="btn buttonBatal">Batal</a>
+            <button type="submit" class="btn buttonSimpan">Simpan</button>
         </div>
     </form>
 @endsection

@@ -1,28 +1,20 @@
 @extends('layouts.admin')
 
 @section('content')
-    <style>
-        p {
-            font-size: 1rem;
-            padding-top: 1rem;
-            font-family: Arial, Helvetica, sans-serif;
-            color: #232323;
-        }
-
-        h3 {
-            font-size: 1.5rem;
-            font-family: Arial, Helvetica, sans-serif;
-            color: #333333;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-    </style>
+<<<<<<< Updated upstream
     <div class="container-fluid">
         <h3 class="h3 mb-2 text-gray-800">Detail Course</h3>
-        <p>Halaman ini menampilkan detail lengkap dari course yang dipilih. Anda dapat melihat daftar topik yang termasuk
-            dalam course ini, lengkap dengan status progresnya. Selain itu, halaman ini juga memungkinkan Anda untuk
-            menambahkan topik baru atau mengedit topik yang sudah ada.</p>
-        <br>
+        <p>Halaman details berisi topik. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+            Ipsum has been the industry's.</p>
+
+=======
+    <link rel="stylesheet" href="{{ asset('admin/css/content.css') }}">
+
+    <div class="container-fluid">
+        <button onclick="window.history.back()" class="btn buttonBatal">Kembali</button>
+        <h1>Detail Course</h1>
+        <p>Halaman Detail Course digunakan untuk mengelola detail course dalam sistem. Dengan fitur ini, admin dapat melihat detail lengkap dari course yang dipilih, daftar topik yang termasuk dalam course, lengkap dengan status progressnya. Selain itu, halaman ini juga memungkinkan untuk menambahkan topik baru atau mengedit topik yang sudah ada.</p>
+>>>>>>> Stashed changes
         <div class="mb-2">
             <h5 class="text-primary">
                 KODE COURSE: <span class="text-gray-800">{{ $course->kode_course }}</span>
@@ -97,6 +89,7 @@
                                 <th>No</th>
                                 <th>Topik</th>
                                 <th>Sub-Topik</th>
+<<<<<<< Updated upstream
                                 <th>Progres</th>
                                 <th>Detail</th>
                                 @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')

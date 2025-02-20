@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="{{ asset('admin/css/modal.css') }}">
+
+<h2>Tambah Course</h2>
 <form method="POST" action="{{ route('course.store') }}">
     @csrf
     <div class="form-group">

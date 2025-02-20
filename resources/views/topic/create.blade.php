@@ -37,7 +37,7 @@
                 <input type="text" class="form-control" id="name_subTopic_${subtopicIndex}" name="name_subTopic[]"
                     placeholder="Enter Name Sub Topic" required oninput="this.value = this.value.toUpperCase()">
 
-                <button type="button" class="btn btn-sm btn-danger remove-input">Remove</button>
+                <button type="button" class="btn btn-sm buttonDelete remove-input">Hapus</button>
             </div>`
             );
             subtopicIndex++;

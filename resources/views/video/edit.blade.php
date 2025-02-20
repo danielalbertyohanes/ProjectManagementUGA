@@ -1,3 +1,8 @@
+<<<<<<< Updated upstream
+=======
+<link rel="stylesheet" href="{{ asset('admin/css/modal.css') }}">
+
+<h2>Edit Video</h2>
 <form action="{{ route('video.update', $video->id) }}" method="post">
     @csrf
     @method('PUT')
@@ -21,8 +26,9 @@
     </div>
 
     <div class="modal-footer">
-        <a href="{{ route('subTopic.show', $video->ppt->sub_topic_id) }}" class="btn btn-danger"
+        <a href="{{ route('subTopic.show', $video->ppt->sub_topic_id) }}" class="btn buttonBatal"
             data-dismiss="modal">Batal</a>
-        <button type="submit" class="btn btn-primary">Simpan</button>
+        <button type="submit" class="btn buttonSimpan">Simpan</button>
     </div>
 </form>
+>>>>>>> Stashed changes
