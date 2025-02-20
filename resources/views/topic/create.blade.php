@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="{{ asset('admin/css/modal.css') }}">
+
+<h2>Tambah Topic</h2>
 <form method="POST" action="{{ route('topic.store') }}">
     @csrf
     <div class="form-group">
@@ -18,11 +21,11 @@
                 placeholder="Enter Name Sub Topic" required oninput="this.value = this.value.toUpperCase()">
         </div>
     </div>
-    <button type="button" class="btn btn-sm btn-primary" id="addSubTopic">Tambah Sub Topic</button>
+    <button type="button" class="btn buttonSimpan" id="addSubTopic">Tambah Sub Topic</button>
 
     <div class="modal-footer">
-        <a href="{{ route('course.show', $course->id) }}" class="btn btn-danger">Batal</a>
-        <button type="submit" class="btn btn-primary">Simpan</button>
+        <a href="{{ route('course.show', $course->id) }}" class="btn buttonBatal">Batal</a>
+        <button type="submit" class="btn buttonSimpan">Simpan</button>
     </div>
 </form>
 
@@ -37,7 +40,7 @@
                 <input type="text" class="form-control" id="name_subTopic_${subtopicIndex}" name="name_subTopic[]"
                     placeholder="Enter Name Sub Topic" required oninput="this.value = this.value.toUpperCase()">
 
-                <button type="button" class="btn btn-sm buttonDelete remove-input">Hapus</button>
+                <button type="button" class="btn btn-sm buttonDelete remove-input mb-3">Hapus</button>
             </div>`
             );
             subtopicIndex++;

@@ -1,26 +1,151 @@
-:root { --primary: #0F4C81; --secondary: #658DC6; --background: #ffffff; --gray-dark: #84898C; --accent1: #A58D7F; --accent2: #F5B895; --accent3: #F3D5AD; }
-
-body { font-family: 'Nunito', sans-serif; background-color: var(--background); }
-
-/* Card Styling */ .card { border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); overflow: hidden; }
-
-.card-header { font-weight: bold; padding: 15px; color: white; }
-
-.bg-primary { background-color: var(--primary) !important; }
-
-.bg-info { background-color: var(--secondary) !important; }
-
-.bg-success { background-color: var(--accent1) !important; }
-
-.bg-warning { background-color: var(--accent2) !important; }
-
-.bg-danger { background-color: var(--accent3) !important; }
-
-.bg-secondary { background-color: var(--gray-dark) !important; }
-
-/* Text Styling */ .card-text { font-size: 16px; color: #333; }
-
-.display-4 { font-size: 28px; font-weight: bold; }
-
-/* Responsive */ @media (max-width: 768px) { .display-4 { font-size: 22px; } }
-
+/* Variables - Color Scheme dengan Kontras Lebih Baik */
+:root {
+    --primary: #0D3B69;
+    --secondary: #4A7CC2;
+    --background: #ffffff;
+    --gray-dark: #475057;
+    --users-bg: #E1ECF8;
+    --users-text: #0D3B69;
+    --lecturers-bg: #8B6B55;
+    --date-bg: #E9BA6B;
+    --date-text: #5D4037;
+    --courses-bg: #F08C4A;
+    --shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Container dan Grid Layout */
+  .dashboard-container {
+    padding: 1.5rem;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  /* Card Styles */
+  .dashboard-card {
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Card Variants */
+  .welcome-card {
+    background-color: var(--primary);
+    color: white;
+  }
+  
+  .period-card {
+    background-color: var(--secondary);
+    color: white;
+  }
+  
+  .users-card {
+    background-color: var(--users-bg);
+    color: var(--users-text);
+  }
+  
+  .lecturers-card {
+    background-color: var(--lecturers-bg);
+    color: white;
+  }
+  
+  .date-card {
+    background-color: var(--date-bg);
+    color: var(--date-text);
+  }
+  
+  .courses-card {
+    background-color: var(--courses-bg);
+    color: white;
+  }
+  
+  /* Typography */
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .card-title i {
+    margin-right: 0.5rem;
+  }
+  
+  .card-text {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .period-name {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .period-date {
+    margin-bottom: 0.25rem;
+  }
+  
+  .stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+  }
+  
+  .empty-state, .no-data {
+    font-size: 1rem;
+    opacity: 0.9;
+  }
+  
+  /* Responsive Adjustments */
+  @media (min-width: 768px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    
+    .stats-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+  /* Animation Effects */
+  .dashboard-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+  
+  .dashboard-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Accessibility Improvements */
+  .dashboard-card:focus-within {
+    outline: 2px solid #4A90E2;
+    outline-offset: 2px;
+  }
+  
+  /* Print Styles */
+  @media print {
+    .dashboard-card {
+      break-inside: avoid;
+      border: 1px solid #ddd;
+      box-shadow: none;
+    }
+    
+    .dashboard-grid, .stats-grid {
+      gap: 0.5rem;
+    }
+  }

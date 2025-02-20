@@ -42,11 +42,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('report/periode', [ReportController::class, 'rptPeriode'])->name('report.rptPeriode');
 
         Route::resource('link_external', LinkExternalController::class);
+        Route::post('/link_external/getCreateForm', [LinkExternalController::class, 'getCreateForm'])->name('link_external.getCreateForm');
         Route::post('/link_external/getEditForm', [LinkExternalController::class, 'getEditForm'])->name('link.getEditForm');
 
         Route::resource('employee', UserController::class);
         Route::post('/employee/getEditForm', [UserController::class, 'getEditForm'])->name('employee.getEditForm');
         Route::put('/employee/{user}/{from}', [UserController::class, 'update'])->name('employee.update');
+        Route::post('/employee/getCreateForm', [UserController::class, 'getCreateForm'])->name('employee.getCreateForm');
 
         Route::resource('dosen', DosenController::class);
         Route::post('/dosen/getCreateForm', [DosenController::class, 'getCreateForm'])->name('dosen.getCreateForm');

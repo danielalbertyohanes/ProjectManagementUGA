@@ -5,7 +5,10 @@
 
     <div class="container-fluid">
         <h1>MASTER PERIODE</h1>
-        <p>Modul Master Periode digunakan untuk mengelola informasi karyawan dalam sistem. Dengan fitur ini, admin dapat menambahkan, mengedit, dan melihat daftar periode. Data yang dikelola mencakup nama, tanggal mulai, tanggal selesai, anggal kurasi, serta status periode. Jika status active maka akan tampil pada inputan tambah course.</p>
+        <p>Modul Master Periode digunakan untuk mengelola informasi karyawan dalam sistem. Dengan fitur ini, admin dapat
+            menambahkan, mengedit, dan melihat daftar periode. Data yang dikelola mencakup nama, tanggal mulai, tanggal
+            selesai, anggal kurasi, serta status periode. Jika status active maka akan tampil pada inputan tambah course.
+        </p>
 
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
@@ -13,7 +16,8 @@
 
         @if (Auth::user()->position_id == '1')
             {{-- Button Tambah Periode --}}
-            <button class="btn buttonCreate mb-3" data-toggle="modal" data-target="#modalCreatePeriode" onclick="loadCreateForm()">Tambah Periode</button>
+            <button class="btn buttonCreate mb-3" data-toggle="modal" data-target="#modalCreatePeriode"
+                onclick="loadCreateForm()">Tambah Periode</button>
         @endif
 
         {{-- Tabel Link External --}}

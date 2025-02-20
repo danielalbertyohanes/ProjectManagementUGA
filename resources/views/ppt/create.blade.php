@@ -15,8 +15,8 @@
                 required readonly>
 
             <label for="name_ppt">Nama PPT</label>
-            <input type="text" class="form-control" id="name_ppt" name="name_ppt" placeholder="Masukan Nama PPT" required
-                oninput="this.value = this.value.toUpperCase()">
+            <input type="text" class="form-control" id="name_ppt" name="name_ppt" placeholder="Masukan Nama PPT"
+                required oninput="this.value = this.value.toUpperCase()">
 
         </div>
         <div class="form-group">
@@ -38,13 +38,8 @@
         </div>
 
         <div class="modal-footer">
-<<<<<<< Updated upstream
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <a href="{{ route('ppt.index') }}" class="btn btn-danger">Cancel</a>
-=======
             <a href="{{ route('subTopic.show', $subTopic->id) }}" class="btn buttonBatal">Batal</a>
             <button type="submit" class="btn buttonSimpan">Simpan</button>
->>>>>>> Stashed changes
         </div>
     </form>
 @endsection

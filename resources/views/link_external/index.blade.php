@@ -1,31 +1,38 @@
 @extends('layouts.admin')
 
 @section('content')
+    <link rel="stylesheet" href="{{ asset('admin/css/content.css') }}">
+
     <div class="container-fluid">
-        <h1 class="h3 mb-2 text-gray-800">Link External</h1>
-        <p>Info terkait link agar informative</p>
+        <h1>MASTER EXTERNAL LINK</h1>
+        <p>Modul External Link digunakan untuk mengelola informasi link external dalam sistem.
+            Dengan fitur ini, admin dapat menambahkan, mengedit, dan melihat daftar link external. Data yang dikelola
+            mencakup nama, url, serta status link external. Jika status active maka akan tampil pada halaman master course.
+        </p>
+
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
 
-        <a class="btn btn-success mb-3" href="{{ route('link_external.create') }}">+ New Link</a>
+        {{-- Button Tambah Link External --}}
+        <button class="btn buttonCreate mb-3" data-toggle="modal" data-target="#modalCreateLink"
+            onclick="loadCreateForm()">Tambah External Link</button>
 
         {{-- Tabel Link External --}}
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">DataTables</h6>
+                <h6 class="m-0 font-weight-bold text-primary">DAFTAR EXTERNAL LINK</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-<<<<<<< Updated upstream
-                                <th class="text-center">No</th>
-                                <th class="text-center">Nama</th>
-                                <th class="text-center">URL</th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center">Action</th>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>URL</th>
+                                <th>Status</ths=>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>

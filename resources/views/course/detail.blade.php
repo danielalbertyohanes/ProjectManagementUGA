@@ -1,20 +1,16 @@
 @extends('layouts.admin')
 
 @section('content')
-<<<<<<< Updated upstream
-    <div class="container-fluid">
-        <h3 class="h3 mb-2 text-gray-800">Detail Course</h3>
-        <p>Halaman details berisi topik. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-            Ipsum has been the industry's.</p>
-
-=======
     <link rel="stylesheet" href="{{ asset('admin/css/content.css') }}">
-
     <div class="container-fluid">
-        <button onclick="window.history.back()" class="btn buttonBatal">Kembali</button>
-        <h1>Detail Course</h1>
-        <p>Halaman Detail Course digunakan untuk mengelola detail course dalam sistem. Dengan fitur ini, admin dapat melihat detail lengkap dari course yang dipilih, daftar topik yang termasuk dalam course, lengkap dengan status progressnya. Selain itu, halaman ini juga memungkinkan untuk menambahkan topik baru atau mengedit topik yang sudah ada.</p>
->>>>>>> Stashed changes
+        <div style=" display: flex; justify-content: space-between;">
+            <h3 class="h3 mb-2 text-gray-800">Detail Course</h3>
+            <button onclick="window.history.back()" class="btn buttonBatal">Kembali</button>
+        </div>
+
+        <p>Halaman ini menampilkan detail lengkap dari course yang dipilih. Anda dapat melihat daftar topik yang termasuk
+            dalam course ini, lengkap dengan status progresnya. Selain itu, halaman ini juga memungkinkan Anda untuk
+            menambahkan topik baru atau mengedit topik yang sudah ada.</p>
         <div class="mb-2">
             <h5 class="text-primary">
                 KODE COURSE: <span class="text-gray-800">{{ $course->kode_course }}</span>
@@ -33,7 +29,7 @@
             <h5 class="text-primary">
                 TANGGAL_MULAI: <span class="text-gray-800">
                     @foreach ($course->periode as $periode)
-                        {{ \Carbon\Carbon::parse($periode->start_date)->format('d-m-yy') }}</>
+                        {{ \Carbon\Carbon::parse($periode->start_date)->format('d-m-Y') }}</>
                         <br>
                     @endforeach
                 </span>
@@ -74,7 +70,7 @@
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
         @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
-            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreate"
+            <button class="btn buttonCreate mb-3" data-toggle="modal" data-target="#modalCreateTopic"
                 onclick="loadCreateForm({{ $course->id }})">Tambah Topic</button>
         @endif
         <div class="card shadow mb-4">
@@ -89,7 +85,6 @@
                                 <th>No</th>
                                 <th>Topik</th>
                                 <th>Sub-Topik</th>
-<<<<<<< Updated upstream
                                 <th>Progres</th>
                                 <th>Detail</th>
                                 @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
@@ -113,8 +108,8 @@
                                         <td>{{ $firstSubTopic->name }}</td>
                                         <td>
                                             <div class="progress">
-                                                <div class="progress-bar" role="progressbar"
-                                                    style="width:{{ $firstSubTopic->progress }}%;"
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                                    role="progressbar" style="width:{{ $firstSubTopic->progress }}%;"
                                                     aria-valuenow="{{ $firstSubTopic->progress }}" aria-valuemin="0"
                                                     aria-valuemax="100">
                                                     {{ $firstSubTopic->progress }}%
@@ -122,14 +117,14 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <a class="btn btn-info"
+                                            <a class="btn buttonDetail"
                                                 href="{{ route('subTopic.show', $firstSubTopic->id) }}">
                                                 Detail
                                             </a>
                                         </td>
                                         @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
                                             <td>
-                                                <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
+                                                <a href="#" class="btn buttonEdit mb-3" data-toggle="modal"
                                                     data-target="#modalEditSubTopics"
                                                     onclick="getEditSubTopicForm({{ $firstSubTopic->id }})">Edit</a>
                                                 <form method="POST"
@@ -137,7 +132,7 @@
                                                     style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <input type="submit" value="Hapus" class="btn btn-danger"
+                                                    <input type="submit" value="Hapus" class="btn buttonDelete mb-3"
                                                         onclick="return confirm('Apa kamu yakin menghapus {{ $firstSubTopic->name }}?');">
                                                 </form>
                                             </td>
@@ -148,22 +143,22 @@
                                             <td>{{ $subTopic->name }}</td>
                                             <td>
                                                 <div class="progress">
-                                                    <div class="progress-bar" role="progressbar"
-                                                        style="width:{{ $subTopic->progress }}%;"
+                                                    <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                                        role="progressbar" style="width:{{ $subTopic->progress }}%;"
                                                         aria-valuenow="{{ $subTopic->progress }}" aria-valuemin="0"
                                                         aria-valuemax="100">
                                                         {{ $subTopic->progress }}%
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td> <a class="btn btn-info"
+                                            <td> <a class="btn buttonDetail"
                                                     href="{{ route('subTopic.show', $subTopic->id) }}">
                                                     Detail
                                                 </a>
                                             </td>
                                             @if (Auth::user()->position_id == '1' || Auth::user()->position_id == '2')
                                                 <td>
-                                                    <a href="#" class="btn btn-warning mb-3" data-toggle="modal"
+                                                    <a href="#" class="btn buttonEdit mb-3" data-toggle="modal"
                                                         data-target="#modalEditSubTopics"
                                                         onclick="getEditSubTopicForm({{ $subTopic->id }})">Edit</a>
                                                     <form method="POST"
@@ -171,7 +166,7 @@
                                                         style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <input type="submit" value="Hapus" class="btn btn-danger"
+                                                        <input type="submit" value="Hapus" class="btn buttonDelete mb-3"
                                                             onclick="return confirm('Apa kamu yakin menghapus {{ $subTopic->name }}?');">
                                                     </form>
                                                 </td>
@@ -198,9 +193,7 @@
             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalCreateLabel">Create</h5>
-                    </div>
+
                     <div class="modal-body" id="modalCreateContent">
                     </div>
                 </div>
@@ -212,9 +205,7 @@
             aria-hidden="true">
             <div class="modal-dialog modal-wide">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalEditLabel">Edit</h5>
-                    </div>
+
                     <div class="modal-body" id="modalContent">
                     </div>
                 </div>

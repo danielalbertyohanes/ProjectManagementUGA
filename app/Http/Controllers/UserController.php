@@ -85,6 +85,13 @@ class UserController extends Controller
             'msg' => view('employee.edit', compact('user', 'positions'))->render()
         ], 200);
     }
+    public function getCreateForm(Request $request)
+    {
+        $positions = Position::getAll();
+        //Log::info('Masuk ke getCreateForm'); // Cek apakah masuk ke method ini
+        return response()->json(['status' => 'ok', 'msg' => view('employee.create', compact('positions'))->render()]);
+    }
+
 
     public function create()
     {

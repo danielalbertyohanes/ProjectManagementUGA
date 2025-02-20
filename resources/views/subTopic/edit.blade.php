@@ -12,12 +12,7 @@
     </div>
 
     <div class="modal-footer">
-<<<<<<< Updated upstream
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <a href="{{ route('course.show', $subTopic->topic->course_id) }}" class="btn btn-danger">Cancel</a>
-=======
         <a href="{{ route('course.show', $subTopic->topic->course_id) }}" class="btn buttonBatal">Batal</a>
         <button type="submit" class="btn buttonSimpan">Simpan</button>
->>>>>>> Stashed changes
     </div>
 </form>

@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 <link rel="stylesheet" href="{{ asset('admin/css/modal.css') }}">
 
 <h2>Edit Video</h2>
@@ -31,4 +29,3 @@
         <button type="submit" class="btn buttonSimpan">Simpan</button>
     </div>
 </form>
->>>>>>> Stashed changes

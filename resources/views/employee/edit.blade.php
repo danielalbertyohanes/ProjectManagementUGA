@@ -1,10 +1,4 @@
-<style>
-    label {
-        color: #232323;
-        padding-top: 10px;
-    }
-</style>
-
+<link rel="stylesheet" href="{{ asset('admin/css/modal.css') }}">
 <form method="POST" action="{{ route('employee.update', ['user' => $user->id, 'from' => 'employee']) }}">
     @csrf
     @method('PUT')
@@ -60,7 +54,7 @@
     </div>
 
     <div class="modal-footer">
-        <a href="{{ route('employee.index') }}" class="btn btn-danger">Batal</a>
-        <button type="submit" class="btn btn-primary">Simpan</button>
+        <a href="{{ route('employee.index') }}" class="btn buttonBatal">Batal</a>
+        <button type="submit" class="btn buttonSimpan">Simpan</button>
     </div>
 </form>

@@ -52,12 +52,12 @@
                 </select>
             </div>
         </div>
-        <button type="button" class="btn btn-sm btn-primary" id="addDosen">Tambah Dosen</button>
+        <button type="button" class="btn btn-sm buttonSimpan" id="addDosen">Tambah Dosen</button>
     </div>
 
     <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-        <button type="submit" class="btn btn-primary">Simpan</button>
+        <button type="button" class="btn buttonBatal" data-dismiss="modal">Batal</button>
+        <button type="submit" class="btn buttonSimpan">Simpan</button>
     </div>
 </form>
 
@@ -98,7 +98,7 @@
                 '<option value="{{ $dosen->id }}">{{ $dosen->name }} - {{ $dosen->npk }} - {{ $dosen->fakultas }}</option>' +
                 '@endforeach' +
                 '</select>' +
-                '<button type="button" class="btn btn-sm btn-danger remove-input">Hapus</button>' +
+                '<button type="button" class="btn btn-sm buttonDelete remove-input mb-3">Hapus</button>' +
                 '</div>'
             );
             updateDosenOptions();

@@ -1,31 +1,21 @@
 @extends('layouts.admin')
 
 @section('content')
-<<<<<<< Updated upstream
-    <div class="container-fluid">
-        <h1 class="h3 mb-2 text-gray-800">DOSEN</h1>
-        <p>Info terkait dosen agar informative</p>
-=======
     <link rel="stylesheet" href="{{ asset('admin/css/content.css') }}">
 
     <div class="container-fluid">
         <h1>MASTER KONTRIBUTOR</h1>
-        <p>Modul Master Kontributor digunakan untuk mengelola informasi kontributor dalam sistem. Dengan fitur ini admin dapat menambahkan, mengedit, menghapus dan melihat daftar kontributor atau dosen. Data yang dikelola mencakup Nomor Pokok Karyawan (NPK), nama, fakultas, nomor telepon, serta deskripsi kontributor.</p>
+        <p>Modul Master Kontributor digunakan untuk mengelola informasi kontributor dalam sistem. Dengan fitur ini admin
+            dapat menambahkan, mengedit, menghapus dan melihat daftar kontributor atau dosen. Data yang dikelola mencakup
+            Nomor Pokok Karyawan (NPK), nama, fakultas, nomor telepon, serta deskripsi kontributor.</p>
 
->>>>>>> Stashed changes
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
 
-<<<<<<< Updated upstream
-        @if (Auth::user()->position_id == '3')
-            <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalCreateDosen"
-                onclick="loadCreateForm()">+ New Course</button>
-        @endif
-=======
         {{-- Button Tambah Kontributor --}}
-        <button class="btn buttonCreate mb-3" data-toggle="modal" data-target="#modalCreateDosen" onclick="loadCreateForm()">Tambah Kontributor</button>
->>>>>>> Stashed changes
+        <button class="btn buttonCreate mb-3" data-toggle="modal" data-target="#modalCreateDosen"
+            onclick="loadCreateForm()">Tambah Kontributor</button>
 
         {{-- Tabel Kontributor --}}
         <div class="card shadow mb-4">
@@ -56,28 +46,13 @@
                                     <td>{{ $d->no_telp }}</td>
                                     <td>{{ $d->description }}</td>
                                     <td>
-<<<<<<< Updated upstream
-                                        @if (Auth::user()->position_id == '3')
-                                            <a href="#" class="btn btn-warning" data-toggle="modal"
-                                                data-target="#modalEditA" onclick="getEditForm({{ $d->id }})">EDIT
-                                            </a>
-                                            <form method="POST" action="{{ route('dosen.destroy', $d->id) }}"
-                                                style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <input type="submit" value="Delete" class="btn btn-danger"
-                                                    onclick="return confirm('Are you sure to delete {{ $d->id }} - {{ $d->name }}?');">
-                                            </form>
-                                        @endif
-=======
-                                        {{-- @if (Auth::user()->position_id == '3') --}}
                                         <a href="#" class="btn buttonEdit" data-toggle="modal"
                                             data-target="#modalEditA" onclick="getEditForm({{ $d->id }})">Edit
                                         </a>
-                                        <a href="#" class="btn buttonDelete" onclick="confirmDelete('{{ route('dosen.destroy', $d->id) }}', '{{ $d->name }}')">
-                                            Delete
+                                        <a href="#" class="btn buttonDelete"
+                                            onclick="confirmDelete('{{ route('dosen.destroy', $d->id) }}', '{{ $d->name }}')">
+                                            Hapus
                                         </a>
->>>>>>> Stashed changes
                                     </td>
                                 </tr>
                             @endforeach
@@ -178,17 +153,17 @@
             $('#modalDeleteConfirm').modal('show');
         }
 
-        $(document).ready(function () {
-            $('#modalDeleteConfirm').on('hidden.bs.modal', function () {
+        $(document).ready(function() {
+            $('#modalDeleteConfirm').on('hidden.bs.modal', function() {
                 $('#deleteDosenName').text('');
                 $('#deleteForm').attr('action', '');
             });
 
-            $('.buttonBatal').on('click', function () {
+            $('.buttonBatal').on('click', function() {
                 $('#modalDeleteConfirm').modal('hide');
             });
 
-            $('.close').on('click', function () {
+            $('.close').on('click', function() {
                 $('#modalDeleteConfirm').modal('hide');
             });
         });

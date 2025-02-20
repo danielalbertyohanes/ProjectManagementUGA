@@ -50,7 +50,6 @@ class LinkExternalController extends Controller
     {
         return response()->json(['status' => 'ok', 'msg' => view('link_external.create')->render()]);
     }
-
     public function getEditForm(Request $request)
     {
         $id = $request->id;
