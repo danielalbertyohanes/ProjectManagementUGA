@@ -241,7 +241,7 @@
                                                 @endif
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
+                                                <button type="button" class="btn buttonBatal"
                                                     data-dismiss="modal">Tutup</button>
 
                                                 @if ($course->status != 'Cancel')

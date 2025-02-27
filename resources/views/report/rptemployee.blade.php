@@ -1,20 +1,37 @@
 @extends('layouts.admin')
 
 @section('content')
+    <style>
+        .card-body-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .btn-download-pdf {
+            margin-left: auto;
+        }
+    </style>
     <div class="container-fluid mt-4">
         <h1 class="text-center mb-4 text-black" style="font-size: 3rem;">Laporan Kerja Karyawan</h1>
 
         @foreach ($employeeReports as $key => $report)
             <div class="card mb-4">
-                <div class="card-header bg-primary text-white toggle-header" data-target="#report-{{ $key }}">
+                <div class="card-header text-white toggle-header" data-target="#report-{{ $key }}">
                     <h3 class="mb-0">{{ $report['user']->name }}</h3>
-                    <p class="mb-0">
+                    <h6 class="mb-0">
                         Total Courses (PIC): {{ $report['courses_count'] }} |
                         Total Tugas: {{ $report['total_tasks'] }}
-                    </p>
+                    </h6>
                 </div>
 
                 <div class="card-body" id="report-{{ $key }}" style="display: none;">
+
+
+                    <div class="card-body-header">
+                        <!-- Tambahkan tombol Download PDF pad JS-->
+                    </div>
 
                     <!-- Courses Section -->
                     @if ($report['courses_count'] > 0)
@@ -104,6 +121,7 @@
                                             <td>{{ $log->status }}</td>
                                             <td>{{ ucwords(str_replace('-', ' ', $log->description)) }}</td>
                                             <td>{{ $log->created_at->format('d M Y H:i') }}</td>
+                                        
                                             <td><span
                                                     class="badge bg-{{ $log->video->status === 'Edited' ? 'success' : 'warning' }}">
                                                     {{ $log->video->status }}
@@ -171,16 +189,17 @@
                 var userName = card.find('.card-header h3').text().trim();
                 var fileName = 'Laporan_Kerja_' + userName.replace(/\s+/g, '_');
 
-                // Tambahkan tombol download
+                // Tambahkan tombol download ke dalam card-body-header
                 var downloadButton = $('<button>', {
                     text: 'Download PDF',
-                    class: 'btn btn-primary btn-download-pdf',
+                    class: 'btn buttonCreate btn-download-pdf',
                     click: function() {
                         generatePDF(card[0], fileName);
                     }
                 });
 
-                card.find('.card-header').append(downloadButton);
+                // Tempatkan tombol di dalam card-body-header
+                card.find('.card-body-header').append(downloadButton);
             });
         });
     </script>

@@ -27,8 +27,8 @@
     </div>
 
     <div class="modal-footer">
-        <a href="{{ route('course.index') }}" class="btn btn-danger">Batal</a>
-        <button type="submit" class="btn btn-primary">Simpan</button>
+        <button type="button" class="btn buttonBatal" data-dismiss="modal">Batal</button>
+        <button type="submit" class="btn buttonSimpan">Simpan</button>
     </div>
 </form>
 

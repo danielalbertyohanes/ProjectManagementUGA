@@ -20,6 +20,7 @@
     <!-- Custom styles -->
     <link href="{{ asset('admin/css/sb-admin-2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/css/admin.css') }}" rel="stylesheet">
+    <link href="{{ asset('admin/css/content.css') }}" rel="stylesheet">
 </head>
 
 <body class="flex">

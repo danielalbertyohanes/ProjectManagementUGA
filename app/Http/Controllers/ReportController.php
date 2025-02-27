@@ -72,6 +72,35 @@ class ReportController extends Controller
     public function rptPeriode($periodeId = null)
     {
         $periodes = Periode::with(['course.topics.subTopics.ppts.videos'])->get()->map(function ($periode) {
+            // Hitung total PPT dan video untuk seluruh periode
+            $totalPPTs = $periode->course->sum(function ($course) {
+                return $course->topics->sum(function ($topic) {
+                    return $topic->subTopics->sum(function ($subTopic) {
+                        return $subTopic->ppts->count();
+                    });
+                });
+            });
+
+            $totalVideos = $periode->course->sum(function ($course) {
+                return $course->topics->sum(function ($topic) {
+                    return $topic->subTopics->sum(function ($subTopic) {
+                        return $subTopic->videos->count();
+                    });
+                });
+            });
+
+            // Ambil detail course per periode
+            $courses = $periode->course->map(function ($course) {
+                return [
+                    'name' => $course->name,
+                    'status' => $course->status,
+                    'total_topics' => $course->topics->count(),
+                    'total_subtopics' => $course->topics->sum(fn($topic) => $topic->subTopics->count()), // Total subtopic per course
+                    'total_ppts' => $course->topics->sum(fn($topic) => $topic->subTopics->sum(fn($subTopic) => $subTopic->ppts->count())), // Total PPT per course
+                    'total_videos' => $course->topics->sum(fn($topic) => $topic->subTopics->sum(fn($subTopic) => $subTopic->videos->count())), // Total video per course
+                ];
+            });
+
             return [
                 'id' => $periode->id,
                 'name' => $periode->name,
@@ -87,25 +116,11 @@ class ReportController extends Controller
                 'progress_percentage' => $periode->course->count() > 0
                     ? round(($periode->course->where('status', 'Publish')->count() / $periode->course->count()) * 100, 2)
                     : 0,
-                // Count PPTs in this period
-                'total_ppts' => $periode->course->sum(function ($course) {
-                    return $course->topics->sum(function ($topic) {
-                        return $topic->subTopics->sum(function ($subTopic) {
-                            return $subTopic->ppts->count();
-                        });
-                    });
-                }),
-                // Count Videos in this period
-                'total_videos' => $periode->course->sum(function ($course) {
-                    return $course->topics->sum(function ($topic) {
-                        return $topic->subTopics->sum(function ($subTopic) {
-                            return $subTopic->videos->count();
-                        });
-                    });
-                }),
+                'total_ppts' => $totalPPTs,
+                'total_videos' => $totalVideos,
+                'courses' => $courses, // Detail course per periode
             ];
         });
-
         return view('report.rptperiode', compact('periodes'));
     }
 }

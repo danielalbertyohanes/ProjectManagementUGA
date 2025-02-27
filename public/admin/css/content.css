@@ -129,14 +129,14 @@ td {
 }
 
 .buttonDetail {
-    background-color: var(--secondary);
-    border-color: var(--secondary);
+    background-color: var(--primary);
+    border-color: var(--primary);
     color: white
 }
 
 .buttonDetail:hover {
-    background-color: var(--gray-dark);
-    border-color: var(--gray-dark);
+    background-color: var(--secondary);
+    border-color: var(--secondary);
     color: white;
 }
 
@@ -153,14 +153,14 @@ td {
 }
 
 .buttonPublish {
-    background-color: var(--accent2);
-    border-color: var(--accent2);
+    background-color: var(--red);
+    border-color: var(--red);
     color: white
 }
 
 .buttonPublish:hover {
-    background-color: var(--accent3);
-    border-color: var(--accent3);
+    background-color: var(--red-light);
+    border-color: var(--red-light);
     color: white;
 }
 /* Modal */
@@ -264,4 +264,14 @@ select option:hover {
     position: relative;
     overflow: visible;
     /* Pastikan tooltip bisa terlihat */
+}
+.card-body-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.btn-download-pdf {
+    margin-left: auto;
 }
