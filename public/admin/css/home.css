@@ -12,26 +12,26 @@
     --courses-bg: #F08C4A;
     --shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   }
-  
+
   /* Container dan Grid Layout */
   .dashboard-container {
     padding: 1.5rem;
     max-width: 1280px;
     margin: 0 auto;
   }
-  
+
   .dashboard-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
+
   .stats-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
+
   /* Card Styles */
   .dashboard-card {
     border-radius: 0.5rem;
@@ -40,38 +40,38 @@
     position: relative;
     overflow: hidden;
   }
-  
+
   /* Card Variants */
   .welcome-card {
     background-color: var(--primary);
     color: white;
   }
-  
+
   .period-card {
     background-color: var(--secondary);
     color: white;
   }
-  
+
   .users-card {
-    background-color: var(--users-bg);
+    background-color: var(--date-text);
     color: var(--users-text);
   }
-  
+
   .lecturers-card {
     background-color: var(--lecturers-bg);
     color: white;
   }
-  
+
   .date-card {
     background-color: var(--date-bg);
     color: var(--date-text);
   }
-  
+
   .courses-card {
     background-color: var(--courses-bg);
     color: white;
   }
-  
+
   /* Typography */
   .card-title {
     font-size: 1.25rem;
@@ -79,64 +79,70 @@
     margin-bottom: 0.5rem;
     display: flex;
     align-items: center;
+    color: white;
   }
-  
+
   .card-title i {
     margin-right: 0.5rem;
   }
-  
+
   .card-text {
     font-size: 1rem;
     line-height: 1.5;
+    color: white;
   }
-  
+
   .period-name {
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
+    color: white;
   }
-  
+
   .period-date {
     margin-bottom: 0.25rem;
+    color: white;
   }
-  
+
   .stat-number {
     font-size: 2rem;
     font-weight: 700;
     margin-top: 0.5rem;
+    color: white;
   }
-  
+
   .empty-state, .no-data {
     font-size: 1rem;
     opacity: 0.9;
+    color: white;
   }
-  
+
   /* Responsive Adjustments */
   @media (min-width: 768px) {
     .dashboard-grid {
       grid-template-columns: 1fr 1fr;
     }
-    
+
     .stats-grid {
       grid-template-columns: 1fr 1fr;
     }
   }
-  
+
   /* Animation Effects */
   .dashboard-card {
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   }
-  
+
   .dashboard-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   }
-  
+
   /* Accessibility Improvements */
   .dashboard-card:focus-within {
     outline: 2px solid #4A90E2;
     outline-offset: 2px;
   }
-  
+
   /* Print Styles */
   @media print {
     .dashboard-card {
@@ -144,7 +150,7 @@
       border: 1px solid #ddd;
       box-shadow: none;
     }
-    
+
     .dashboard-grid, .stats-grid {
       gap: 0.5rem;
     }
